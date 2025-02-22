@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Anatomia</title>
+    <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/011/116/298/original/continuous-line-drawing-of-a-human-brain-free-vector.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f0f0; /* Cor de fundo padrão */
+            background-image: url('https://images.alphacoders.com/203/thumb-1920-203603.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-color 0.5s ease-in-out; /* Transição suave para troca de fundo */
+        }
+
+        body.no-background {
+            background-image: none;
+        }
+
+        .menu, .sub-menu, .cranio-sub-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80%;
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .menu h1, .sub-menu h1, .cranio-sub-menu h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Estilização dos botões em vermelho burgundy */
+        .menu button, 
+        .sub-menu button, 
+        .cranio-sub-menu button {
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 15px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #800020; /* burgundy */
+            color: white;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .menu button:hover, 
+        .sub-menu button:hover, 
+        .cranio-sub-menu button:hover {
+            background-color: #660018; /* burgundy um pouco mais escuro */
+            transform: scale(1.05);
+        }
+
+        .menu button:active, 
+        .sub-menu button:active, 
+        .cranio-sub-menu button:active {
+            background-color: #500010; /* burgundy ainda mais escuro */
+        }
+
+        .menu button:focus, 
+        .sub-menu button:focus, 
+        .cranio-sub-menu button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #800020;
+        }
+
+        .game {
+            display: none;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+
+        .game.active {
+            opacity: 1;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+            border: 5px solid #333;
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .target {
+            position: absolute;
+            background-color: rgba(8, 0, 120, 0.293);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .target.correct {
+            background-color: rgba(0, 255, 0, 0.7);
+        }
+
+        .target.incorrect {
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #28a745; /* Barra de progresso verde */
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+
+        #feedback {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Destaque para a pergunta */
+        #question {
+            background-color: rgba(128, 0, 32, 0.8); /* burgundy translúcido */
+            border-radius: 12px;
+            padding: 10px;
+            color: white;
+            font-style: italic;
+        }
+
+        .structure-name {
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <audio id="correct-sound" src="https://nanabanana660.github.io/game/Correct%20Answer%20Sound%20Effect.mp3"></audio>
+    <audio id="wrong-sound" src="https://nanabanana660.github.io/game/videoplayback.m4a"></audio>
+    <audio id="victory-sound" src="https://nanabanana660.github.io/game/videoplayback%20(1).m4a"></audio>
+    <!-- Menu Principal -->
+    <div class="menu" id="menu">
+        <h1>Bem-vindo ao Quiz de Neuroanatomia da T24!</h1>
+        <button onclick="showSubMenu()">Escolher Fase</button>
+    </div>
+
+    <!-- Sub-menu para seleção de fase -->
+    <div class="sub-menu" id="sub-menu" style="display: none;">
+        <h1>Escolha uma fase</h1>
+        <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
+        <button onclick="backToMenu()">Voltar</button>
+    </div>
+
+    <!-- Sub-menu para o subnível do crânio -->
+    <div class="cranio-sub-menu" id="cranio-sub-menu" style="display: none;">
+        <h1>Escolha a vista do crânio</h1>
+        <button onclick="startGame('cranio', 'frontal')">Vista Frontal</button>
+        <button onclick="startGame('cranio', 'orbital')">Vista Orbital</button>
+        <button onclick="startGame('cranio', 'lateral')">Vista Lateral</button>
+        <button onclick="startGame('cranio', 'posterior')">Vista Posterior</button>
+        <button onclick="startGame('cranio', 'inferior')">Vista Inferior</button>
+        <button onclick="startGame('cranio', 'mandibula')">Vista Mandíbula</button>
+        <button onclick="startGame('cranio', 'calota_craniana')">Calota Craniana</button>
+        <button onclick="startGame('cranio', 'interior')">Vista Interior</button>
+        <button onclick="startGame('cranio', 'superior')">Vista Superior</button>
+        <button onclick="backToSubMenu()">Voltar</button>
+    </div>
+
+    <!-- Jogo -->
+    <div class="game" id="game">
+        <h1>Quiz de Anatomia</h1>
+        <div class="question-container" id="question-container">
+            <p id="question"></p>
+        </div>
+        <div class="container">
+            <img id="image" src="" width="100%">
+            <div id="targets"></div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+        </div>
+        <p id="feedback"></p>
+        <p id="score">Acertos: 0 / 0 (0%)</p>
+        <p id="congrats" style="display:none; color: green; font-weight: bold;">
+            🎉 Parabéns! Você acertou todas as perguntas! 🎉
+        </p>
+        <button onclick="backToSubMenu()">Voltar</button>
+    </div>
+
+    <script>
+        const phases = {
+            cranio: {
+                frontal: {
+                    image: "https://i.imgur.com/JlM0A6A.png", // Link da imagem frontal
+                    backgroundColor: "#f0f8ff", // Azul claro
+                    points: [
+                        { top: "260px", left: "200px", name: "Glabela" },
+                        { top: "400px", left: "140px", name: "Maxila" },
+                        { top: "380px", left: "200px", size: "large", name: "Abertura piriforme" },
+                        { top: "405px", left: "175px", size: "small", name: "Concha nasal inferior" },
+                        { top: "365px", left: "175px", size: "small", name: "Conha nasal média" },
+                        { top: "140px", left: "200px", size: "large", name: "Osso frontal" },
+                        { top: "500px", left: "200px", size: "large", name: "Processos alveolares" },
+                        { top: "420px", left: "200px", size: "small", name: "Septo nasal" },
+                        { top: "240px", left: "330px", name: "Supercílio" },
+                        { top: "300px", left: "100px", size: "large", name: "Órbita" },
+                        { top: "380px", left: "50px", name: "Osso zigmóide" },
+                    ]
+                },
+                orbital: {
+                    image: "https://i.imgur.com/ufGdxRu.png", // Link da imagem frontal
+                    backgroundColor: "#fff0f5", // Rosa claro
+                    points: [
+                        { top: "230px", left: "140px", name: "Fissura orbital inferior" },
+                        { top: "130px", left: "160px", name: "Fissura orbital superior" },
+                        { top: "80px", left: "200px", name: "Face orbital do osso frontal" },
+                        { top: "160px", left: "120px", name: "Face orbital do osso esfenoide" },
+                        { top: "150px", left: "230px", name: "Lâmina orbital do osso etmóide" },
+                        { top: "230px", left: "80px", name: "Face orbital do osso zigomático" },
+                        { top: "210px", left: "200px", name: "Face orbital da maxila" },
+                        { top: "140px", left: "261px", size: "small", name: "Osso lacrimal" },
+                        { top: "180px", left: "270px", size: "small", name: "Ducto lacrimal" },
+                    ]
+                },
+                lateral: {
+                    image: "https://i.imgur.com/KLwGBRj.png", // Link da imagem lateral
+                    backgroundColor: "#f0fff0", // Verde claro
+                    points: [
+                        { top: "80px", left: "90px", size: "large", name: "Osso parietal" },
+                        { top: "220px", left: "130px", size: "large", name: "Osso temporal" },
+                        { top: "270px", left: "270px", name: "Osso zigomático" },
+                        { top: "275px", left: "200px", size: "small", name: "Arco zigomático" },
+                        { top: "200px", left: "220px", name: "Asa maior do esfenoide" },
+                        { top: "300px", left: "110px", size: "small", name: "Processo mastóide do temporal" },
+                        { top: "275px", left: "130px", size: "small", name: "Meato acústico externo" },
+                        { top: "80px", left: "280px", size: "large", name: "Osso frontal" },
+                        { top: "80px", left: "160px", size: "small", name: "Sutura coronal" },
+                        { top: "180px", left: "220px", size: "small", name: "Sutura esfeno-frontal" },
+                        { top: "180px", left: "190px", size: "small", name: "Sutura esfeno-parietal" },
+                        { top: "180px", left: "130px", size: "small", name: "Sutura escamosa" },
+                        { top: "200px", left: "190px", size: "small", name: "Sutura esfeno-temporal" },
+                    ]
+                },
+                mandibula: {
+                    image: "https://i.imgur.com/8cbQjSf.png", // Link da imagem da mandíbula
+                    backgroundColor: "#fffacd", // Amarelo claro
+                    points: [
+                        { top: "270px", left: "170px", name: "Ângulo da mandíbula" },
+                        { top: "200px", left: "120px", name: "Ramo da mandíbula" },
+                        { top: "80px", left: "50px", name: "Processo condilar da mandíbula" },
+                        { top: "250px", left: "300px", name: "Corpo da mandíbula" },
+                        { top: "250px", left: "450px", name: "Mento" },
+                    ]
+                },
+                posterior: {
+                    image: "https://i.imgur.com/kO3G1Ew.png", // Link da imagem posterior
+                    backgroundColor: "#e6e6fa", // Lavanda
+                    points: [
+                        { top: "180px", left: "140px", size: "small", name: "Protuberância occipital externa" },
+                        { top: "175px", left: "125px", size: "small", name: "Íneo" },
+                        { top: "110px", left: "120px", size: "large", name: "Osso occipital" },
+                        { top: "40px", left: "180px", size: "large", name: "Osso parietal" },
+                        { top: "165px", left: "50px", size: "small", name: "Linha superior da nuca" },
+                    ]
+                },
+                inferior: {
+                    image: "https://i.imgur.com/YRnucHu.png", // Link da vista inferior
+                    backgroundColor: "#f5f5dc", // Bege
+                    points: [
+                        { top: "110px", left: "230px", size: "small", name: "Osso palatino" },
+                        { top: "155px", left: "160px", size: "small", name: "Osso esfenoide" },
+                        { top: "220px", left: "130px", name: "Osso temporal" },
+                        { top: "310px", left: "220px", size: "large", name: "Osso occipital" },
+                        { top: "135px", left: "205px", size: "small", name: "Coano" },
+                        { top: "145px", left: "218px", size: "small", name: "Vômer" },
+                        { top: "180px", left: "300px", size: "small", name: "Fossa mandibular" },
+                        { top: "225px", left: "180px", size: "small", name: "Canal do nervo hipoglosso" },
+                        { top: "235px", left: "255px", size: "small", name: "Côndilo occipital" },
+                        { top: "145px", left: "261px", size: "small", name: "Lâmina lateral do processo pterigoide do esfenoide" },
+                        { top: "145px", left: "243px", size: "small", name: "Lâmina medial do processo pterigoide do esfenoide" },
+                        { top: "210px", left: "295px", size: "small", name: "Processo estiloide do temporal" },
+                        { top: "240px", left: "320px", size: "small", name: "Processo mastoide do temporal" },
+                        { top: "170px", left: "175px", size: "small", name: "Forame oval" },
+                        { top: "175px", left: "196px", size: "small", name: "Forame lácero" },
+                        { top: "180px", left: "160px", size: "small", name: "Forame espinhoso" },
+                        { top: "205px", left: "167px", size: "small", name: "Forame carotídeo" },
+                        { top: "215px", left: "270px", size: "small", name: "Forame jugular" },
+                        { top: "240px", left: "220px", name: "Forame magno" },
+                        { top: "52px", left: "215px", size: "small", name: "Sutura palatina mediana" },
+                        { top: "95px", left: "200px", size: "small", name: "Sutura palatina transversa" },
+                        { top: "60px", left: "190px", name: "Processo palatino da maxila" },
+                        { top: "120px", left: "218px", size: "small", name: "Espinha nasal posterior" },
+                    ]
+                },
+                superior: {
+                    image: "https://i.imgur.com/xNVouFu.png", // Link da vista superior
+                    backgroundColor: "#fafad2", // Amarelo claro
+                    points: [
+                        { top: "100px", left: "220px", size: "small", name: "Vértix" },
+                        { top: "50px", left: "210px", size: "small", name: "Drégma" },
+                        { top: "280px", left: "240px", size: "small", name: "Lâmbda" },
+                        { top: "150px", left: "230px", name: "Sutura sagital" },
+                        { top: "150px", left: "280px", size: "large", name: "Eminência parietal" },
+                    ]
+                },
+                calota_craniana: {
+                    image: "https://i.imgur.com/pEk7trI.png", //Link da vista da calota craniana
+                    backgroundColor: "#e0ffff", // Azul claro
+                    points:[
+                        { top: "200px", left: "200px", size: "small", name: "Sulco sagital" },
+                        { top: "175px", left: "180px", size: "small", name: "Fóvea granular" },
+                        { top: "240px", left: "90px", size: "small", name: "Sulco vascular" }
+                    ]
+                },
+                interior: {
+                    image: "https://i.imgur.com/VTlPdSn.png", //Link da vista interior
+                    backgroundColor: "#ffe4e1", // Rosa claro
+                    points: [
+                        { top: "100px", left: "190px", size: "small", name: "Crista etmoidal" },
+                        { top: "110px", left: "200px", size: "small", name: "Lâmina crivosa do etmoide" },
+                        { top: "160px", left: "225px", size: "small", name: "Processo clinoide anterior da sela turca" },
+                        { top: "145px", left: "235px", size: "small", name: "Asa menor do esfenoide" },
+                        { top: "160px", left: "170px", size: "small", name: "Forame óptico" },
+                        { top: "175px", left: "160px", size: "small", name: "Forame redondo" },
+                        { top: "160px", left: "260px", size: "small", name: "Asa maior do esfenoide" },
+                        { top: "200px", left: "143px", size: "small", name: "Forame oval" },
+                        { top: "215px", left: "135px", size: "small", name: "Forame espinhoso" },
+                        { top: "200px", left: "220px", size: "small", name: "Forame lácero" },
+                        { top: "195px", left: "200px", size: "small", name: "Processo clinoide posterior da sela turca" },
+                        { top: "270px", left: "190px", name: "Forame magno" },
+                        { top: "258px", left: "140px", size: "small", name: "Forame jugular" },
+                        { top: "240px", left: "140px", size: "small", name: "Meato acústico interno" },
+                        { top: "205px", left: "170px", size: "small", name: "Impressão trigeminal" },
+                        { top: "100px", left: "120px", size: "large", name: "Fossa craniana anterior" },
+                        { top: "215px", left: "70px", size: "large", name: "Fossa craniana média" },
+                        { top: "350px", left: "120px", size: "large", name: "Fossa craniana posterior" },
+                        { top: "258px", left: "100px", size: "small", name: "Rochedo temporal" },
+                        { top: "225px", left: "300px", size: "small", name: "Corpo do esfenoide" },
+                        { top: "350px", left: "250px", name: "Fossa cerebelar" },
+                        { top: "400px", left: "220px", size: "small", name: "Sulco transverso" },
+                        { top: "290px", left: "290px", size: "small", name: "Sulco do seio sigmóide" },
+                        { top: "235px", left: "190px", size: "small", name: "Clivo" },
+                        { top: "220px", left: "200px", size: "small", name: "Dorso do esfenoide" },
+                        { top: "180px", left: "190px", size: "small", name: "Fossa hipofisária" },
+                        { top: "150px", left: "120px", size: "small", name: "Fissura orbital superior" },
+                    ]
+                }
+            }
+        };
+
+        let currentPhase = null;
+        let currentView = null;
+        let currentQuestionIndex = 0;
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+        let shuffledPoints = [];
+
+        function showSubMenu() {
+            document.getElementById("menu").style.display = "none";
+            document.getElementById("sub-menu").style.display = "flex";
+        }
+
+        function chooseCranioSublevel() {
+            document.getElementById("sub-menu").style.display = "none";
+            document.getElementById("cranio-sub-menu").style.display = "flex";
+        }
+
+        function startGame(phase, view) {
+            currentPhase = phase;
+            currentView = view;
+            correctAnswers = 0;
+            totalQuestions = phases[phase][view].points.length;
+            currentQuestionIndex = 0;
+            shuffledPoints = shuffleArray([...phases[phase][view].points]);
+
+            // Esconde os menus de seleção
+            document.getElementById("sub-menu").style.display = "none";
+            document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("game").classList.add("active");
+            document.getElementById("image").src = phases[phase][view].image;
+
+            // Altera o fundo da página para a cor correspondente à fase
+            document.body.style.backgroundColor = phases[phase][view].backgroundColor;
+            document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
+
+            loadQuestions();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function loadQuestions() {
+            const phaseData = phases[currentPhase][currentView];
+            const targetsContainer = document.getElementById("targets");
+            targetsContainer.innerHTML = "";
+            document.getElementById("feedback").innerText = '';
+
+            const currentQuestion = shuffledPoints[currentQuestionIndex];
+            phaseData.points.forEach(point => {
+                const target = document.createElement("div");
+                target.className = "target";
+
+                // Ajusta o tamanho do ponto
+                if (point.size === "small") {
+                    target.style.width = "15px";
+                    target.style.height = "15px";
+                } else if (point.size === "large") {
+                    target.style.width = "30px";
+                    target.style.height = "30px";
+                } else {
+                    target.style.width = "20px";
+                    target.style.height = "20px";
+                }
+
+                target.style.top = point.top;
+                target.style.left = point.left;
+                target.onclick = () => checkAnswer(point.name, target);
+                targetsContainer.appendChild(target);
+            });
+
+            let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
+            document.getElementById("question").innerHTML = questionText;
+        }
+
+        function checkAnswer(structure, target) {
+            const phaseData = phases[currentPhase][currentView];
+            const correctAnswer = shuffledPoints[currentQuestionIndex].name;
+            const feedback = document.getElementById("feedback");
+
+            if (structure === correctAnswer) {
+                target.classList.add("correct");
+                feedback.innerText = 'Correto!';
+                feedback.style.color = 'green';
+                correctAnswers++;
+                document.getElementById("correct-sound").play(); // Toca o som de acerto
+            } else {
+                target.classList.add("incorrect");
+                feedback.innerText = 'Tente novamente!';
+                feedback.style.color = 'red';
+                document.getElementById("wrong-sound").play(); // Toca o som de erro
+            }
+
+            // Aguarda 1 segundo antes de trocar a pergunta e limpar o feedback
+            setTimeout(() => {
+                currentQuestionIndex++;
+                updateProgressBar();
+                updateScore();
+
+                if (currentQuestionIndex < shuffledPoints.length) {
+                    let questionText = `Clique no ponto correspondente a: <span class="structure-name">${shuffledPoints[currentQuestionIndex].name.toUpperCase()}</span>`;
+                    document.getElementById("question").innerHTML = questionText;
+                } else {
+                    showEndGame();
+                }
+                // Limpa o feedback
+                feedback.innerText = '';
+            }, 1000);
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById("progress-bar");
+            const percentage = (currentQuestionIndex / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function updateScore() {
+            const scoreElement = document.getElementById("score");
+            const congratsElement = document.getElementById("congrats");
+            let percentage = (correctAnswers / totalQuestions) * 100;
+            scoreElement.innerText = `Acertos: ${correctAnswers} / ${totalQuestions} (${percentage.toFixed(0)}%)`;
+            if (percentage === 100 && totalQuestions > 0) {
+                congratsElement.style.display = "block";
+                document.getElementById("victory-sound").play(); // Toca o som de vitória
+            } else {
+                congratsElement.style.display = "none";
+            }
+        }
+
+        function showEndGame() {
+            const feedback = document.getElementById("feedback");
+            feedback.innerText = `Jogo finalizado! Você acertou ${correctAnswers} de ${totalQuestions} pontos.`;
+            feedback.style.color = correctAnswers === totalQuestions ? 'green' : 'red';
+        }
+
+        function backToMenu() {
+
+            // Esconde o submenu e o jogo (caso estejam visíveis)
+            document.getElementById("sub-menu").style.display = "none";
+            document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("game").style.display = "none";
+
+            document.getElementById("game").style.display = "none";
+            document.getElementById("menu").style.display = "flex";
+            document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
+            document.body.style.backgroundImage = "url('https://images.alphacoders.com/203/thumb-1920-203603.jpg')"; // Restaura a imagem de fundo
+            resetGame();
+        }
+
+        function backToSubMenu() {
+            document.getElementById("game").style.display = "none";
+            document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("sub-menu").style.display = "flex";
+            document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
+            document.body.style.backgroundImage = "url('https://images.alphacoders.com/203/thumb-1920-203603.jpg')"; // Restaura a imagem de fundo
+            resetGame();
+        }
+
+        function resetGame() {
+            currentPhase = null;
+            currentView = null;
+            currentQuestionIndex = 0;
+            correctAnswers = 0;
+            totalQuestions = 0;
+            shuffledPoints = [];
+            document.getElementById("progress-bar").style.width = "0%";
+        }
+    </script>
+</body>
+</html>
