@@ -546,94 +546,103 @@
     let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
     document.getElementById("question").innerHTML = questionText;
 }
-        function startWritingMode() {
-            const targetsContainer = document.getElementById("targets");
-            targetsContainer.innerHTML = "";
+function startWritingMode() {
+    const targetsContainer = document.getElementById("targets");
+    targetsContainer.innerHTML = "";
 
-            const currentQuestion = shuffledPoints[currentQuestionIndex];
-            const target = document.createElement("div");
-            target.className = "target blinking"; // Adiciona a classe "blinking" para piscar
-            target.style.top = currentQuestion.top;
-            target.style.left = currentQuestion.left;
-            target.style.width = "20px";
-            target.style.height = "20px";
-            targetsContainer.appendChild(target);
+    const currentQuestion = shuffledPoints[currentQuestionIndex];
+    const target = document.createElement("div");
+    target.className = "target blinking"; // Adiciona a classe "blinking" para piscar
+    target.style.top = currentQuestion.top;
+    target.style.left = currentQuestion.left;
+    target.style.width = "20px";
+    target.style.height = "20px";
+    targetsContainer.appendChild(target);
 
-            // Remove a caixa de entrada anterior, se existir
-            const existingInputContainer = document.getElementById("input-container");
-            if (existingInputContainer) {
-                existingInputContainer.remove();
-            }
-
-            // Exibe a pergunta
-            document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
-
-            // Cria um campo de entrada para o jogador digitar
-            const inputContainer = document.createElement("div");
-            inputContainer.id = "input-container"; // Adiciona um ID para facilitar a remoção
-            inputContainer.style.marginTop = "20px";
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = "Digite aqui...";
-            input.style.padding = "10px";
-            input.style.fontSize = "16px";
-            input.style.borderRadius = "5px";
-            input.style.border = "2px solid #800020";
-            // Adiciona o evento de tecla pressionada ao campo de entrada
-        input.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") { // Verifica se a tecla pressionada é o Enter
-        submitButton.click(); // Simula o clique no botão "Enviar"
-       }
-        });
-            const submitButton = document.createElement("button");
-            submitButton.innerText = "Enviar";
-            submitButton.style.padding = "10px 20px";
-            submitButton.style.marginLeft = "10px";
-            submitButton.style.backgroundColor = "#800020";
-            submitButton.style.color = "white";
-            submitButton.style.border = "none";
-            submitButton.style.borderRadius = "5px";
-            submitButton.style.cursor = "pointer";
-
-submitButton.onclick = () => {
-    const userAnswer = input.value.trim().toLowerCase();
-    const correctAnswer = currentQuestion.name.toLowerCase();
-
-    // Verifica se a resposta está correta (com tolerância para pequenos erros)
-    const isCorrect = checkSimilarity(userAnswer, correctAnswer);
-    const feedback = document.getElementById("feedback");
-
-    if (isCorrect) {
-        feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
-        feedback.style.color = 'green';
-        correctAnswers++;
-        document.getElementById("correct-sound").play();
-    } else {
-        feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
-        feedback.style.color = 'red';
-        document.getElementById("wrong-sound").play();
+    // Remove a caixa de entrada anterior, se existir
+    const existingInputContainer = document.getElementById("input-container");
+    if (existingInputContainer) {
+        existingInputContainer.remove();
     }
 
-    // Aguarda 1 segundo antes de passar para a próxima pergunta
-    setTimeout(() => {
-        currentQuestionIndex++;
-        updateProgressBar();
-        updateScore();
+    // Exibe a pergunta
+    document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
 
-        if (currentQuestionIndex < shuffledPoints.length) {
-            startWritingMode(); // Carrega a próxima pergunta
+    // Cria um campo de entrada para o jogador digitar
+    const inputContainer = document.createElement("div");
+    inputContainer.id = "input-container"; // Adiciona um ID para facilitar a remoção
+    inputContainer.style.marginTop = "20px";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Digite aqui...";
+    input.style.padding = "10px";
+    input.style.fontSize = "16px";
+    input.style.borderRadius = "5px";
+    input.style.border = "2px solid #800020";
+
+    // Adiciona o evento de tecla pressionada ao campo de entrada
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") { // Verifica se a tecla pressionada é o Enter
+            submitButton.click(); // Simula o clique no botão "Enviar"
+        }
+    });
+
+    const submitButton = document.createElement("button");
+    submitButton.innerText = "Enviar";
+    submitButton.style.padding = "10px 20px";
+    submitButton.style.marginLeft = "10px";
+    submitButton.style.backgroundColor = "#800020";
+    submitButton.style.color = "white";
+    submitButton.style.border = "none";
+    submitButton.style.borderRadius = "5px";
+    submitButton.style.cursor = "pointer";
+
+    submitButton.onclick = () => {
+        const userAnswer = input.value.trim().toLowerCase();
+        const correctAnswer = currentQuestion.name.toLowerCase();
+
+        // Verifica se a resposta está correta (com tolerância para pequenos erros)
+        const isCorrect = checkSimilarity(userAnswer, correctAnswer);
+        const feedback = document.getElementById("feedback");
+
+        if (isCorrect) {
+            feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
+            feedback.style.color = 'green';
+            correctAnswers++;
+            document.getElementById("correct-sound").play();
         } else {
-            showEndGame(); // Finaliza o jogo
+            feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
+            feedback.style.color = 'red';
+            document.getElementById("wrong-sound").play();
         }
 
-        input.focus(); // Foca automaticamente no campo de entrada
-    }, 1000);
-};
+        // Aguarda 1 segundo antes de passar para a próxima pergunta
+        setTimeout(() => {
+            currentQuestionIndex++;
+            updateProgressBar();
+            updateScore();
 
-            inputContainer.appendChild(input);
-            inputContainer.appendChild(submitButton);
-            document.getElementById("question-container").appendChild(inputContainer);
-        }
+            if (currentQuestionIndex < shuffledPoints.length) {
+                startWritingMode(); // Carrega a próxima pergunta
+            } else {
+                showEndGame(); // Finaliza o jogo
+            }
+
+            // Foca automaticamente no campo de entrada
+            const input = document.querySelector("#input-container input");
+            if (input) {
+                input.focus();
+            }
+        }, 1000);
+    };
+
+    inputContainer.appendChild(input);
+    inputContainer.appendChild(submitButton);
+    document.getElementById("question-container").appendChild(inputContainer);
+
+    // Foca automaticamente no campo de entrada ao iniciar o modo de escrita
+    input.focus();
+}
 
         function checkSimilarity(userAnswer, correctAnswer) {
             // Remove acentos e converte para minúsculas
