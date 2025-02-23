@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9FH2K8V65B"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9FH2K8V65B');
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz de Anatomia</title>
@@ -28,7 +37,7 @@
             background-image: none;
         }
 
-        .menu, .sub-menu, .cranio-sub-menu {
+        .menu, .sub-menu, .cranio-sub-menu, .mode-menu {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -42,7 +51,7 @@
             transition: transform 0.3s ease;
         }
 
-        .menu h1, .sub-menu h1, .cranio-sub-menu h1 {
+        .menu h1, .sub-menu h1, .cranio-sub-menu h1, .mode-menu h1 {
             color: #333;
             font-size: 2.5em;
             margin-bottom: 20px;
@@ -57,7 +66,8 @@
         /* Estilização dos botões em vermelho burgundy */
         .menu button, 
         .sub-menu button, 
-        .cranio-sub-menu button {
+        .cranio-sub-menu button,
+        .mode-menu button {
             font-size: 18px;
             padding: 15px 30px;
             margin: 15px 0;
@@ -72,20 +82,23 @@
 
         .menu button:hover, 
         .sub-menu button:hover, 
-        .cranio-sub-menu button:hover {
+        .cranio-sub-menu button:hover,
+        .mode-menu button:hover {
             background-color: #660018; /* burgundy um pouco mais escuro */
             transform: scale(1.05);
         }
 
         .menu button:active, 
         .sub-menu button:active, 
-        .cranio-sub-menu button:active {
+        .cranio-sub-menu button:active,
+        .mode-menu button:active {
             background-color: #500010; /* burgundy ainda mais escuro */
         }
 
         .menu button:focus, 
         .sub-menu button:focus, 
-        .cranio-sub-menu button:focus {
+        .cranio-sub-menu button:focus,
+        .mode-menu button:focus {
             outline: none;
             box-shadow: 0 0 5px #800020;
         }
@@ -113,7 +126,7 @@
 
         .target {
             position: absolute;
-            background-color: rgba(8, 0, 120, 0.293);
+            background-color: rgb(255, 247, 6);
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -125,6 +138,16 @@
 
         .target.incorrect {
             background-color: rgba(255, 0, 0, 0.7);
+        }
+
+        .blinking {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .progress-bar {
@@ -163,22 +186,38 @@
             color: white;
             text-transform: uppercase;
         }
+
+        /* Rodapé com copyright */
+        .copyright {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Fundo transparente */
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <audio id="correct-sound" 
+    <audio id="correct-sound">
         <source src="/game/Correct Answer Sound Effect.mp3" type="audio/mpeg">    
     </audio>
-    <audio id="wrong-sound" 
+    <audio id="wrong-sound">
         <source src="/game/videoplayback.m4a" type="audio/mpeg">
     </audio>
-    <audio id="victory-sound" 
+    <audio id="victory-sound">
         <source src="/game/videoplayback%20(1).m4a" type="audio/mpeg">
     </audio>
     <!-- Menu Principal -->
     <div class="menu" id="menu">
         <h1>Bem-vindo ao Quiz de Neuroanatomia da T24!</h1>
         <button onclick="showSubMenu()">Escolher Fase</button>
+        <!-- Rodapé com copyright -->
+        <div class="copyright">
+            © 2025 - Ianny Miranda. Todos os direitos reservados
+        </div>
     </div>
 
     <!-- Sub-menu para seleção de fase -->
@@ -186,21 +225,38 @@
         <h1>Escolha uma fase</h1>
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
         <button onclick="backToMenu()">Voltar</button>
+        <div class="copyright">
+            © 2025 - Ianny Miranda. Todos os direitos reservados
+        </div>
     </div>
 
     <!-- Sub-menu para o subnível do crânio -->
     <div class="cranio-sub-menu" id="cranio-sub-menu" style="display: none;">
         <h1>Escolha a vista do crânio</h1>
-        <button onclick="startGame('cranio', 'frontal')">Vista Frontal</button>
-        <button onclick="startGame('cranio', 'orbital')">Vista Orbital</button>
-        <button onclick="startGame('cranio', 'lateral')">Vista Lateral</button>
-        <button onclick="startGame('cranio', 'posterior')">Vista Posterior</button>
-        <button onclick="startGame('cranio', 'inferior')">Vista Inferior</button>
-        <button onclick="startGame('cranio', 'mandibula')">Vista Mandíbula</button>
-        <button onclick="startGame('cranio', 'calota_craniana')">Calota Craniana</button>
-        <button onclick="startGame('cranio', 'interior')">Vista Interior</button>
-        <button onclick="startGame('cranio', 'superior')">Vista Superior</button>
+        <button onclick="chooseMode('frontal')">Vista Frontal</button>
+        <button onclick="chooseMode('orbital')">Vista Orbital</button>
+        <button onclick="chooseMode('lateral')">Vista Lateral</button>
+        <button onclick="chooseMode('posterior')">Vista Posterior</button>
+        <button onclick="chooseMode('inferior')">Vista Inferior</button>
+        <button onclick="chooseMode('mandibula')">Vista Mandíbula</button>
+        <button onclick="chooseMode('calota_craniana')">Calota Craniana</button>
+        <button onclick="chooseMode('interior')">Vista Interior</button>
+        <button onclick="chooseMode('superior')">Vista Superior</button>
         <button onclick="backToSubMenu()">Voltar</button>
+        <div class="copyright">
+            © 2025 - Ianny Miranda. Todos os direitos reservados
+        </div>
+    </div>
+
+    <!-- Menu para escolher o modo -->
+    <div class="mode-menu" id="mode-menu" style="display: none;">
+        <h1>Escolha o modo</h1>
+        <button onclick="startGame('cranio', currentView, 'padrao')">Modo Padrão</button>
+        <button onclick="startGame('cranio', currentView, 'escrita')">Modo Escrita</button>
+        <button onclick="backToCranioSubMenu()">Voltar</button>
+        <div class="copyright">
+            © 2025 - Ianny Miranda. Todos os direitos reservados
+        </div>
     </div>
 
     <!-- Jogo -->
@@ -241,7 +297,7 @@
                         { top: "420px", left: "200px", size: "small", name: "Septo nasal" },
                         { top: "240px", left: "330px", name: "Supercílio" },
                         { top: "300px", left: "100px", size: "large", name: "Órbita" },
-                        { top: "380px", left: "50px", name: "Osso zigmóide" },
+                        { top: "380px", left: "50px", name: "Osso zigmático" },
                     ]
                 },
                 orbital: {
@@ -387,6 +443,7 @@
 
         let currentPhase = null;
         let currentView = null;
+        let currentMode = null;
         let currentQuestionIndex = 0;
         let correctAnswers = 0;
         let totalQuestions = 0;
@@ -402,28 +459,46 @@
             document.getElementById("cranio-sub-menu").style.display = "flex";
         }
 
-        function startGame(phase, view) {
+        function chooseMode(view) {
+            currentView = view;
+            document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("mode-menu").style.display = "flex";
+        }
+
+        function backToCranioSubMenu() {
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("cranio-sub-menu").style.display = "flex";
+        }
+
+        function startGame(phase, view, mode) {
+             resetGame(); // Reinicia o jogo antes de iniciar um novo modo
+
             currentPhase = phase;
             currentView = view;
+            currentMode = mode;
             correctAnswers = 0;
             totalQuestions = phases[phase][view].points.length;
             currentQuestionIndex = 0;
             shuffledPoints = shuffleArray([...phases[phase][view].points]);
 
-            // Esconde os menus de seleção
-            document.getElementById("sub-menu").style.display = "none";
-            document.getElementById("cranio-sub-menu").style.display = "none";
-            document.getElementById("game").style.display = "block";
-            document.getElementById("game").classList.add("active");
-            document.getElementById("image").src = phases[phase][view].image;
+        // Esconde os menus de seleção
+        document.getElementById("sub-menu").style.display = "none";
+        document.getElementById("cranio-sub-menu").style.display = "none";
+        document.getElementById("mode-menu").style.display = "none";
+        document.getElementById("game").style.display = "block";
+        document.getElementById("game").classList.add("active");
+        document.getElementById("image").src = phases[phase][view].image;
 
-            // Altera o fundo da página para a cor correspondente à fase
-            document.body.style.backgroundColor = phases[phase][view].backgroundColor;
-            document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
+        // Altera o fundo da página para a cor correspondente à fase
+        document.body.style.backgroundColor = phases[phase][view].backgroundColor;
+        document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
 
-            loadQuestions();
+        if (mode === 'escrita') {
+            startWritingMode(); // Inicia a nova modalidade
+        } else {
+            loadQuestions(); // Continua com o modo normal
         }
-
+}
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -433,36 +508,141 @@
         }
 
         function loadQuestions() {
-            const phaseData = phases[currentPhase][currentView];
+    // Remove a caixa de entrada do modo de escrita, se existir
+    const inputContainer = document.getElementById("input-container");
+    if (inputContainer) {
+        inputContainer.remove();
+    }
+
+    // Resto do código da função loadQuestions
+    const phaseData = phases[currentPhase][currentView];
+    const targetsContainer = document.getElementById("targets");
+    targetsContainer.innerHTML = "";
+    document.getElementById("feedback").innerText = '';
+
+    const currentQuestion = shuffledPoints[currentQuestionIndex];
+    phaseData.points.forEach(point => {
+        const target = document.createElement("div");
+        target.className = "target";
+
+        // Ajusta o tamanho do ponto
+        if (point.size === "small") {
+            target.style.width = "15px";
+            target.style.height = "15px";
+        } else if (point.size === "large") {
+            target.style.width = "30px";
+            target.style.height = "30px";
+        } else {
+            target.style.width = "20px";
+            target.style.height = "20px";
+        }
+
+        target.style.top = point.top;
+        target.style.left = point.left;
+        target.onclick = () => checkAnswer(point.name, target);
+        targetsContainer.appendChild(target);
+    });
+
+    let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
+    document.getElementById("question").innerHTML = questionText;
+}
+        function startWritingMode() {
             const targetsContainer = document.getElementById("targets");
             targetsContainer.innerHTML = "";
-            document.getElementById("feedback").innerText = '';
 
             const currentQuestion = shuffledPoints[currentQuestionIndex];
-            phaseData.points.forEach(point => {
-                const target = document.createElement("div");
-                target.className = "target";
+            const target = document.createElement("div");
+            target.className = "target blinking"; // Adiciona a classe "blinking" para piscar
+            target.style.top = currentQuestion.top;
+            target.style.left = currentQuestion.left;
+            target.style.width = "20px";
+            target.style.height = "20px";
+            targetsContainer.appendChild(target);
 
-                // Ajusta o tamanho do ponto
-                if (point.size === "small") {
-                    target.style.width = "15px";
-                    target.style.height = "15px";
-                } else if (point.size === "large") {
-                    target.style.width = "30px";
-                    target.style.height = "30px";
+            // Remove a caixa de entrada anterior, se existir
+            const existingInputContainer = document.getElementById("input-container");
+            if (existingInputContainer) {
+                existingInputContainer.remove();
+            }
+
+            // Exibe a pergunta
+            document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
+
+            // Cria um campo de entrada para o jogador digitar
+            const inputContainer = document.createElement("div");
+            inputContainer.id = "input-container"; // Adiciona um ID para facilitar a remoção
+            inputContainer.style.marginTop = "20px";
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Digite aqui...";
+            input.style.padding = "10px";
+            input.style.fontSize = "16px";
+            input.style.borderRadius = "5px";
+            input.style.border = "2px solid #800020";
+            // Adiciona o evento de tecla pressionada ao campo de entrada
+        input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") { // Verifica se a tecla pressionada é o Enter
+        submitButton.click(); // Simula o clique no botão "Enviar"
+       }
+        });
+            const submitButton = document.createElement("button");
+            submitButton.innerText = "Enviar";
+            submitButton.style.padding = "10px 20px";
+            submitButton.style.marginLeft = "10px";
+            submitButton.style.backgroundColor = "#800020";
+            submitButton.style.color = "white";
+            submitButton.style.border = "none";
+            submitButton.style.borderRadius = "5px";
+            submitButton.style.cursor = "pointer";
+
+            submitButton.onclick = () => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = currentQuestion.name.toLowerCase();
+
+                // Verifica se a resposta está correta (com tolerância para pequenos erros)
+                const isCorrect = checkSimilarity(userAnswer, correctAnswer);
+                const feedback = document.getElementById("feedback");
+
+                if (isCorrect) {
+                    feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
+                    feedback.style.color = 'green';
+                    correctAnswers++;
+                    document.getElementById("correct-sound").play();
                 } else {
-                    target.style.width = "20px";
-                    target.style.height = "20px";
+                    feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
+                    feedback.style.color = 'red';
+                    document.getElementById("wrong-sound").play();
                 }
 
-                target.style.top = point.top;
-                target.style.left = point.left;
-                target.onclick = () => checkAnswer(point.name, target);
-                targetsContainer.appendChild(target);
-            });
+                // Aguarda 1 segundo antes de passar para a próxima pergunta
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    updateProgressBar();
+                    updateScore();
+                    input.focus(); // Foca automaticamente no campo de entrada
 
-            let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
-            document.getElementById("question").innerHTML = questionText;
+                    if (currentQuestionIndex < shuffledPoints.length) {
+                        startWritingMode(); // Carrega a próxima pergunta
+                    } else {
+                        showEndGame(); // Finaliza o jogo
+                    }
+                }, 1000);
+            };
+
+            inputContainer.appendChild(input);
+            inputContainer.appendChild(submitButton);
+            document.getElementById("question-container").appendChild(inputContainer);
+        }
+
+        function checkSimilarity(userAnswer, correctAnswer) {
+            // Remove acentos e converte para minúsculas
+            const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+            userAnswer = normalize(userAnswer);
+            correctAnswer = normalize(correctAnswer);
+
+            // Verifica se a resposta do usuário está contida na resposta correta ou vice-versa
+            return userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer);
         }
 
         function checkAnswer(structure, target) {
@@ -472,13 +652,13 @@
 
             if (structure === correctAnswer) {
                 target.classList.add("correct");
-                feedback.innerText = 'Correto!';
+                feedback.innerText = `Correto! A estrutura é: ${correctAnswer}`;
                 feedback.style.color = 'green';
                 correctAnswers++;
                 document.getElementById("correct-sound").play(); // Toca o som de acerto
             } else {
                 target.classList.add("incorrect");
-                feedback.innerText = 'Tente novamente!';
+                feedback.innerText = `Incorreto! A estrutura correta é: ${correctAnswer}`;
                 feedback.style.color = 'red';
                 document.getElementById("wrong-sound").play(); // Toca o som de erro
             }
@@ -526,10 +706,10 @@
         }
 
         function backToMenu() {
-
             // Esconde o submenu e o jogo (caso estejam visíveis)
             document.getElementById("sub-menu").style.display = "none";
             document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("mode-menu").style.display = "none";
             document.getElementById("game").style.display = "none";
 
             document.getElementById("game").style.display = "none";
@@ -542,6 +722,7 @@
         function backToSubMenu() {
             document.getElementById("game").style.display = "none";
             document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("mode-menu").style.display = "none";
             document.getElementById("sub-menu").style.display = "flex";
             document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
             document.body.style.backgroundImage = "url('https://images.alphacoders.com/203/thumb-1920-203603.jpg')"; // Restaura a imagem de fundo
@@ -551,6 +732,7 @@
         function resetGame() {
             currentPhase = null;
             currentView = null;
+            currentMode = null;
             currentQuestionIndex = 0;
             correctAnswers = 0;
             totalQuestions = 0;
