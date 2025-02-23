@@ -595,39 +595,40 @@
             submitButton.style.borderRadius = "5px";
             submitButton.style.cursor = "pointer";
 
-            submitButton.onclick = () => {
-                const userAnswer = input.value.trim().toLowerCase();
-                const correctAnswer = currentQuestion.name.toLowerCase();
+submitButton.onclick = () => {
+    const userAnswer = input.value.trim().toLowerCase();
+    const correctAnswer = currentQuestion.name.toLowerCase();
 
-                // Verifica se a resposta está correta (com tolerância para pequenos erros)
-                const isCorrect = checkSimilarity(userAnswer, correctAnswer);
-                const feedback = document.getElementById("feedback");
+    // Verifica se a resposta está correta (com tolerância para pequenos erros)
+    const isCorrect = checkSimilarity(userAnswer, correctAnswer);
+    const feedback = document.getElementById("feedback");
 
-                if (isCorrect) {
-                    feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
-                    feedback.style.color = 'green';
-                    correctAnswers++;
-                    document.getElementById("correct-sound").play();
-                } else {
-                    feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
-                    feedback.style.color = 'red';
-                    document.getElementById("wrong-sound").play();
-                }
+    if (isCorrect) {
+        feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
+        feedback.style.color = 'green';
+        correctAnswers++;
+        document.getElementById("correct-sound").play();
+    } else {
+        feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
+        feedback.style.color = 'red';
+        document.getElementById("wrong-sound").play();
+    }
 
-                // Aguarda 1 segundo antes de passar para a próxima pergunta
-                setTimeout(() => {
-                    currentQuestionIndex++;
-                    updateProgressBar();
-                    updateScore();
-                    input.focus(); // Foca automaticamente no campo de entrada
+    // Aguarda 1 segundo antes de passar para a próxima pergunta
+    setTimeout(() => {
+        currentQuestionIndex++;
+        updateProgressBar();
+        updateScore();
 
-                    if (currentQuestionIndex < shuffledPoints.length) {
-                        startWritingMode(); // Carrega a próxima pergunta
-                    } else {
-                        showEndGame(); // Finaliza o jogo
-                    }
-                }, 1000);
-            };
+        if (currentQuestionIndex < shuffledPoints.length) {
+            startWritingMode(); // Carrega a próxima pergunta
+        } else {
+            showEndGame(); // Finaliza o jogo
+        }
+
+        input.focus(); // Foca automaticamente no campo de entrada
+    }, 1000);
+};
 
             inputContainer.appendChild(input);
             inputContainer.appendChild(submitButton);
