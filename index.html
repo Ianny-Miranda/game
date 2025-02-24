@@ -254,7 +254,7 @@
         <button onclick="startGame('cranio', currentView, 'padrao')">Modo Padrão</button>
         <button onclick="startGame('cranio', currentView, 'escrita')">Modo Escrita</button>
         <button onclick="backToCranioSubMenu()">Voltar</button>
-        <div class="copyright">
+                <div class="copyright">
             © 2025 - Ianny Miranda. Todos os direitos reservados
         </div>
     </div>
@@ -281,6 +281,23 @@
     </div>
 
     <script>
+                // Verifica se o usuário está em um dispositivo móvel
+                function isMobileDevice() {
+            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+        }
+
+        // Exibe um aviso se o usuário estiver em um dispositivo móvel
+        function checkMobileDevice() {
+            if (isMobileDevice()) {
+                alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
+                // Redireciona para uma página de aviso ou impede o acesso ao jogo
+                window.location.href = "aviso-mobile.html"; // Substitua pelo URL da página de aviso, se necessário
+            }
+        }
+
+                // Chama a função de verificação quando a página é carregada
+                window.onload = checkMobileDevice;
+
         const phases = {
             cranio: {
                 frontal: {
@@ -546,103 +563,93 @@
     let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
     document.getElementById("question").innerHTML = questionText;
 }
-function startWritingMode() {
-    const targetsContainer = document.getElementById("targets");
-    targetsContainer.innerHTML = "";
+        function startWritingMode() {
+            const targetsContainer = document.getElementById("targets");
+            targetsContainer.innerHTML = "";
 
-    const currentQuestion = shuffledPoints[currentQuestionIndex];
-    const target = document.createElement("div");
-    target.className = "target blinking"; // Adiciona a classe "blinking" para piscar
-    target.style.top = currentQuestion.top;
-    target.style.left = currentQuestion.left;
-    target.style.width = "20px";
-    target.style.height = "20px";
-    targetsContainer.appendChild(target);
+            const currentQuestion = shuffledPoints[currentQuestionIndex];
+            const target = document.createElement("div");
+            target.className = "target blinking"; // Adiciona a classe "blinking" para piscar
+            target.style.top = currentQuestion.top;
+            target.style.left = currentQuestion.left;
+            target.style.width = "20px";
+            target.style.height = "20px";
+            targetsContainer.appendChild(target);
 
-    // Remove a caixa de entrada anterior, se existir
-    const existingInputContainer = document.getElementById("input-container");
-    if (existingInputContainer) {
-        existingInputContainer.remove();
-    }
+            // Remove a caixa de entrada anterior, se existir
+            const existingInputContainer = document.getElementById("input-container");
+            if (existingInputContainer) {
+                existingInputContainer.remove();
+            }
 
-    // Exibe a pergunta
-    document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
+            // Exibe a pergunta
+            document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
 
-    // Cria um campo de entrada para o jogador digitar
-    const inputContainer = document.createElement("div");
-    inputContainer.id = "input-container"; // Adiciona um ID para facilitar a remoção
-    inputContainer.style.marginTop = "20px";
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Digite aqui...";
-    input.style.padding = "10px";
-    input.style.fontSize = "16px";
-    input.style.borderRadius = "5px";
-    input.style.border = "2px solid #800020";
-
-    // Adiciona o evento de tecla pressionada ao campo de entrada
-    input.addEventListener("keydown", (event) => {
+            // Cria um campo de entrada para o jogador digitar
+            const inputContainer = document.createElement("div");
+            inputContainer.id = "input-container"; // Adiciona um ID para facilitar a remoção
+            inputContainer.style.marginTop = "20px";
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Digite aqui...";
+            input.style.padding = "10px";
+            input.style.fontSize = "16px";
+            input.style.borderRadius = "5px";
+            input.style.border = "2px solid #800020";
+            // Adiciona o evento de tecla pressionada ao campo de entrada
+        input.addEventListener("keydown", (event) => {
         if (event.key === "Enter") { // Verifica se a tecla pressionada é o Enter
-            submitButton.click(); // Simula o clique no botão "Enviar"
+        submitButton.click(); // Simula o clique no botão "Enviar"
+       }
+        });
+            const submitButton = document.createElement("button");
+            submitButton.innerText = "Enviar";
+            submitButton.style.padding = "10px 20px";
+            submitButton.style.marginLeft = "10px";
+            submitButton.style.backgroundColor = "#800020";
+            submitButton.style.color = "white";
+            submitButton.style.border = "none";
+            submitButton.style.borderRadius = "5px";
+            submitButton.style.cursor = "pointer";
+
+            submitButton.onclick = () => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = currentQuestion.name.toLowerCase();
+
+                // Verifica se a resposta está correta (com tolerância para pequenos erros)
+                const isCorrect = checkSimilarity(userAnswer, correctAnswer);
+                const feedback = document.getElementById("feedback");
+
+                if (isCorrect) {
+                    feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
+                    feedback.style.color = 'green';
+                    correctAnswers++;
+                    document.getElementById("correct-sound").play();
+                } else {
+                    feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
+                    feedback.style.color = 'red';
+                    document.getElementById("wrong-sound").play();
+                }
+
+                // Aguarda 1 segundo antes de passar para a próxima pergunta
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    updateProgressBar();
+                    updateScore();
+                    input.focus(); // Foca automaticamente no campo de entrada
+
+                    if (currentQuestionIndex < shuffledPoints.length) {
+                        startWritingMode(); // Carrega a próxima pergunta
+                    } else {
+                        showEndGame(); // Finaliza o jogo
+                    }
+                }, 1000);
+            };
+
+            inputContainer.appendChild(input);
+            inputContainer.appendChild(submitButton);
+            document.getElementById("question-container").appendChild(inputContainer);
         }
-    });
-
-    const submitButton = document.createElement("button");
-    submitButton.innerText = "Enviar";
-    submitButton.style.padding = "10px 20px";
-    submitButton.style.marginLeft = "10px";
-    submitButton.style.backgroundColor = "#800020";
-    submitButton.style.color = "white";
-    submitButton.style.border = "none";
-    submitButton.style.borderRadius = "5px";
-    submitButton.style.cursor = "pointer";
-
-    submitButton.onclick = () => {
-        const userAnswer = input.value.trim().toLowerCase();
-        const correctAnswer = currentQuestion.name.toLowerCase();
-
-        // Verifica se a resposta está correta (com tolerância para pequenos erros)
-        const isCorrect = checkSimilarity(userAnswer, correctAnswer);
-        const feedback = document.getElementById("feedback");
-
-        if (isCorrect) {
-            feedback.innerText = `Correto! A estrutura é: ${currentQuestion.name}`;
-            feedback.style.color = 'green';
-            correctAnswers++;
-            document.getElementById("correct-sound").play();
-        } else {
-            feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.name}`;
-            feedback.style.color = 'red';
-            document.getElementById("wrong-sound").play();
-        }
-
-        // Aguarda 1 segundo antes de passar para a próxima pergunta
-        setTimeout(() => {
-            currentQuestionIndex++;
-            updateProgressBar();
-            updateScore();
-
-            if (currentQuestionIndex < shuffledPoints.length) {
-                startWritingMode(); // Carrega a próxima pergunta
-            } else {
-                showEndGame(); // Finaliza o jogo
-            }
-
-            // Foca automaticamente no campo de entrada
-            const input = document.querySelector("#input-container input");
-            if (input) {
-                input.focus();
-            }
-        }, 1000);
-    };
-
-    inputContainer.appendChild(input);
-    inputContainer.appendChild(submitButton);
-    document.getElementById("question-container").appendChild(inputContainer);
-
-    // Foca automaticamente no campo de entrada ao iniciar o modo de escrita
-    input.focus();
-}
 
         function checkSimilarity(userAnswer, correctAnswer) {
             // Remove acentos e converte para minúsculas
