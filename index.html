@@ -37,7 +37,7 @@
             background-image: none;
         }
 
-        .menu, .sub-menu, .cranio-sub-menu, .mode-menu {
+        .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu, .mode-menu {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -51,7 +51,7 @@
             transition: transform 0.3s ease;
         }
 
-        .menu h1, .sub-menu h1, .cranio-sub-menu h1, .mode-menu h1 {
+        .menu h1, .sub-menu h1, .cranio-sub-menu h1, .medula-sub-menu h1, .mode-menu h1 {
             color: #333;
             font-size: 2.5em;
             margin-bottom: 20px;
@@ -67,6 +67,7 @@
         .menu button, 
         .sub-menu button, 
         .cranio-sub-menu button,
+        .medula-sub-menu button,
         .mode-menu button {
             font-size: 18px;
             padding: 15px 30px;
@@ -83,6 +84,7 @@
         .menu button:hover, 
         .sub-menu button:hover, 
         .cranio-sub-menu button:hover,
+        .medula-sub-menu button:hover,
         .mode-menu button:hover {
             background-color: #660018; /* burgundy um pouco mais escuro */
             transform: scale(1.05);
@@ -91,6 +93,7 @@
         .menu button:active, 
         .sub-menu button:active, 
         .cranio-sub-menu button:active,
+        .medula-sub-menu button:active,
         .mode-menu button:active {
             background-color: #500010; /* burgundy ainda mais escuro */
         }
@@ -98,6 +101,7 @@
         .menu button:focus, 
         .sub-menu button:focus, 
         .cranio-sub-menu button:focus,
+        .medula-sub-menu button:focus,
         .mode-menu button:focus {
             outline: none;
             box-shadow: 0 0 5px #800020;
@@ -126,7 +130,7 @@
 
         .target {
             position: absolute;
-            background-color: rgb(255, 247, 6);
+            background-color: rgba(255, 247, 6, 0.64);
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -224,6 +228,7 @@
     <div class="sub-menu" id="sub-menu" style="display: none;">
         <h1>Escolha uma fase</h1>
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
+        <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
         <button onclick="backToMenu()">Voltar</button>
         <div class="copyright">
             © 2025 - Ianny Miranda. Todos os direitos reservados
@@ -233,27 +238,40 @@
     <!-- Sub-menu para o subnível do crânio -->
     <div class="cranio-sub-menu" id="cranio-sub-menu" style="display: none;">
         <h1>Escolha a vista do crânio</h1>
-        <button onclick="chooseMode('frontal')">Vista Frontal</button>
-        <button onclick="chooseMode('orbital')">Vista Orbital</button>
-        <button onclick="chooseMode('lateral')">Vista Lateral</button>
-        <button onclick="chooseMode('posterior')">Vista Posterior</button>
-        <button onclick="chooseMode('inferior')">Vista Inferior</button>
-        <button onclick="chooseMode('mandibula')">Vista Mandíbula</button>
-        <button onclick="chooseMode('calota_craniana')">Calota Craniana</button>
-        <button onclick="chooseMode('interior')">Vista Interior</button>
-        <button onclick="chooseMode('superior')">Vista Superior</button>
+        <button onclick="chooseMode('cranio', 'anterior')">Vista Anterior</button>
+        <button onclick="chooseMode('cranio', 'orbital')">Vista Orbital</button>
+        <button onclick="chooseMode('cranio', 'lateral')">Vista Lateral</button>
+        <button onclick="chooseMode('cranio', 'posterior')">Vista Posterior</button>
+        <button onclick="chooseMode('cranio', 'inferior')">Vista Inferior</button>
+        <button onclick="chooseMode('cranio', 'mandibula')">Vista Mandíbula</button>
+        <button onclick="chooseMode('cranio', 'calota_craniana')">Calota Craniana</button>
+        <button onclick="chooseMode('cranio', 'interior')">Vista Interior</button>
+        <button onclick="chooseMode('cranio', 'superior')">Vista Superior</button>
         <button onclick="backToSubMenu()">Voltar</button>
         <div class="copyright">
             © 2025 - Ianny Miranda. Todos os direitos reservados
         </div>
     </div>
 
+        <!-- Sub-menu para o subnível da medula -->
+        <div class="medula-sub-menu" id="medula-sub-menu" style="display: none;">
+            <h1>Escolha a vista da medula</h1>
+            <button onclick="chooseMode('medula', 'coluna_espinal_completa')">Coluna Espinal Completa</button>
+            <button onclick="chooseMode('medula', 'vista_superior')">Vista Superior</button>
+            <button onclick="chooseMode('medula', 'vista_anterior_nervos')">Vista Anterior com Nervos</button>
+            <button onclick="chooseMode('medula', 'vista_posterior_sem_nervos')">Vista Posterior sem Nervos</button>
+            <button onclick="backToSubMenu()">Voltar</button>
+            <div class="copyright">
+                © 2025 - Ianny Miranda. Todos os direitos reservados
+            </div>
+        </div>
+
     <!-- Menu para escolher o modo -->
     <div class="mode-menu" id="mode-menu" style="display: none;">
         <h1>Escolha o modo</h1>
-        <button onclick="startGame('cranio', currentView, 'padrao')">Modo Padrão</button>
-        <button onclick="startGame('cranio', currentView, 'escrita')">Modo Escrita</button>
-        <button onclick="backToCranioSubMenu()">Voltar</button>
+        <button onclick="startGame( currentPhase, currentView, 'padrao')">Modo Memorização</button>
+        <button onclick="startGame( currentPhase, currentView, 'escrita')">Modo Escrita</button>
+        <button onclick="backToSubMenu()">Voltar</button>
                 <div class="copyright">
             © 2025 - Ianny Miranda. Todos os direitos reservados
         </div>
@@ -300,7 +318,7 @@
 
         const phases = {
             cranio: {
-                frontal: {
+                anterior: {
                     image: "https://i.imgur.com/JlM0A6A.png", // Link da imagem frontal
                     backgroundColor: "#f0f8ff", // Azul claro
                     points: [
@@ -419,7 +437,7 @@
                     points:[
                         { top: "200px", left: "200px", size: "small", name: "Sulco sagital" },
                         { top: "175px", left: "180px", size: "small", name: "Fóvea granular" },
-                        { top: "240px", left: "90px", size: "small", name: "Sulco vascular" }
+                        { top: "240px", left: "90px", size: "small", name: "Sulco vascular" },
                     ]
                 },
                 interior: {
@@ -455,8 +473,85 @@
                         { top: "150px", left: "120px", size: "small", name: "Fissura orbital superior" },
                     ]
                 }
-            }
-        };
+            },
+        
+                    medula: {
+                        
+                        coluna_espinal_completa: {
+                        image: "https://i.imgur.com/ZDKJLSM.png", // Link da imagem da vista anterior
+                        backgroundColor: "#f0f8ff", // Cor de fundo para essa fase
+                        points: [
+                        { top: "100px", left: "200px", size: 'small', name: "Radículas sensitivas" },
+                        { top: "200px", left: "210px", size: 'small', name: "Gânglio sensitivo" },
+                        { top: "240px", left: "215px", size: 'small', name: "Gânglio motor" },
+                        { top: "207px", left: "240px", size: 'small', name: "Nervo espinal" },
+                        { top: "230px", left: "190px", size: 'small', name: "Plexo venoso vertebral" },
+                        { top: "403px", left: "190px", size: 'small', name: "Cone medular" },
+                        { top: "430px", left: "210px", size: 'small', name: "Segunda vertebra lombar" },
+                        { top: "430px", left: "193px", size: 'small', name: "Filamento terminal" },
+                        { top: "500px", left: "190px", name: "Cauda equina" },
+                        { top: "550px", left: "190px", size: 'small', name: "Fundo de saco dural" },
+                        { top: "327px", left: "200px", size: 'small', name: "Forame intervertebral" },
+                        { top: "380px", left: "200px", size: 'small', name: "Bainha da duramater" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                        vista_superior: {
+                            image: "https://i.imgur.com/MnS2XJg.png",
+                            backgroundColor: "#e6e6fa", /*Lavanda*/
+                            points: [
+                            { top: "100px", left: "270px", name: "Fissura mediana anterior" },
+                            { top: "300px", left: "270px", name: "Sulco mediano posterior" },
+                            { top: "80px", left: "310px", size: 'large', name: "Funículo anterior" },
+                            { top: "87px", left: "140px", name: "Sulco lateral anterior" },
+                            { top: "350px", left: "210px", name: "Sulco intermédio posterior" },
+                            { top: "356px", left: "410px", name: "Sulco lateral posterior" },
+                            { top: "200px", left: "450px", size: 'large', name: "Funiculo lateral" },
+                            { top: "350px", left: "290px", name: "Fascículo gráceo" },
+                            { top: "350px", left: "360px", name: "Fascículo cuneiforme" },
+                            { top: "110px", left: "200px", name: "Corno anterior" },
+                            { top: "180px", left: "120px", name: "Corno lateral" },
+                            { top: "300px", left: "140px", name: "Corno posterior" },
+                            { top: "200px", left: "240px",name: "Substância cinzenta intermédia central" },
+                            { top: "190px", left: "180px", name: "Substância cinzenta intermédia lateral" },
+                            { top: "250px", left: "310px", name: "Comissura branca posterior" },
+                            { top: "176px", left: "300px", size: 'small', name: "Comissura branca anterior" },
+                            { top: "200px", left: "270px", size: 'small', name: "Canal central da medula" },
+                            ]
+                        },
+
+                        vista_anterior_nervos: {
+                            image: "https://i.imgur.com/aUarpkr.png",
+                            backgroundColor: "#fafad2", /*Amarelo*/
+                            points: [
+                            { top: "250px", left: "360px", name: "Artéria e veia espinal anterior" },
+                            { top: "50px", left: "500px", name: "Radículas sensitivas" },
+                            { top: "220px", left: "150px", name: "Raíz anterior" },
+                            { top: "207px", left: "206px", size: 'small', name: "Raíz posterior" },
+                            { top: "200px", left: "160px", name: "Gânglio sensitivo" },
+                            { top: "100px", left: "655px", name: "Nervo espinal" },
+                            ]
+                        },
+                        
+                        vista_posterior_sem_nervos: {
+                            image: "https://i.imgur.com/HQpThdt.png",
+                            backgroundColor: "#fffacd",
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+
+                        }
+                    }
+             }
 
         let currentPhase = null;
         let currentView = null;
@@ -476,9 +571,16 @@
             document.getElementById("cranio-sub-menu").style.display = "flex";
         }
 
-        function chooseMode(view) {
+        function chooseMedulaSublevel() {
+            document.getElementById("sub-menu").style.display = "none";
+            document.getElementById("medula-sub-menu").style.display = "flex";
+        }
+
+        function chooseMode(phase, view) {
+            currentPhase = phase
             currentView = view;
             document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("medula-sub-menu").style.display = "none";
             document.getElementById("mode-menu").style.display = "flex";
         }
 
@@ -487,34 +589,45 @@
             document.getElementById("cranio-sub-menu").style.display = "flex";
         }
 
+        function backToMedulaSubMenu() {
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("medula-sub-menu").style.display = "flex";
+        }
+
+        function backToSubMenu() {
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("sub-menu").style.display = "flex";
+        }
+
         function startGame(phase, view, mode) {
              resetGame(); // Reinicia o jogo antes de iniciar um novo modo
 
-            currentPhase = phase;
-            currentView = view;
-            currentMode = mode;
-            correctAnswers = 0;
-            totalQuestions = phases[phase][view].points.length;
-            currentQuestionIndex = 0;
-            shuffledPoints = shuffleArray([...phases[phase][view].points]);
+                currentPhase = phase;
+                currentView = view;
+                currentMode = mode;
+                correctAnswers = 0;
+                totalQuestions = phases[phase][view].points.length;
+                currentQuestionIndex = 0;
+                shuffledPoints = shuffleArray([...phases[phase][view].points]);
 
-        // Esconde os menus de seleção
-        document.getElementById("sub-menu").style.display = "none";
-        document.getElementById("cranio-sub-menu").style.display = "none";
-        document.getElementById("mode-menu").style.display = "none";
-        document.getElementById("game").style.display = "block";
-        document.getElementById("game").classList.add("active");
-        document.getElementById("image").src = phases[phase][view].image;
+                // Esconde os menus de seleção
+                document.getElementById("sub-menu").style.display = "none";
+                document.getElementById("cranio-sub-menu").style.display = "none";
+                document.getElementById("medula-sub-menu").style.display = "none";
+                document.getElementById("mode-menu").style.display = "none";
+                document.getElementById("game").style.display = "block";
+                document.getElementById("game").classList.add("active");
+                document.getElementById("image").src = phases[phase][view].image;
 
-        // Altera o fundo da página para a cor correspondente à fase
-        document.body.style.backgroundColor = phases[phase][view].backgroundColor;
-        document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
+                // Altera o fundo da página para a cor correspondente à fase
+                document.body.style.backgroundColor = phases[phase][view].backgroundColor;
+                document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
 
-        if (mode === 'escrita') {
-            startWritingMode(); // Inicia a nova modalidade
-        } else {
-            loadQuestions(); // Continua com o modo normal
-        }
+                if (mode === 'escrita') {
+                    startWritingMode(); // Inicia a nova modalidade
+                } else {
+                    loadQuestions(); // Continua com o modo normal
+                }
 }
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -525,40 +638,40 @@
         }
 
         function loadQuestions() {
-    // Remove a caixa de entrada do modo de escrita, se existir
-    const inputContainer = document.getElementById("input-container");
-    if (inputContainer) {
-        inputContainer.remove();
-    }
+            // Remove a caixa de entrada do modo de escrita, se existir
+            const inputContainer = document.getElementById("input-container");
+            if (inputContainer) {
+                inputContainer.remove();
+            }
 
-    // Resto do código da função loadQuestions
-    const phaseData = phases[currentPhase][currentView];
-    const targetsContainer = document.getElementById("targets");
-    targetsContainer.innerHTML = "";
-    document.getElementById("feedback").innerText = '';
+            // Resto do código da função loadQuestions
+            const phaseData = phases[currentPhase][currentView];
+            const targetsContainer = document.getElementById("targets");
+            targetsContainer.innerHTML = "";
+            document.getElementById("feedback").innerText = '';
 
-    const currentQuestion = shuffledPoints[currentQuestionIndex];
-    phaseData.points.forEach(point => {
-        const target = document.createElement("div");
-        target.className = "target";
+            const currentQuestion = shuffledPoints[currentQuestionIndex];
+            phaseData.points.forEach(point => {
+                const target = document.createElement("div");
+                target.className = "target";
 
-        // Ajusta o tamanho do ponto
-        if (point.size === "small") {
-            target.style.width = "15px";
-            target.style.height = "15px";
-        } else if (point.size === "large") {
-            target.style.width = "30px";
-            target.style.height = "30px";
-        } else {
-            target.style.width = "20px";
-            target.style.height = "20px";
-        }
+                // Ajusta o tamanho do ponto
+                if (point.size === "small") {
+                    target.style.width = "15px";
+                    target.style.height = "15px";
+                } else if (point.size === "large") {
+                    target.style.width = "30px";
+                    target.style.height = "30px";
+                } else {
+                    target.style.width = "20px";
+                    target.style.height = "20px";
+                }
 
-        target.style.top = point.top;
-        target.style.left = point.left;
-        target.onclick = () => checkAnswer(point.name, target);
-        targetsContainer.appendChild(target);
-    });
+                target.style.top = point.top;
+                target.style.left = point.left;
+                target.onclick = () => checkAnswer(point.name, target);
+                targetsContainer.appendChild(target);
+            });
 
     let questionText = `Clique no ponto correspondente a: <span class="structure-name">${currentQuestion.name.toUpperCase()}</span>`;
     document.getElementById("question").innerHTML = questionText;
@@ -739,6 +852,7 @@
         function backToSubMenu() {
             document.getElementById("game").style.display = "none";
             document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("medula-sub-menu").style.display = "none";
             document.getElementById("mode-menu").style.display = "none";
             document.getElementById("sub-menu").style.display = "flex";
             document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
