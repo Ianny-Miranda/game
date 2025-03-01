@@ -992,6 +992,12 @@
                 });
             }
         }
+
+        // Tenta reproduzir a música assim que a página carrega
+        window.onload = () => {
+            playBackgroundMusic();
+        };
+        }
         
         const dialogues = [
             { text: "Bem-vindo ao Hospital Geral. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
