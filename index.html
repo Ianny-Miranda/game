@@ -1022,16 +1022,18 @@
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "none";
-
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("visual-novel").style.display = "none";
+        
             // Exibe o menu principal
             document.getElementById("menu").style.display = "flex";
-
+        
             // Restaura o background do menu principal
             document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
-
+        
             // Reseta o jogo
             resetGame();
-}
+        }
 
         function chooseCranioSublevel() {
             document.getElementById("visual-novel-choice").style.display = "none";
@@ -1069,24 +1071,24 @@
         }
 
         function backToSublevelChoice() {
-            // Esconde o menu de escolha de modo
-            document.getElementById("mode-menu").style.display = "none";
-
-            // Exibe o submenu de seleção de fase correspondente à fase atual
-            if (currentPhase === "cranio") {
-                document.getElementById("cranio-sublevel-choice").style.display = "flex";
-            } else if (currentPhase === "medula") {
-                document.getElementById("medula-sublevel-choice").style.display = "flex";
-            } else if (currentPhase === "vértebra") {
-                document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+                // Esconde o menu de escolha de modo
+                document.getElementById("mode-menu").style.display = "none";
+            
+                // Exibe o submenu de seleção de fase correspondente à fase atual
+                if (currentPhase === "cranio") {
+                    document.getElementById("cranio-sublevel-choice").style.display = "flex";
+                } else if (currentPhase === "medula") {
+                    document.getElementById("medula-sublevel-choice").style.display = "flex";
+                } else if (currentPhase === "vértebra") {
+                    document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+                }
+            
+                // Restaura o background do submenu
+                document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            
+                // Reseta o jogo
+                resetGame();
             }
-
-            // Restaura o background do submenu
-            document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
-
-            // Reseta o jogo
-            resetGame();
-        }
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
