@@ -446,7 +446,7 @@
     </style>
 </head>
 <body>
-    <audio id="background-music" loop volume="0.4">
+    <audio id="background-music">
         <source src="game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
@@ -974,6 +974,9 @@
         function playBackgroundMusic() {
             const backgroundMusic = document.getElementById("background-music");
             if (backgroundMusic) {
+                // Define o volume para 50% (0.5)
+                backgroundMusic.volume = 0.5;
+        
                 // Tenta reproduzir o áudio
                 backgroundMusic.play().then(() => {
                     console.log("Música iniciada com sucesso!");
@@ -984,7 +987,7 @@
                 });
             }
         }
-
+        
         // Tenta reproduzir a música assim que a página carrega
         window.onload = () => {
             playBackgroundMusic();
