@@ -322,10 +322,18 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            box-shadow:
+                1px 1px 0 #000,
+                2px 2px 0 #000,
+                3px 3px 0 #000;
         }
 
         .dialogue-box button:hover {
             background-color: #600018;
+        }
+
+        .dialogue-box button:active {
+            transform: translate(3px, 3px); /* Move o botão para simular o clique */
         }
 
         .visual-novel-choice {
@@ -446,7 +454,7 @@
     </style>
 </head>
 <body>
-    <audio id="background-music">
+    <audio id="background-music" loop volume="0.4">
         <source src="game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
@@ -974,9 +982,6 @@
         function playBackgroundMusic() {
             const backgroundMusic = document.getElementById("background-music");
             if (backgroundMusic) {
-                // Define o volume para 50% (0.5)
-                backgroundMusic.volume = 0.5;
-        
                 // Tenta reproduzir o áudio
                 backgroundMusic.play().then(() => {
                     console.log("Música iniciada com sucesso!");
@@ -985,9 +990,15 @@
                 }).catch((error) => {
                     console.error("Erro ao iniciar a música:", error);
                 });
+                 // Inicia a música após o primeiro clique do usuário
+        document.addEventListener("click", () => {
+            playBackgroundMusic();
+            // Remove o listener após o primeiro clique
+            document.removeEventListener("click", arguments.callee);
+        });
             }
         }
-        
+
         // Tenta reproduzir a música assim que a página carrega
         window.onload = () => {
             playBackgroundMusic();
