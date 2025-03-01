@@ -455,7 +455,7 @@
 </head>
 <body>
     <audio id="background-music" loop volume="0.4">
-        <source src="game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
+        <source src="A Lonely Cherry Tree 🌸 - Pix.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
     <audio id="correct-sound">
@@ -985,26 +985,13 @@
                 // Tenta reproduzir o áudio
                 backgroundMusic.play().then(() => {
                     console.log("Música iniciada com sucesso!");
-                    // Remove o mudo e ajusta o volume para 40% (0.4)
+                    // Remove o mudo após iniciar a reprodução
                     backgroundMusic.muted = false;
-                    backgroundMusic.volume = 0.4;
                 }).catch((error) => {
                     console.error("Erro ao iniciar a música:", error);
                 });
             }
         }
-
-        // Tenta reproduzir a música assim que a página carrega
-        window.onload = () => {
-            playBackgroundMusic();
-        };
-
-        // Inicia a música após o primeiro clique do usuário (caso a reprodução automática falhe)
-        document.addEventListener("click", () => {
-            playBackgroundMusic();
-            // Remove o listener após o primeiro clique
-            document.removeEventListener("click", arguments.callee);
-        });
         
         const dialogues = [
             { text: "Bem-vindo ao Hospital Geral. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
