@@ -970,20 +970,23 @@
         let shuffledPoints = [];
         let dialogueIndex = 0;
 
-        window.onload = function () {
-            // Inicia a música de fundo
-            playBackgroundMusic();
-
-            // Configura o controle de volume
-            const volumeControl = document.getElementById("volume-control");
-            if (volumeControl) {
-                volumeControl.addEventListener("input", function () {
-                    setVolume(this.value);
+        function playBackgroundMusic() {
+            const backgroundMusic = document.getElementById("background-music");
+            if (backgroundMusic) {
+                // Tenta reproduzir o áudio
+                backgroundMusic.play().then(() => {
+                    console.log("Música iniciada com sucesso!");
+                    // Remove o mudo após iniciar a reprodução
+                    backgroundMusic.muted = false;
+                }).catch((error) => {
+                    console.error("Erro ao iniciar a música:", error);
                 });
             }
+        }
 
-            // Verifica se o usuário está em um dispositivo móvel
-            checkMobileDevice();
+        // Tenta reproduzir a música assim que a página carrega
+        window.onload = () => {
+            playBackgroundMusic();
         };
         
         const dialogues = [
