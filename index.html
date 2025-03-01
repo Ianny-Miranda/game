@@ -15,9 +15,12 @@
     <title>Quiz de Anatomia</title>
     <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/011/116/298/original/continuous-line-drawing-of-a-human-brain-free-vector.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+15&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Jersey 15';
             margin: 0;
             padding: 0;
             display: flex;
@@ -26,7 +29,7 @@
             justify-content: center;
             min-height: 100vh;
             background-color: #f0f0f0; /* Cor de fundo padrão */
-            background-image: url('https://images.alphacoders.com/203/thumb-1920-203603.jpg');
+            background-image: url('https://i.imgur.com/naeZ29X.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -37,7 +40,7 @@
             background-image: none;
         }
 
-        .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu, .mode-menu {
+        .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu, .vertebra-sub-menu, .mode-menu {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,15 +48,19 @@
             width: 80%;
             max-width: 500px;
             background-color: rgba(255, 255, 255, 0.9);
+            border: 4px solid #5A3E2B; 
             padding: 30px;
+            position: relative;
             border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
         }
+        
 
-        .menu h1, .sub-menu h1, .cranio-sub-menu h1, .medula-sub-menu h1, .mode-menu h1 {
-            color: #333;
+        .menu h1, .sub-menu h1, .cranio-sub-menu h1, .medula-sub-menu h1, .vertebra-submenuh1, .mode-menu h1 {
+            color: #920000;
             font-size: 2.5em;
+            text-shadow: 2px 2px 0 #ffffff;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -62,46 +69,76 @@
             font-size: 18px;
             color: #555;
         }
+        
 
         /* Estilização dos botões em vermelho burgundy */
         .menu button, 
         .sub-menu button, 
         .cranio-sub-menu button,
         .medula-sub-menu button,
+        .vertebra-sub-menu button,
         .mode-menu button {
-            font-size: 18px;
-            padding: 15px 30px;
-            margin: 15px 0;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #800020; /* burgundy */
-            color: white;
-            width: 100%;
-            transition: background 0.3s, transform 0.2s;
+                /* Tamanho do botão */
+                width: 300px; /* Largura da imagem */
+                height: 70px; /* Altura da imagem */
+
+                font-family: 'Jersey 15', cursive; /* Fonte retrô */
+                font-size: 20px;
+                color: #fff; /* Texto branco */
+                text-shadow: 2px 2px 0 #000; /* Sombra no texto */
+                display: inline-block; /* Faz o botão se comportar como um bloco inline *
+
+
+                /* Imagem de fundo */
+                background-image: url('https://i.imgur.com/dHWvqGk.png');
+                background-color: #00000000;
+                background-size: cover; /* Garante que a imagem cubra todo o botão */
+                display: block; /* Remove o espaço extra embaixo da imagem */
+                
+                
+
+                /* Remove estilos padrão do botão */
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 0;
+                margin: 0;
+                box-shadow: none;
+                cursor: pointer;
+                object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+                line-height: 0; /* Remove espaços extras dentro do botão */
+
         }
 
         .menu button:hover, 
         .sub-menu button:hover, 
         .cranio-sub-menu button:hover,
         .medula-sub-menu button:hover,
+        .vertebra-sub-menu button:hover,
         .mode-menu button:hover {
-            background-color: #660018; /* burgundy um pouco mais escuro */
-            transform: scale(1.05);
+            filter: brightness(1.2); /* Clareia o botão */
+            transition: all 0.2s ease; /* Suaviza a transição */
         }
 
         .menu button:active, 
         .sub-menu button:active, 
         .cranio-sub-menu button:active,
         .medula-sub-menu button:active,
+        .vertebra-sub-menu button:active,
         .mode-menu button:active {
-            background-color: #500010; /* burgundy ainda mais escuro */
+               /* Efeito de pressionado */
+            box-shadow:
+                1px 1px 0 #000,
+                2px 2px 0 #000,
+                3px 3px 0 #000;
+            transform: translate(3px, 3px); /* Move o botão para simular o clique */
         }
 
         .menu button:focus, 
         .sub-menu button:focus, 
         .cranio-sub-menu button:focus,
         .medula-sub-menu button:focus,
+        .vertebra-sub-menu button:focus,
         .mode-menu button:focus {
             outline: none;
             box-shadow: 0 0 5px #800020;
@@ -109,9 +146,20 @@
 
         .game {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             text-align: center;
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
+            background-image: url('https://i.imgur.com/SUA_IMAGEM_DE_FUNDO_DO_JOGO.jpg'); /* Imagem de fundo do jogo */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: auto;
+            z-index: 1000; /* Garante que o jogo fique acima de outros elementos */
         }
 
         .game.active {
@@ -202,9 +250,205 @@
             font-size: 14px;
             color: #333;
         }
+        
+        .visual-novel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1; /* Coloca o fundo atrás do conteúdo */
+
+        }
+
+        .dialogue-container {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+
+        .medic-frame {
+            width: 200px;
+            height: 300px;
+            background-color: #fff;
+            border: 5px solid #800020;
+            border-radius: 10px;
+            margin-right: 20px;
+            overflow: hidden;
+        }
+
+        .medic-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+        }
+
+        .dialogue-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 70%;
+            max-width: 800px;
+            text-align: left;
+        }
+
+        .dialogue-box p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .dialogue-box button {
+            padding: 10px 20px;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dialogue-box button:hover {
+            background-color: #600018;
+        }
+
+        .visual-novel-choice {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .choice-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .choice-box h1 {
+            color: #800020;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .choice-box button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .choice-box button:hover {
+            background-color: #600018;
+        }
+
+        /* Estilo base para todos os menus no estilo visual novel */
+        .visual-novel-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow: hidden;
+            overflow: auto;
+        }
+
+        .visual-novel-menu .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        .visual-novel-menu .choice-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            
+        }
+
+        .visual-novel-menu .choice-box h1 {
+            color: #800020;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .visual-novel-menu .choice-box button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        .visual-novel-menu .choice-box button:hover {
+            background-color: #600018;
+        }
+
+        .game-content {
+            background-color: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 20px auto; /* Centraliza o conteúdo */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
     </style>
 </head>
 <body>
+    <audio id="background-music" loop>
+        <source src="/game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
+    </audio>
     <audio id="correct-sound">
         <source src="/game/Correct Answer Sound Effect.mp3" type="audio/mpeg">    
     </audio>
@@ -217,26 +461,41 @@
     <!-- Menu Principal -->
     <div class="menu" id="menu">
         <h1>Bem-vindo ao Quiz de Neuroanatomia da T24!</h1>
-        <button onclick="showSubMenu()">Escolher Fase</button>
+        <button onclick="showSubMenu()">Iniciar</button>
         <!-- Rodapé com copyright -->
         <div class="copyright">
             © 2025 - Ianny Miranda. Todos os direitos reservados
         </div>
     </div>
 
-    <!-- Sub-menu para seleção de fase -->
-    <div class="sub-menu" id="sub-menu" style="display: none;">
-        <h1>Escolha uma fase</h1>
-        <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
-        <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
-        <button onclick="backToMenu()">Voltar</button>
-        <div class="copyright">
-            © 2025 - Ianny Miranda. Todos os direitos reservados
+    <!-- Cena de Visual Novel -->
+    <div class="visual-novel" id="visual-novel" style="display: none;">
+        <div class="background" id="visual-novel-background"></div>
+        <div class="dialogue-container">
+            <div class="medic-frame">
+                <img src="https://i.imgur.com/7kDMzXJ.jpg" alt="Dra. Silva">
+            </div>
+            <div class="dialogue-box">
+                <p id="dialogue-text">Bem-vindo ao Hospital Geral. Eu sou a Dra. Silva. Como posso ajudá-lo hoje?</p>
+                <button onclick="nextDialogue()">Continuar</button>
+            </div>
         </div>
     </div>
 
-    <!-- Sub-menu para o subnível do crânio -->
-    <div class="cranio-sub-menu" id="cranio-sub-menu" style="display: none;">
+<!-- Menu de Escolha de Fase -->
+<div class="visual-novel-menu" id="visual-novel-choice" style="display: none;">
+    <div class="background" id="visual-novel-choice-background"></div>
+    <div class="choice-box">
+        <h1>O que você gostaria de aprender hoje?</h1>
+        <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
+        <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
+    </div>
+</div>
+
+<!-- Menu de Escolha de Subnível do Crânio -->
+<div class="visual-novel-menu" id="cranio-sublevel-choice" style="display: none;">
+    <div class="background" id="cranio-sublevel-background"></div>
+    <div class="choice-box">
         <h1>Escolha a vista do crânio</h1>
         <button onclick="chooseMode('cranio', 'anterior')">Vista Anterior</button>
         <button onclick="chooseMode('cranio', 'orbital')">Vista Orbital</button>
@@ -247,55 +506,72 @@
         <button onclick="chooseMode('cranio', 'calota_craniana')">Calota Craniana</button>
         <button onclick="chooseMode('cranio', 'interior')">Vista Interior</button>
         <button onclick="chooseMode('cranio', 'superior')">Vista Superior</button>
-        <button onclick="backToSubMenu()">Voltar</button>
-        <div class="copyright">
-            © 2025 - Ianny Miranda. Todos os direitos reservados
-        </div>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
     </div>
+</div>
 
-        <!-- Sub-menu para o subnível da medula -->
-        <div class="medula-sub-menu" id="medula-sub-menu" style="display: none;">
-            <h1>Escolha a vista da medula</h1>
-            <button onclick="chooseMode('medula', 'coluna_espinal_completa')">Coluna Espinal Completa</button>
-            <button onclick="chooseMode('medula', 'vista_superior')">Vista Superior</button>
-            <button onclick="chooseMode('medula', 'vista_anterior_nervos')">Vista Anterior com Nervos</button>
-            <button onclick="chooseMode('medula', 'vista_posterior_sem_nervos')">Vista Posterior sem Nervos</button>
-            <button onclick="backToSubMenu()">Voltar</button>
-            <div class="copyright">
-                © 2025 - Ianny Miranda. Todos os direitos reservados
-            </div>
-        </div>
+<!-- Menu de Escolha de Subnível da Medula -->
+<div class="visual-novel-menu" id="medula-sublevel-choice" style="display: none;">
+    <div class="background" id="medula-sublevel-background"></div>
+    <div class="choice-box">
+        <h1>Escolha a vista da medula</h1>
+        <button onclick="chooseMode('medula', 'coluna_espinal_completa')">Coluna Espinal Completa</button>
+        <button onclick="chooseMode('medula', 'vista_superior')">Vista Superior</button>
+        <button onclick="chooseMode('medula', 'vista_anterior_nervos')">Vista Anterior com Nervos</button>
+        <button onclick="chooseMode('medula', 'vista_posterior_sem_nervos')">Vista Posterior sem Nervos</button>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
+    </div>
+</div>
 
-    <!-- Menu para escolher o modo -->
-    <div class="mode-menu" id="mode-menu" style="display: none;">
+<!-- Menu de Escolha de Subnível das Vértebras -->
+<div class="visual-novel-menu" id="vertebra-sublevel-choice" style="display: none;">
+    <div class="background" id="vertebra-sublevel-background"></div>
+    <div class="choice-box">
+        <h1>Escolha a vista da vértebra</h1>
+        <button onclick="chooseMode('vértebra', 'vertebra_superior')">Vista Superior da Vértebra Típica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_lateral')">Vista Lateral da Vértebra Típica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_inferior')">Vista Inferior da Vértebra Típica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_posterior')">Vista Posterior da Vértebra Típica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_atipica_superior')">Vista Superior da Vértebra Atípica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_atipica_lateral')">Vista Lateral da Vértebra Atípica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_atipica_inferior')">Vista Inferior da Vértebra Atípica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_atipica_posterior')">Vista Posterior da Vértebra Atípica</button>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
+    </div>
+</div>
+
+<!-- Menu de Escolha de Modo -->
+<div class="visual-novel-menu" id="mode-menu" style="display: none;">
+    <div class="background" id="mode-menu-background"></div>
+    <div class="choice-box">
         <h1>Escolha o modo</h1>
-        <button onclick="startGame( currentPhase, currentView, 'padrao')">Modo Memorização</button>
-        <button onclick="startGame( currentPhase, currentView, 'escrita')">Modo Escrita</button>
-        <button onclick="backToSubMenu()">Voltar</button>
-                <div class="copyright">
-            © 2025 - Ianny Miranda. Todos os direitos reservados
-        </div>
+        <button onclick="startGame(currentPhase, currentView, 'padrao')">Modo Memorização</button>
+        <button onclick="startGame(currentPhase, currentView, 'escrita')">Modo Escrita</button>
+        <button onclick="backToSublevelChoice()">Voltar</button>
     </div>
+</div>
 
     <!-- Jogo -->
     <div class="game" id="game">
-        <h1>Quiz de Anatomia</h1>
-        <div class="question-container" id="question-container">
-            <p id="question"></p>
+        <div class="game-content">
+            <h1>Quiz de Anatomia</h1>
+            <div class="question-container" id="question-container">
+                <p id="question"></p>
+            </div>
+            <div class="container">
+                <img id="image" src="" width="100%">
+                <div id="targets"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+            <p id="feedback"></p>
+            <p id="score">Acertos: 0 / 0 (0%)</p>
+            <p id="congrats" style="display:none; color: green; font-weight: bold;">
+                🎉 Parabéns! Você acertou todas as perguntas! 🎉
+            </p>
+            <button onclick="backToSublevelChoice()">Voltar</button>
         </div>
-        <div class="container">
-            <img id="image" src="" width="100%">
-            <div id="targets"></div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-bar-fill" id="progress-bar"></div>
-        </div>
-        <p id="feedback"></p>
-        <p id="score">Acertos: 0 / 0 (0%)</p>
-        <p id="congrats" style="display:none; color: green; font-weight: bold;">
-            🎉 Parabéns! Você acertou todas as perguntas! 🎉
-        </p>
-        <button onclick="backToSubMenu()">Voltar</button>
     </div>
 
     <script>
@@ -320,7 +596,7 @@
             cranio: {
                 anterior: {
                     image: "https://i.imgur.com/JlM0A6A.png", // Link da imagem frontal
-                    backgroundColor: "#f0f8ff", // Azul claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "260px", left: "200px", name: "Glabela" },
                         { top: "400px", left: "140px", name: "Maxila" },
@@ -337,7 +613,7 @@
                 },
                 orbital: {
                     image: "https://i.imgur.com/ufGdxRu.png", // Link da imagem frontal
-                    backgroundColor: "#fff0f5", // Rosa claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "230px", left: "140px", name: "Fissura orbital inferior" },
                         { top: "130px", left: "160px", name: "Fissura orbital superior" },
@@ -352,7 +628,7 @@
                 },
                 lateral: {
                     image: "https://i.imgur.com/KLwGBRj.png", // Link da imagem lateral
-                    backgroundColor: "#f0fff0", // Verde claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "80px", left: "90px", size: "large", name: "Osso parietal" },
                         { top: "220px", left: "130px", size: "large", name: "Osso temporal" },
@@ -371,7 +647,7 @@
                 },
                 mandibula: {
                     image: "https://i.imgur.com/8cbQjSf.png", // Link da imagem da mandíbula
-                    backgroundColor: "#fffacd", // Amarelo claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "270px", left: "170px", name: "Ângulo da mandíbula" },
                         { top: "200px", left: "120px", name: "Ramo da mandíbula" },
@@ -382,9 +658,9 @@
                 },
                 posterior: {
                     image: "https://i.imgur.com/kO3G1Ew.png", // Link da imagem posterior
-                    backgroundColor: "#e6e6fa", // Lavanda
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
-                        { top: "180px", left: "140px", size: "small", name: "Protuberância occipital externa" },
+                        { top: "168px", left: "140px", size: "small", name: "Protuberância occipital externa" },
                         { top: "175px", left: "125px", size: "small", name: "Íneo" },
                         { top: "110px", left: "120px", size: "large", name: "Osso occipital" },
                         { top: "40px", left: "180px", size: "large", name: "Osso parietal" },
@@ -393,7 +669,7 @@
                 },
                 inferior: {
                     image: "https://i.imgur.com/YRnucHu.png", // Link da vista inferior
-                    backgroundColor: "#f5f5dc", // Bege
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "110px", left: "230px", size: "small", name: "Osso palatino" },
                         { top: "155px", left: "160px", size: "small", name: "Osso esfenoide" },
@@ -422,7 +698,7 @@
                 },
                 superior: {
                     image: "https://i.imgur.com/xNVouFu.png", // Link da vista superior
-                    backgroundColor: "#fafad2", // Amarelo claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "100px", left: "220px", size: "small", name: "Vértix" },
                         { top: "50px", left: "210px", size: "small", name: "Drégma" },
@@ -433,7 +709,7 @@
                 },
                 calota_craniana: {
                     image: "https://i.imgur.com/pEk7trI.png", //Link da vista da calota craniana
-                    backgroundColor: "#e0ffff", // Azul claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points:[
                         { top: "200px", left: "200px", size: "small", name: "Sulco sagital" },
                         { top: "175px", left: "180px", size: "small", name: "Fóvea granular" },
@@ -442,7 +718,7 @@
                 },
                 interior: {
                     image: "https://i.imgur.com/VTlPdSn.png", //Link da vista interior
-                    backgroundColor: "#ffe4e1", // Rosa claro
+                    background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
                         { top: "100px", left: "190px", size: "small", name: "Crista etmoidal" },
                         { top: "110px", left: "200px", size: "small", name: "Lâmina crivosa do etmoide" },
@@ -479,7 +755,7 @@
                         
                         coluna_espinal_completa: {
                         image: "https://i.imgur.com/ZDKJLSM.png", // Link da imagem da vista anterior
-                        backgroundColor: "#f0f8ff", // Cor de fundo para essa fase
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                         points: [
                         { top: "100px", left: "200px", size: 'small', name: "Radículas sensitivas" },
                         { top: "200px", left: "210px", size: 'small', name: "Gânglio sensitivo" },
@@ -499,7 +775,7 @@
 
                         vista_superior: {
                             image: "https://i.imgur.com/MnS2XJg.png",
-                            backgroundColor: "#e6e6fa", /*Lavanda*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
                             { top: "100px", left: "270px", name: "Fissura mediana anterior" },
                             { top: "300px", left: "270px", name: "Sulco mediano posterior" },
@@ -523,7 +799,7 @@
 
                         vista_anterior_nervos: {
                             image: "https://i.imgur.com/aUarpkr.png",
-                            backgroundColor: "#fafad2", /*Amarelo*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
                             { top: "250px", left: "360px", name: "Artéria e veia espinal anterior" },
                             { top: "50px", left: "500px", name: "Radículas sensitivas" },
@@ -536,7 +812,7 @@
                         
                         vista_posterior_sem_nervos: {
                             image: "https://i.imgur.com/HQpThdt.png",
-                            backgroundColor: "#fffacd",
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
                             { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
                             { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
@@ -550,6 +826,138 @@
                             ]
 
                         }
+                    },
+
+                    vertebra: {
+
+                        vertebra_superior: {
+                            image: "https://i.imgur.com/w434enG.png", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+
+                            ]
+                        },
+
+                        vertebra_lateral: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_inferior: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_posterior: {
+                            image: "https://i.imgur.com/w434enG.png", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_atipica_superior: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_atipica_lateral: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_atipica_inferior: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        },
+
+                        vertebra_atipica_posterior: {
+                            image: "", /*add image*/
+                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                            points: [
+                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
+                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
+                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
+                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
+                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
+                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
+                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
+                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
+                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            ]
+                        }
                     }
              }
 
@@ -560,82 +968,166 @@
         let correctAnswers = 0;
         let totalQuestions = 0;
         let shuffledPoints = [];
+        let dialogueIndex = 0;
+
+        window.onload = function () {
+            // Inicia a música de fundo
+            playBackgroundMusic();
+
+            // Configura o controle de volume
+            const volumeControl = document.getElementById("volume-control");
+            if (volumeControl) {
+                volumeControl.addEventListener("input", function () {
+                    setVolume(this.value);
+                });
+            }
+
+            // Verifica se o usuário está em um dispositivo móvel
+            checkMobileDevice();
+        };
+        
+        const dialogues = [
+            { text: "Bem-vindo ao Hospital Geral. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
+            { text: "Aqui você pode aprender sobre a anatomia dos principais sistemas do corpo.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
+            { text: "O que você gostaria de aprender hoje?", background: "https://i.imgur.com/XM1jcWJ.jpg" }
+        ];
 
         function showSubMenu() {
             document.getElementById("menu").style.display = "none";
-            document.getElementById("sub-menu").style.display = "flex";
+            document.getElementById("visual-novel").style.display = "flex";
+            nextDialogue();
         }
 
+        function nextDialogue() {
+            if (dialogueIndex < dialogues.length) {
+                const currentDialogue = dialogues[dialogueIndex];
+                document.getElementById("dialogue-text").innerText = currentDialogue.text;
+                document.getElementById("visual-novel-background").style.backgroundImage = `url('${currentDialogue.background}')`;
+                dialogueIndex++;
+            } else {
+                showVisualNovelChoice();
+            }
+        }
+
+        function showVisualNovelChoice() {
+            document.getElementById("visual-novel").style.display = "none";
+            document.getElementById("visual-novel-choice").style.display = "flex";
+            document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+        }
+
+        function backToMenu() {
+            // Esconde o jogo e outros menus
+            document.getElementById("game").style.display = "none";
+            document.getElementById("cranio-sublevel-choice").style.display = "none";
+            document.getElementById("medula-sublevel-choice").style.display = "none";
+            document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            document.getElementById("mode-menu").style.display = "none";
+
+            // Exibe o menu principal
+            document.getElementById("menu").style.display = "flex";
+
+            // Restaura o background do menu principal
+            document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
+
+            // Reseta o jogo
+            resetGame();
+}
+
         function chooseCranioSublevel() {
-            document.getElementById("sub-menu").style.display = "none";
-            document.getElementById("cranio-sub-menu").style.display = "flex";
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("cranio-sublevel-choice").style.display = "flex";
+            document.getElementById("cranio-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
 
         function chooseMedulaSublevel() {
-            document.getElementById("sub-menu").style.display = "none";
-            document.getElementById("medula-sub-menu").style.display = "flex";
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("medula-sublevel-choice").style.display = "flex";
+            document.getElementById("medula-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+        }
+
+        function chooseVertebraSublevel() {
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+            document.getElementById("vertebra-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
 
         function chooseMode(phase, view) {
-            currentPhase = phase
+            currentPhase = phase;
             currentView = view;
-            document.getElementById("cranio-sub-menu").style.display = "none";
-            document.getElementById("medula-sub-menu").style.display = "none";
+            document.getElementById("cranio-sublevel-choice").style.display = "none";
+            document.getElementById("medula-sublevel-choice").style.display = "none";
+            document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "flex";
+            document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
 
-        function backToCranioSubMenu() {
+        function backToVisualNovelChoice() {
+            document.getElementById("cranio-sublevel-choice").style.display = "none";
+            document.getElementById("medula-sublevel-choice").style.display = "none";
+            document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            document.getElementById("visual-novel-choice").style.display = "flex";
+        }
+
+        function backToSublevelChoice() {
+            // Esconde o menu de escolha de modo
             document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("cranio-sub-menu").style.display = "flex";
+
+            // Exibe o submenu de seleção de fase correspondente à fase atual
+            if (currentPhase === "cranio") {
+                document.getElementById("cranio-sublevel-choice").style.display = "flex";
+            } else if (currentPhase === "medula") {
+                document.getElementById("medula-sublevel-choice").style.display = "flex";
+            } else if (currentPhase === "vértebra") {
+                document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+            }
+
+            // Restaura o background do submenu
+            document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+
+            // Reseta o jogo
+            resetGame();
         }
 
-        function backToMedulaSubMenu() {
-            document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("medula-sub-menu").style.display = "flex";
-        }
-
-        function backToSubMenu() {
-            document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("sub-menu").style.display = "flex";
-        }
-
-        function startGame(phase, view, mode) {
-             resetGame(); // Reinicia o jogo antes de iniciar um novo modo
-
-                currentPhase = phase;
-                currentView = view;
-                currentMode = mode;
-                correctAnswers = 0;
-                totalQuestions = phases[phase][view].points.length;
-                currentQuestionIndex = 0;
-                shuffledPoints = shuffleArray([...phases[phase][view].points]);
-
-                // Esconde os menus de seleção
-                document.getElementById("sub-menu").style.display = "none";
-                document.getElementById("cranio-sub-menu").style.display = "none";
-                document.getElementById("medula-sub-menu").style.display = "none";
-                document.getElementById("mode-menu").style.display = "none";
-                document.getElementById("game").style.display = "block";
-                document.getElementById("game").classList.add("active");
-                document.getElementById("image").src = phases[phase][view].image;
-
-                // Altera o fundo da página para a cor correspondente à fase
-                document.body.style.backgroundColor = phases[phase][view].backgroundColor;
-                document.body.style.backgroundImage = "none"; // Remove a imagem de fundo
-
-                if (mode === 'escrita') {
-                    startWritingMode(); // Inicia a nova modalidade
-                } else {
-                    loadQuestions(); // Continua com o modo normal
-                }
-}
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                const j = Math.floor(Math.random() * (i + 1)); // Escolhe um índice aleatório
+                [array[i], array[j]] = [array[j], array[i]]; // Troca os elementos
             }
             return array;
         }
+
+        function startGame(phase, view, mode) {
+            resetGame();
+            currentPhase = phase;
+            currentView = view;
+            currentMode = mode;
+
+            // Remove o background do menu inicial
+            document.body.style.backgroundImage = "none";
+            document.body.style.backgroundColor = "#f0f0f0"; // Define uma cor de fundo padrão
+
+            // Aplica o background da fase selecionada
+            const gameContainer = document.getElementById("game");
+            gameContainer.style.backgroundImage = `url('${phases[phase][view].background}')`; // Adicione um campo "background" no objeto da fase
+            gameContainer.style.backgroundSize = "cover";
+            gameContainer.style.backgroundPosition = "center";
+
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("game").classList.add("active");
+
+            document.getElementById("image").src = phases[phase][view].image;
+            correctAnswers = 0;
+            totalQuestions = phases[phase][view].points.length;
+            shuffledPoints = shuffleArray([...phases[phase][view].points]);
+            currentQuestionIndex = 0;
+
+            if (mode === 'escrita') {
+                startWritingMode();
+            } else {
+                loadQuestions();
+            }
+}
 
         function loadQuestions() {
             // Remove a caixa de entrada do modo de escrita, se existir
@@ -839,25 +1331,22 @@
             // Esconde o submenu e o jogo (caso estejam visíveis)
             document.getElementById("sub-menu").style.display = "none";
             document.getElementById("cranio-sub-menu").style.display = "none";
+            document.getElementById("medula-sub-menu").style.display = "none";
+            document.getElementById("vertebra-sub-menu").style.display = "none";
             document.getElementById("mode-menu").style.display = "none";
             document.getElementById("game").style.display = "none";
 
             document.getElementById("game").style.display = "none";
             document.getElementById("menu").style.display = "flex";
             document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
-            document.body.style.backgroundImage = "url('https://images.alphacoders.com/203/thumb-1920-203603.jpg')"; // Restaura a imagem de fundo
+            document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')"; // Restaura a imagem de fundo
             resetGame();
         }
 
         function backToSubMenu() {
-            document.getElementById("game").style.display = "none";
-            document.getElementById("cranio-sub-menu").style.display = "none";
-            document.getElementById("medula-sub-menu").style.display = "none";
-            document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("sub-menu").style.display = "flex";
-            document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
-            document.body.style.backgroundImage = "url('https://images.alphacoders.com/203/thumb-1920-203603.jpg')"; // Restaura a imagem de fundo
-            resetGame();
+            document.getElementById("cranio-sublevel-choice").style.display = "none";
+            document.getElementById("medula-sublevel-choice").style.display = "none";
+            document.getElementById("vertebra-sublevel-choice").style.display = "none";
         }
 
         function resetGame() {
