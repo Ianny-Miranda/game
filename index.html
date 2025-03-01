@@ -446,8 +446,9 @@
     </style>
 </head>
 <body>
-    <audio id="background-music" loop>
-        <source src="/game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
+    <audio id="background-music" loop volume="0.4">
+        <source src="game/Kubbi - Up In My Jam ♫ NO COPYRIGHT 8-bit Music - Free Music.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
     </audio>
     <audio id="correct-sound">
         <source src="/game/Correct Answer Sound Effect.mp3" type="audio/mpeg">    
@@ -570,7 +571,7 @@
             <p id="congrats" style="display:none; color: green; font-weight: bold;">
                 🎉 Parabéns! Você acertou todas as perguntas! 🎉
             </p>
-            <button onclick="backToSublevelChoice()">Voltar</button>
+            <button onclick="backToSubMenu()">Voltar</button>
         </div>
     </div>
 
