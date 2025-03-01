@@ -985,17 +985,12 @@
                 // Tenta reproduzir o áudio
                 backgroundMusic.play().then(() => {
                     console.log("Música iniciada com sucesso!");
-                    // Remove o mudo após iniciar a reprodução
+                    // Remove o mudo e ajusta o volume para 40% (0.4)
                     backgroundMusic.muted = false;
+                    backgroundMusic.volume = 0.4;
                 }).catch((error) => {
                     console.error("Erro ao iniciar a música:", error);
                 });
-                 // Inicia a música após o primeiro clique do usuário
-        document.addEventListener("click", () => {
-            playBackgroundMusic();
-            // Remove o listener após o primeiro clique
-            document.removeEventListener("click", arguments.callee);
-        });
             }
         }
 
@@ -1003,6 +998,13 @@
         window.onload = () => {
             playBackgroundMusic();
         };
+
+        // Inicia a música após o primeiro clique do usuário (caso a reprodução automática falhe)
+        document.addEventListener("click", () => {
+            playBackgroundMusic();
+            // Remove o listener após o primeiro clique
+            document.removeEventListener("click", arguments.callee);
+        });
         
         const dialogues = [
             { text: "Bem-vindo ao Hospital Geral. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
@@ -1362,9 +1364,23 @@
         }
 
         function backToSubMenu() {
-            document.getElementById("cranio-sublevel-choice").style.display = "none";
-            document.getElementById("medula-sublevel-choice").style.display = "none";
-            document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            // Esconde o jogo
+            document.getElementById("game").style.display = "none";
+
+            // Restaura o background do menu principal
+            document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
+
+            // Exibe o menu de seleção de subnível correspondente à fase atual
+            if (currentPhase === "cranio") {
+                document.getElementById("cranio-sublevel-choice").style.display = "flex";
+            } else if (currentPhase === "medula") {
+                document.getElementById("medula-sublevel-choice").style.display = "flex";
+            } else if (currentPhase === "vértebra") {
+                document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+            }
+
+            // Reseta o jogo
+            resetGame();
         }
 
         function resetGame() {
