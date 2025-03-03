@@ -1294,11 +1294,11 @@
                 feedback.innerText = `Correto! A estrutura é: ${currentQuestion.question.name}`;
                 feedback.style.color = 'green'; // Cor verde para acerto
                 correctAnswers++;
-                document.getElementById("correct-sound").play();
+                document.getElementById("game/correct.mp3").play();
             } else {
                 feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.question.name}`;
                 feedback.style.color = 'red'; // Cor vermelha para erro
-                document.getElementById("wrong-sound").play();
+                document.getElementById("game/Bamboo hit Sound effect - CreativeLibrary.mp3").play();
             }
 
             // Atualiza a interface
