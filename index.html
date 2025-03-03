@@ -154,7 +154,7 @@
             text-align: center;
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
-            background-image: url('https://i.imgur.com/SUA_IMAGEM_DE_FUNDO_DO_JOGO.jpg'); /* Imagem de fundo do jogo */
+            background-image: url('https://i.imgur.com/PUf8wJf.jpg'); /* Imagem de fundo do jogo */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -451,6 +451,18 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #800020;
+            margin: 20px 0;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
     </style>
 </head>
 <body>
@@ -459,10 +471,10 @@
         Seu navegador não suporta o elemento de áudio.
     </audio>
     <audio id="correct-sound">
-        <source src="/game/correct.mp3" type="audio/mpeg">    
+        <source src="/game/Correct Answer Sound Effect.mp3" type="audio/mpeg">    
     </audio>
     <audio id="wrong-sound">
-        <source src="/game/Bamboo hit Sound effect - CreativeLibrary.mp3" type="audio/mpeg">
+        <source src="/game/videoplayback.m4a" type="audio/mpeg">
     </audio>
     <audio id="victory-sound">
         <source src="/game/videoplayback%20(1).m4a" type="audio/mpeg">
@@ -482,7 +494,7 @@
         <div class="background" id="visual-novel-background"></div>
         <div class="dialogue-container">
             <div class="medic-frame">
-                <img src="https://i.imgur.com/7kDMzXJ.jpg" alt="Dra. Silva">
+                <img src="https://i.imgur.com/jeUdHBc.png" alt="Dra. Silva">
             </div>
             <div class="dialogue-box">
                 <p id="dialogue-text">Bem-vindo ao Hospital Geral. Eu sou a Dra. Silva. Como posso ajudá-lo hoje?</p>
@@ -496,8 +508,10 @@
     <div class="background" id="visual-novel-choice-background"></div>
     <div class="choice-box">
         <h1>O que você gostaria de aprender hoje?</h1>
+        <button onclick="chooseVertebraSublevel()">Vértebras</button>
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
         <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
+        <button onclick="startProvaMode()">Modo PROVA PRÁTICA 1</button>
     </div>
 </div>
 
@@ -537,14 +551,13 @@
     <div class="background" id="vertebra-sublevel-background"></div>
     <div class="choice-box">
         <h1>Escolha a vista da vértebra</h1>
-        <button onclick="chooseMode('vértebra', 'vertebra_superior')">Vista Superior da Vértebra Típica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_lateral')">Vista Lateral da Vértebra Típica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_inferior')">Vista Inferior da Vértebra Típica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_posterior')">Vista Posterior da Vértebra Típica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_atipica_superior')">Vista Superior da Vértebra Atípica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_atipica_lateral')">Vista Lateral da Vértebra Atípica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_atipica_inferior')">Vista Inferior da Vértebra Atípica</button>
-        <button onclick="chooseMode('vértebra', 'vertebra_atipica_posterior')">Vista Posterior da Vértebra Atípica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_atlas')">Vértebra Atlas</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_axis')">Vista Superior da Vértebra Axis</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_axis_inferior')">Vista Inferior da Vértebra Axis</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_tipica')">Vista Anterior da Vértebra Típica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_tipica_inferior')">Vista Inferior da Vértebra Atípica</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_sacral')">Sacro + Cóccix anterior</button>
+        <button onclick="chooseMode('vértebra', 'vertebra_sacral_posterior')">Sacro + Cóccix posterior</button>
         <button onclick="backToVisualNovelChoice()">Voltar</button>
     </div>
 </div>
@@ -560,10 +573,15 @@
     </div>
 </div>
 
+
+
     <!-- Jogo -->
     <div class="game" id="game">
         <div class="game-content">
             <h1>Quiz de Anatomia</h1>
+            <div id="timer" style="font-size: 24px; font-weight: bold; color: #800020; margin: 20px 0;">
+                Tempo restante: <span id="time">30</span>s
+            </div>
             <div class="question-container" id="question-container">
                 <p id="question"></p>
             </div>
@@ -573,13 +591,29 @@
             </div>
             <div class="progress-bar">
                 <div class="progress-bar-fill" id="progress-bar"></div>
-            </div>
-            <p id="feedback"></p>
+            </div class="dialogue-box">
+            <p id="feedback" style="font-size: 20px; font-weight: bold; margin-top: 10px;"></p>
             <p id="score">Acertos: 0 / 0 (0%)</p>
             <p id="congrats" style="display:none; color: green; font-weight: bold;">
                 🎉 Parabéns! Você acertou todas as perguntas! 🎉
             </p>
-            <button onclick="backToSubMenu()">Voltar</button>
+            <button id="voltar-button" onclick="backToSubMenu()">Voltar</button>
+            <button id="continuar-button" style="display: none;" onclick="showFeedbackMedica()">Continuar</button>
+        </div>
+    </div>
+
+        <!-- Feedback da Médica -->
+    <div class="visual-novel" id="feedback-medica" style="display: none;">
+        <div class="background" id="feedback-medica-background" style="background-image: url('https://i.imgur.com/PUf8wJf.jpg');"></div>
+        <div class="background" id="feedback-medica-background"></div>
+        <div class="dialogue-container">
+            <div class="medic-frame">
+                <img id="medic-sprite" src="" alt="Dra. Silva">
+            </div>
+            <div class="dialogue-box">
+                <p id="feedback-text"></p>
+                <button onclick="backToMenu()">Voltar ao Menu</button>
+            </div>
         </div>
     </div>
 
@@ -837,136 +871,104 @@
                         }
                     },
 
-                    vertebra: {
+                    vértebra: {
 
-                        vertebra_superior: {
-                            image: "https://i.imgur.com/w434enG.png", /*add image*/
+                        vertebra_atlas: {
+                            image: "https://i.imgur.com/FRrJ4BQ.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
-
+                            { "top": "10px", left: "250px", name: "Tubérculo anterior" },
+                            { "top": "20px", left: "290px", name: "Arco anterior do atlas" },
+                            { "top": "100px", left: "30px", name: "Processo transverso do atlas" },
+                            { "top": "110px", left: "80px", name: "Forame transverso" },
+                            { "top": "200px", left: "150px", name: "Arco posterior" },
+                            { "top": "50px", left: "150px", size: "large", "name": "Face articular do processo articular superior" },
+                            { "top": "270px", left: "260px", name: "Tubérculo posterior" },
+                            { "top": "150px", left: "260px", size: "large", name: "Forame vertebral" }
                             ]
                         },
 
-                        vertebra_lateral: {
-                            image: "", /*add image*/
+                        vertebra_axis: {
+                            image: "https://i.imgur.com/mitBolx.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { "top": "50px", left: "240px", size: "large", name: "Dente do axis" },
+                            { "top": "150px", left: "400px", size: "large", name: "Processo articular superior" },
+                            { "top": "375px", left: "250px", name: "Arco do axis" },
+                            { "top": "445px", left: "250px", size: "large", name: "Processo espinhoso" },
                             ]
                         },
 
-                        vertebra_inferior: {
-                            image: "", /*add image*/
+                        vertebra_axis_inferior: {
+                            image: "https://i.imgur.com/NARdJmW.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { top: "80px", left: "240px", size: "large", name: "Corpo da vértebra" },
+                            { top: "110px", left: "350px", size: "large", name: "Forame transverso" },
+                            { top: "110px", left: "420px", name: "Processo transverso" },
+                            { top: "340px", left: "230px", size: "large", name: "Processo espinhoso" },
+                            { top: "210px", left: "100px", size: "large", name: "Processos articulares inferiores" },
                             ]
                         },
 
-                        vertebra_posterior: {
-                            image: "https://i.imgur.com/w434enG.png", /*add image*/
+                        vertebra_tipica: {
+                            image: "https://i.imgur.com/fTDuE73.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { top: "280px", left: "250px", size: "large", name: "Processo espinhoso" },
+                            { top: "130px", left: "100px", size: "large", name: "Processo transverso" },
+                            { top: "60px", left: "250px", size: "large", name: "Corpo da vértebra" },
+                            { top: "200px", left: "200px", size: "large", name: "Lâmina" },
+                            { top: "80px", left: "170px",  size: "large", name: "Face articular superior" },
+                            { top: "120px", left: "240px", size: "large", name: "Forame intervertebral" },
                             ]
                         },
 
-                        vertebra_atipica_superior: {
-                            image: "", /*add image*/
+                        vertebra_tipica_inferior: {
+                            image: "https://i.imgur.com/XVPCB5M.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { top: "250px", left: "250px", size: "large", name: "Corpo" },
+                            { top: "130px", left: "190px", name: "Pedículo" },
+                            { top: "90px", left: "50px", size: "large", name: "Fóvea costal do processo transverso" },
+                            { top: "150px", left: "250px", size: "large", name: "Forame intervertebral" },
+                            { top: "160px", left: "185px", size: "small", name: "Fóvea costal superior" },
+                            { top: "100px", left: "240px", size: "large", name: "Ângulo da face articular" },
+                            { top: "100px", left: "180px", name: "Processo articular superior" },
                             ]
                         },
 
-                        vertebra_atipica_lateral: {
-                            image: "", /*add image*/
+                        vertebra_sacral: {
+                            image: "https://i.imgur.com/etzNCs6.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { top: "30px", left: "250px", size: "large", name: "Promontório" },
+                            { top: "20px", left: "330px", size: "small", name: "Processo articular superior" },
+                            { top: "50px", left: "430px", size: "large", name: "Asa" },
+                            { top: "90px", left: "360px", name: "Parte sacral da margem pélvica" },
+                            { top: "260px", left: "310px", name: "Forame sacral anterior" },
+                            { top: "225px", left: "250px", name: "Cristas transversas" },
+                            { top: "340px", left: "250px", size: "large", name: "Ápice do Sacro" },
+                            { top: "400px", left: "290px", name: "Processo transverso do cóccix" },
                             ]
                         },
 
-                        vertebra_atipica_inferior: {
-                            image: "", /*add image*/
+                        vertebra_sacral_posterior: {
+                            image: "https://i.imgur.com/G5G9Gcq.png", /*add image*/
                             background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                             points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
+                            { top: "40px", left: "340px", size: "large", name: "Faces dos processos articulares superiores" },
+                            { top: "100px", left: "50px", size: "large", name: "Superfície auricular" },
+                            { top: "300px", left: "150px", size: "large", name: "Forame sacral posterior" },
+                            { top: "250px", left: "60px", size: "large", name: "Crista sacral lateral" },
+                            { top: "250px", left: "230px", size: "large", name: "Crista sacral mediana" },
+                            { top: "450px", left: "200px", name: "Corno sacral" },
+                            { top: "250px", left: "190px", name: "Crista sacral intermédia" },
+                            { top: "490px", left: "220px", name: "Corno coccígeo" },
+                            { top: "500px", left: "200px", name: "Processo transverso do cóccix" },
                             ]
                         },
 
-                        vertebra_atipica_posterior: {
-                            image: "", /*add image*/
-                            background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
-                            points: [
-                            { top: "340px", left: "355px", size: "small", name: "Ligamento denticulado" },
-                            { top: "350px", left: "250px", size: "large", name: "Pia-máter" },
-                            { top: "430px", left: "220px", size: "large", name: "Aracnoide" },
-                            { top: "490px", left: "220px", size: "large", name: "Dura-máter" },
-                            { top: "470px", left: "200px", size: "small", name: "Espaço sub-dural" },
-                            { top: "400px", left: "200px", size: "small", name: "Espaço sub-aracnoideo" },
-                            { top: "250px", left: "230px", name: "Sulco mediano posterior" },
-                            { top: "250px", left: "290px", name: "Sulco intermédio posterior" },
-                            { top: "250px", left: "360px", name: "Sulco lateral posterior" },
-                            ]
-                        }
                     }
              }
 
@@ -999,7 +1001,9 @@
         };
         
         const dialogues = [
-            { text: "Bem-vindo ao Hospital Geral. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
+            { text: "Bem-vindo ao Hospital Geral. Sou a Drª Isabella. Fiquei sabendo que é o novo estagiário, prazer.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
+            { text: "Acredito que esteja um pouco nervoso, mas vou te ajudar, não se preocupe.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
+            { text: "Antes que possa ver os pacientes, acho uma boa ideia revisarmos o básico. A começar por", background: "https://i.imgur.com/XM1jcWJ.jpg" },
             { text: "Aqui você pode aprender sobre a anatomia dos principais sistemas do corpo.", background: "https://i.imgur.com/XM1jcWJ.jpg" },
             { text: "O que você gostaria de aprender hoje?", background: "https://i.imgur.com/XM1jcWJ.jpg" }
         ];
@@ -1109,21 +1113,19 @@
         }
 
         function startGame(phase, view, mode) {
+            // Verifica se a fase e a visualização existem
+            if (!phases[phase] || !phases[phase][view]) {
+                console.error(`Fase ou visualização não encontrada: ${phase} - ${view}`);
+                alert("Erro: Fase ou visualização não encontrada. Verifique a configuração do jogo.");
+                return;
+            }
+
             resetGame();
             currentPhase = phase;
             currentView = view;
             currentMode = mode;
 
-            // Remove o background do menu inicial
-            document.body.style.backgroundImage = "none";
-            document.body.style.backgroundColor = "#f0f0f0"; // Define uma cor de fundo padrão
-
-            // Aplica o background da fase selecionada
-            const gameContainer = document.getElementById("game");
-            gameContainer.style.backgroundImage = `url('${phases[phase][view].background}')`; // Adicione um campo "background" no objeto da fase
-            gameContainer.style.backgroundSize = "cover";
-            gameContainer.style.backgroundPosition = "center";
-
+            // Configura o jogo
             document.getElementById("mode-menu").style.display = "none";
             document.getElementById("game").style.display = "block";
             document.getElementById("game").classList.add("active");
@@ -1134,12 +1136,195 @@
             shuffledPoints = shuffleArray([...phases[phase][view].points]);
             currentQuestionIndex = 0;
 
-            if (mode === 'escrita') {
+            if (mode === 'prova') {
+                startProvaQuestion();
+            } else if (mode === 'escrita') {
                 startWritingMode();
             } else {
                 loadQuestions();
             }
-}
+        }
+
+        let timer; // Variável para armazenar o temporizador
+        let timeLeft = 30; // Tempo inicial
+
+        function startProvaMode() {
+            // Verifica se o objeto phases existe
+            if (!phases) {
+                console.error("Erro: O objeto phases não está definido.");
+                return;
+            }
+
+            // Coleta TODAS as questões de todas as fases
+            const allQuestions = [];
+            
+            // Fases disponíveis (ajuste os nomes conforme seu objeto phases)
+            const phasesList = ["cranio", "medula", "vértebra"];
+            
+            // Percorre cada fase e visualização para coletar as questões
+            phasesList.forEach(phase => {
+                // Verifica se a fase existe
+                if (!phases[phase]) {
+                    console.error(`Fase não encontrada: ${phase}`);
+                    return; // Pula para a próxima fase
+                }
+
+                // Obtém as visualizações da fase
+                const views = Object.keys(phases[phase]);
+                
+                // Percorre cada visualização
+                views.forEach(view => {
+                    // Verifica se a visualização existe
+                    if (!phases[phase][view]) {
+                        console.error(`Visualização não encontrada: ${phase} - ${view}`);
+                        return; // Pula para a próxima visualização
+                    }
+
+                    // Obtém as questões da visualização
+                    const questions = phases[phase][view].points;
+                    
+                    // Adiciona todas as questões ao array
+                    questions.forEach(question => {
+                        allQuestions.push({
+                            phase: phase, // Adiciona a fase
+                            view: view,   // Adiciona a visualização
+                            question: question // Adiciona a questão
+                        });
+                    });
+                });
+            });
+            
+            // Seleciona 20 questões aleatórias
+            const selectedQuestions = shuffleArray(allQuestions).slice(0, 20);
+            
+            // Configura o modo PROVA
+            resetGame();
+            currentMode = "prova";
+            shuffledPoints = selectedQuestions;
+            totalQuestions = 20;
+            currentQuestionIndex = 0;
+            
+            // Prepara a interface
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("game").classList.add("active");
+            document.getElementById("timer").style.display = "block";
+            
+            // Inicia a primeira pergunta
+            startProvaQuestion();
+        }
+
+        function startProvaQuestion() {
+            // Limpa o temporizador anterior
+            if (timer) clearInterval(timer);
+
+            // Reseta o tempo
+            let timeLeft = 30;
+            document.getElementById("time").innerText = timeLeft;
+
+            // Atualiza o temporizador
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById("time").innerText = timeLeft;
+
+                // Tempo esgotado
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    handleProvaAnswer(); // Trata como resposta incorreta
+                }
+            }, 1000);
+
+            // Limpa elementos anteriores
+            const inputContainer = document.getElementById("input-container");
+            if (inputContainer) inputContainer.remove();
+
+            // Configura a pergunta atual
+            const currentQuestion = shuffledPoints[currentQuestionIndex];
+
+            // Verifica se a pergunta atual existe
+            if (!currentQuestion) {
+                console.error("Erro: Questão atual não encontrada.");
+                return;
+            }
+
+            // Define a imagem da visualização atual
+            const phaseData = phases[currentQuestion.phase][currentQuestion.view];
+            document.getElementById("image").src = phaseData.image;
+
+            // Exibe o ponto piscando
+            const targetsContainer = document.getElementById("targets");
+            targetsContainer.innerHTML = ""; // Limpa os pontos anteriores
+
+            const target = document.createElement("div");
+            target.className = "target blinking";
+            target.style.top = currentQuestion.question.top; // Posição Y do ponto
+            target.style.left = currentQuestion.question.left; // Posição X do ponto
+            target.style.width = "20px"; // Tamanho do ponto
+            target.style.height = "20px";
+            targetsContainer.appendChild(target);
+
+            document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
+
+            // Cria o campo de input
+            const newInputContainer = document.createElement("div");
+            newInputContainer.id = "input-container";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Digite aqui...";
+
+            const submitButton = document.createElement("button");
+            submitButton.innerText = "Enviar";
+
+            // Envio da resposta (Enter ou clique)
+            const submitAnswer = () => {
+            clearInterval(timer);
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = currentQuestion.question.name.toLowerCase();
+
+            // Verifica se há input
+            if (!userAnswer) {
+                alert("Por favor, digite uma resposta!");
+                return; // Impede o envio de respostas vazias
+            }
+
+            // Verifica se a resposta está correta
+            const feedback = document.getElementById("feedback");
+            if (checkSimilarity(userAnswer, correctAnswer)) {
+                feedback.innerText = `Correto! A estrutura é: ${currentQuestion.question.name}`;
+                feedback.style.color = 'green'; // Cor verde para acerto
+                correctAnswers++;
+                document.getElementById("correct-sound").play();
+            } else {
+                feedback.innerText = `Incorreto! A estrutura correta é: ${currentQuestion.question.name}`;
+                feedback.style.color = 'red'; // Cor vermelha para erro
+                document.getElementById("wrong-sound").play();
+            }
+
+            // Atualiza a interface
+            updateProgressBar();
+            updateScore();
+
+            // Próxima pergunta ou fim do jogo
+            currentQuestionIndex++;
+            if (currentQuestionIndex < 20) {
+                setTimeout(startProvaQuestion, 1000); // Aguarda 1 segundo
+            } else {
+                showEndGame();
+            }
+        };
+
+            input.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") submitAnswer();
+            });
+            submitButton.addEventListener("click", submitAnswer);
+
+            // Adiciona elementos à tela
+            newInputContainer.appendChild(input);
+            newInputContainer.appendChild(submitButton);
+            document.getElementById("question-container").appendChild(newInputContainer);
+            input.focus(); // Define o foco manualmente
+        }
 
         function loadQuestions() {
             // Remove a caixa de entrada do modo de escrita, se existir
@@ -1335,40 +1520,113 @@
 
         function showEndGame() {
             const feedback = document.getElementById("feedback");
+            const voltarButton = document.getElementById("voltar-button");
+            const continuarButton = document.getElementById("continuar-button");
+
+            // Verifica se os elementos existem
+            if (!feedback || !voltarButton || !continuarButton) {
+                console.error("Elementos não encontrados no DOM.");
+                return;
+            }
+
             feedback.innerText = `Jogo finalizado! Você acertou ${correctAnswers} de ${totalQuestions} pontos.`;
             feedback.style.color = correctAnswers === totalQuestions ? 'green' : 'red';
+
+            // Esconde o botão "Voltar" e mostra o botão "Continuar"
+            voltarButton.style.display = "none";
+            continuarButton.style.display = "block";
+        }
+
+        function showFeedbackMedica() {
+            const feedbackMedica = document.getElementById("feedback-medica");
+            const medicSprite = document.getElementById("medic-sprite");
+            const feedbackText = document.getElementById("feedback-text");
+
+            // Verifica se os elementos existem
+            if (!feedbackMedica || !medicSprite || !feedbackText) {
+                console.error("Elementos do feedback da médica não encontrados no DOM.");
+                return;
+            }
+
+            // Calcula a porcentagem de acertos
+            const percentage = (correctAnswers / totalQuestions) * 100;
+
+            // Define o sprite e a mensagem com base no desempenho
+            if (percentage === 100) {
+                medicSprite.src = "https://i.imgur.com/7kDMzXJ.jpg"; // Sprite feliz
+                feedbackText.innerText = "Incrível! Você acertou todas as perguntas! Tenho certeza que o hospital estará em boas mãos!";
+            } else if (percentage >= 50) {
+                medicSprite.src = "https://i.imgur.com/jR1uYPi.png"; // Sprite neutro
+                feedbackText.innerText = "Bom trabalho! Você acertou a maioria das perguntas. Continue estudando!";
+            } else {
+                medicSprite.src = "https://i.imgur.com/5UAjfs9.png"; // Sprite triste
+                feedbackText.innerText = "Você errou muitas perguntas. Não desanime! Revise o conteúdo e tente novamente.";
+            }
+
+            // Exibe o feedback da médica
+            feedbackMedica.style.display = "flex";
+
+            // Esconde o jogo
+            const game = document.getElementById("game");
+            if (game) {
+                game.style.display = "none";
+            }
         }
 
         function backToMenu() {
-            // Esconde o submenu e o jogo (caso estejam visíveis)
-            document.getElementById("sub-menu").style.display = "none";
-            document.getElementById("cranio-sub-menu").style.display = "none";
-            document.getElementById("medula-sub-menu").style.display = "none";
-            document.getElementById("vertebra-sub-menu").style.display = "none";
-            document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("game").style.display = "none";
+            // Esconde todos os menus e o jogo
+            const elementsToHide = [
+                "sub-menu", "cranio-sub-menu", "medula-sub-menu", 
+                "vertebra-sub-menu", "mode-menu", "game", "feedback-medica"
+            ];
 
-            document.getElementById("game").style.display = "none";
-            document.getElementById("menu").style.display = "flex";
-            document.body.style.backgroundColor = "#f0f0f0"; // Restaura o fundo padrão
-            document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')"; // Restaura a imagem de fundo
+            elementsToHide.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = "none";
+                }
+            });
+
+            // Volta ao menu principal
+            const menu = document.getElementById("menu");
+            if (menu) {
+                menu.style.display = "flex";
+            }
+
+            // Restaura o fundo
+            document.body.style.backgroundColor = "#f0f0f0";
+            document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
+
+            // Reseta o jogo
             resetGame();
         }
 
         function backToSubMenu() {
             // Esconde o jogo
-            document.getElementById("game").style.display = "none";
+            const game = document.getElementById("game");
+            if (game) {
+                game.style.display = "none";
+            }
 
             // Restaura o background do menu principal
             document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
 
             // Exibe o menu de seleção de subnível correspondente à fase atual
             if (currentPhase === "cranio") {
-                document.getElementById("cranio-sublevel-choice").style.display = "flex";
+                const cranioSublevel = document.getElementById("cranio-sublevel-choice");
+                if (cranioSublevel) {
+                    cranioSublevel.style.display = "flex";
+                }
             } else if (currentPhase === "medula") {
-                document.getElementById("medula-sublevel-choice").style.display = "flex";
+                const medulaSublevel = document.getElementById("medula-sublevel-choice");
+                if (medulaSublevel) {
+                    medulaSublevel.style.display = "flex";
+                }
             } else if (currentPhase === "vértebra") {
-                document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+                const vertebraSublevel = document.getElementById("vertebra-sublevel-choice");
+                if (vertebraSublevel) {
+                    vertebraSublevel.style.display = "flex";
+                }
             }
 
             // Reseta o jogo
@@ -1383,8 +1641,18 @@
             correctAnswers = 0;
             totalQuestions = 0;
             shuffledPoints = [];
-            document.getElementById("progress-bar").style.width = "0%";
+            const progressBar = document.getElementById("progress-bar");
+            if (progressBar) {
+                progressBar.style.width = "0%";
+            }
         }
+
+        // Garante que o script seja executado após o carregamento do DOM
+        window.onload = () => {
+            // Inicializa o jogo
+            checkMobileDevice();
+            playBackgroundMusic();
+        };
     </script>
 </body>
 </html>
