@@ -633,19 +633,6 @@
 
     <script>
 
-              // Seleciona o botão e o áudio
-        const startButton = document.getElementById("menu");
-        const backgroundMusic = document.getElementById("background-music");
-
-        // Adiciona um evento de clique ao botão
-        startButton.addEventListener("click", () => {
-            // Tenta reproduzir a música
-            backgroundMusic.play().then(() => {
-                console.log("Música iniciada com sucesso!");
-            }).catch((error) => {
-                console.error("Erro ao iniciar a música:", error);
-            });
-
             function isSmartphone() {
                 // Verifica a largura da tela
                 const isSmallScreen = window.innerWidth < 768;
