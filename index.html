@@ -632,23 +632,7 @@
     </div>
 
     <script>
-
-        // Seleciona o botão e o áudio
-        const startButton = document.getElementById("start-button");
-        const backgroundMusic = document.getElementById("background-music");
-
-        // Adiciona um evento de clique ao botão
-        startButton.addEventListener("click", () => {
-            // Tenta reproduzir a música
-            backgroundMusic.play().then(() => {
-                console.log("Música iniciada com sucesso!");
-            }).catch((error) => {
-                console.error("Erro ao iniciar a música:", error);
-            });
-
-            // Inicia o jogo (adicione sua lógica aqui)
-            alert("Jogo iniciado!");
-        });
+        
 
             function isSmartphone() {
                 // Verifica a largura da tela
@@ -665,7 +649,7 @@
             }
 
             if (isSmartphone()) {
-                alert("Ops! Esse jogo só funciona em tablets e computadores 😢. Ainda...");
+                alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
                 // Redireciona para uma página de aviso ou impede o acesso ao jogo
                 window.location.href = "aviso-mobile.html"; // Substitua pelo URL da página de aviso, se necessário
             }
