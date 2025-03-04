@@ -382,6 +382,20 @@
             background-color: #600018;
         }
 
+        .prova button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #008029;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        
+
         /* Estilo base para todos os menus no estilo visual novel */
         .visual-novel-menu {
             position: fixed;
@@ -481,7 +495,7 @@
     </audio>
     <!-- Menu Principal -->
     <div class="menu" id="menu">
-        <h1>Bem-vindo ao Quiz de Neuroanatomia da T24!</h1>
+        <h1>Bem-vindo ao Quiz de Neuroanatomia!</h1>
         <button onclick="showSubMenu()">Iniciar</button>
         <!-- Rodapé com copyright -->
         <div class="copyright">
@@ -510,8 +524,8 @@
         <h1>O que você gostaria de aprender hoje?</h1>
         <button onclick="chooseVertebraSublevel()">Vértebras</button>
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
+        <button onclick="startProvaMode()">PROVA PRÁTICA 1 (vértebras e crânio)</button>
         <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
-        <button onclick="startProvaMode()">Modo PROVA PRÁTICA 1</button>
     </div>
 </div>
 
@@ -618,22 +632,27 @@
     </div>
 
     <script>
-                // Verifica se o usuário está em um dispositivo móvel
-                function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-        }
 
-        // Exibe um aviso se o usuário estiver em um dispositivo móvel
-        function checkMobileDevice() {
-            if (isMobileDevice()) {
+            function isSmartphone() {
+                // Verifica a largura da tela
+                const isSmallScreen = window.innerWidth < 768;
+
+                // Verifica o user agent
+                const userAgent = navigator.userAgent.toLowerCase();
+                const isiPhone = /iphone/.test(userAgent);
+                const isAndroidPhone = /android.*mobile/.test(userAgent);
+                const isWindowsPhone = /windows phone/.test(userAgent);
+
+                // Retorna true apenas para smartphones
+                return isSmallScreen && (isiPhone || isAndroidPhone || isWindowsPhone);
+            }
+
+            if (isSmartphone()) {
                 alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
                 // Redireciona para uma página de aviso ou impede o acesso ao jogo
                 window.location.href = "aviso-mobile.html"; // Substitua pelo URL da página de aviso, se necessário
             }
-        }
 
-                // Chama a função de verificação quando a página é carregada
-                window.onload = checkMobileDevice;
 
         const phases = {
             cranio: {
@@ -981,6 +1000,40 @@
         let shuffledPoints = [];
         let dialogueIndex = 0;
 
+        function createTarget(point, imageWidth, imageHeight) {
+            const target = document.createElement("div");
+            target.className = "target blinking";
+
+            // Verifica se point.question existe
+            if (!point || !point.question) {
+                console.error("Erro: Objeto point ou point.question não está definido.", point);
+                return null;
+            }
+
+            // Converte posições absolutas para relativas
+            const topRelative = (point.question.top / imageHeight) * 100;
+            const leftRelative = (point.question.left / imageWidth) * 100;
+
+            // Aplica as posições relativas
+            target.style.top = `${topRelative}%`;
+            target.style.left = `${leftRelative}%`;
+            target.style.width = "5%"; // Tamanho relativo
+            target.style.height = "5%";
+
+            return target;
+        }
+        const image = document.getElementById("image");
+        image.onload = () => {
+            const imageWidth = image.width;
+            const imageHeight = image.height;
+
+            // Cria os pontos com base nas dimensões da imagem
+            shuffledPoints.forEach(point => {
+                const target = createTarget(point.question, imageWidth, imageHeight);
+                document.getElementById("targets").appendChild(target);
+            });
+        };
+
         function playBackgroundMusic() {
             const backgroundMusic = document.getElementById("background-music");
             if (backgroundMusic) {
@@ -1159,7 +1212,7 @@
             const allQuestions = [];
             
             // Fases disponíveis (ajuste os nomes conforme seu objeto phases)
-            const phasesList = ["cranio", "medula", "vértebra"];
+            const phasesList = ["cranio", "vértebra"];
             
             // Percorre cada fase e visualização para coletar as questões
             phasesList.forEach(phase => {
