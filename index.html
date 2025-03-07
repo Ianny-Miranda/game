@@ -1183,6 +1183,14 @@
             document.getElementById("game").style.display = "block";
             document.getElementById("game").classList.add("active");
 
+            // Mostra ou oculta o temporizador com base no modo
+            const timerElement = document.getElementById("timer");
+            if (mode === "prova") {
+                timerElement.style.display = "block"; // Mostra o temporizador no modo prova
+            } else {
+                timerElement.style.display = "none"; // Oculta o temporizador nos outros modos
+            }
+
             document.getElementById("image").src = phases[phase][view].image;
             correctAnswers = 0;
             totalQuestions = phases[phase][view].points.length;
@@ -1517,23 +1525,59 @@
             return userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer);
         }
 
-        function checkAnswer(structure, target) {
-            const phaseData = phases[currentPhase][currentView];
-            const correctAnswer = shuffledPoints[currentQuestionIndex].name;
-            const feedback = document.getElementById("feedback");
-
-            if (structure === correctAnswer) {
-                target.classList.add("correct");
-                feedback.innerText = `Correto! A estrutura é: ${correctAnswer}`;
-                feedback.style.color = 'green';
-                correctAnswers++;
-                document.getElementById("correct-sound").play(); // Toca o som de acerto
-            } else {
-                target.classList.add("incorrect");
-                feedback.innerText = `Incorreto! A estrutura correta é: ${correctAnswer}`;
-                feedback.style.color = 'red';
-                document.getElementById("wrong-sound").play(); // Toca o som de erro
+        function levenshteinDistance(a, b) {
+            if (a.length === 0) return b.length;
+            if (b.length === 0) return a.length;
+        
+            const matrix = [];
+        
+            // Inicializa a matriz
+            for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
             }
+            for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+        
+            // Preenche a matriz com as distâncias
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1]; // Caracteres iguais, nenhum custo adicional
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1, // Substituição
+                            matrix[i][j - 1] + 1,     // Inserção
+                            matrix[i - 1][j] + 1      // Deleção
+                        );
+                    }
+                }
+            }
+        
+            return matrix[b.length][a.length]; // Retorna a distância final
+        }
+        
+        function checkSimilarity(userAnswer, correctAnswer, maxErrors = 1) {
+            const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        
+            // Normaliza as respostas
+            userAnswer = normalize(userAnswer);
+            correctAnswer = normalize(correctAnswer);
+        
+            // Divide as respostas em palavras
+            const userWords = userAnswer.split(/\s+/);
+            const correctWords = correctAnswer.split(/\s+/);
+        
+            // Verifica se pelo menos uma palavra-chave da resposta correta está na resposta do usuário
+            const hasKeyword = correctWords.some(correctWord => {
+                return userWords.some(userWord => {
+                    const distance = levenshteinDistance(userWord, correctWord);
+                    return distance <= maxErrors; // Tolerância a erros de digitação
+                });
+            });
+        
+            return hasKeyword; // Retorna true se pelo menos uma palavra-chave estiver presente
+}
 
             // Aguarda 1 segundo antes de trocar a pergunta e limpar o feedback
             setTimeout(() => {
@@ -1697,6 +1741,12 @@
             const progressBar = document.getElementById("progress-bar");
             if (progressBar) {
                 progressBar.style.width = "0%";
+            }
+
+            // Oculta o temporizador ao reiniciar o jogo
+            const timerElement = document.getElementById("timer");
+            if (timerElement) {
+                timerElement.style.display = "none";
             }
         }
 
