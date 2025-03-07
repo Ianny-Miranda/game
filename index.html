@@ -1579,6 +1579,23 @@
             return hasKeyword; // Retorna true se pelo menos uma palavra-chave estiver presente
 }
 
+            function checkAnswer(structure, target) {
+            const phaseData = phases[currentPhase][currentView];
+            const correctAnswer = shuffledPoints[currentQuestionIndex].name;
+            const feedback = document.getElementById("feedback");
+
+            if (structure === correctAnswer) {
+                target.classList.add("correct");
+                feedback.innerText = `Correto! A estrutura é: ${correctAnswer}`;
+                feedback.style.color = 'green';
+                correctAnswers++;
+                document.getElementById("correct-sound").play(); // Toca o som de acerto
+            } else {
+                target.classList.add("incorrect");
+                feedback.innerText = `Incorreto! A estrutura correta é: ${correctAnswer}`;
+                feedback.style.color = 'red';
+                document.getElementById("wrong-sound").play(); // Toca o som de erro
+            }
             // Aguarda 1 segundo antes de trocar a pergunta e limpar o feedback
             setTimeout(() => {
                 currentQuestionIndex++;
