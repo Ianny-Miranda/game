@@ -480,6 +480,31 @@
     </style>
 </head>
 <body>
+    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyDdC5G9AgyqPDAPHcQIGJhlrcDEO3_gtPA",
+          authDomain: "quiz-anatomia-c2915.firebaseapp.com",
+          projectId: "quiz-anatomia-c2915",
+          storageBucket: "quiz-anatomia-c2915.firebasestorage.app",
+          messagingSenderId: "177247502672",
+          appId: "1:177247502672:web:fc27efb0a13e8948676c55",
+          measurementId: "G-MHEYJ38S11"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+
     <audio id="background-music" loop volume="0.4">
         <source src="A Lonely Cherry Tree 🌸 - Pix.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
@@ -493,6 +518,7 @@
     <audio id="victory-sound">
         <source src="/game/videoplayback%20(1).m4a" type="audio/mpeg">
     </audio>
+    
     <!-- Menu Principal -->
     <div class="menu" id="menu">
         <h1>Bem-vindo ao Quiz de Neuroanatomia!</h1>
@@ -526,6 +552,7 @@
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
         <button onclick="startProvaMode()">PROVA PRÁTICA 1 (vértebras e crânio)</button>
         <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
+        <button onclick="chooseTroncoSublevel()">Tronco Encefálico</button>
     </div>
 </div>
 
@@ -572,6 +599,19 @@
         <button onclick="chooseMode('vértebra', 'vertebra_tipica_inferior')">Vista Inferior da Vértebra Atípica</button>
         <button onclick="chooseMode('vértebra', 'vertebra_sacral')">Sacro + Cóccix anterior</button>
         <button onclick="chooseMode('vértebra', 'vertebra_sacral_posterior')">Sacro + Cóccix posterior</button>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
+    </div>
+</div>
+
+<!-- Menu de Escolha de Subnível do Tronco Encefálico -->
+<div class="visual-novel-menu" id="tronco_encefálico-sublevel-choice" style="display: none;">
+    <div class="background" id="tronco_encefálico-sublevel-background"></div>
+    <div class="choice-box">
+        <h1>Escolha a vista do tronco encefálico</h1>
+        <button onclick="chooseMode('tronco_encefálico', 'vista_anterior_tronco')">Vista Anterior</button>
+        <button onclick="chooseMode('tronco_encefálico', 'vista_posterior_tronco')">Vista Posterior</button>
+        <button onclick="chooseMode('tronco_encefálico', 'vista_lateral_tronco')">Vista Lateral</button>
+        <button onclick="chooseMode('tronco_encefálico', 'vista_posterior_sem_nervos')">Vista Posterior sem Nervos</button>
         <button onclick="backToVisualNovelChoice()">Voltar</button>
     </div>
 </div>
@@ -632,6 +672,7 @@
     </div>
 
     <script>
+        
 
             function isSmartphone() {
                 // Verifica a largura da tela
@@ -668,7 +709,7 @@
                         { top: "140px", left: "200px", size: "large", name: "Osso frontal" },
                         { top: "500px", left: "200px", size: "large", name: "Processos alveolares" },
                         { top: "420px", left: "200px", size: "small", name: "Septo nasal" },
-                        { top: "240px", left: "330px", name: "Arco supercíliar" },
+                        { top: "240px", left: "330px", name: "Supercílio" },
                         { top: "300px", left: "100px", size: "large", name: "Órbita" },
                         { top: "380px", left: "50px", name: "Osso zigmático" },
                     ]
@@ -762,8 +803,8 @@
                     image: "https://i.imgur.com/xNVouFu.png", // Link da vista superior
                     background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                     points: [
-                        { top: "100px", left: "220px", size: "small", name: "Vértex" },
-                        { top: "50px", left: "210px", size: "small", name: "Brégma" },
+                        { top: "100px", left: "220px", size: "small", name: "Vértix" },
+                        { top: "50px", left: "210px", size: "small", name: "Drégma" },
                         { top: "280px", left: "240px", size: "small", name: "Lâmbda" },
                         { top: "150px", left: "230px", name: "Sutura sagital" },
                         { top: "150px", left: "280px", size: "large", name: "Eminência parietal" },
@@ -805,7 +846,7 @@
                         { top: "350px", left: "250px", name: "Fossa cerebelar" },
                         { top: "400px", left: "220px", size: "small", name: "Sulco transverso" },
                         { top: "290px", left: "290px", size: "small", name: "Sulco do seio sigmóide" },
-                        { top: "235px", left: "190px", size: "small", name: "Clivus" },
+                        { top: "235px", left: "190px", size: "small", name: "Clivo" },
                         { top: "220px", left: "200px", size: "small", name: "Dorso do esfenoide" },
                         { top: "180px", left: "190px", size: "small", name: "Fossa hipofisária" },
                         { top: "150px", left: "120px", size: "small", name: "Fissura orbital superior" },
@@ -965,7 +1006,7 @@
                             { top: "20px", left: "330px", size: "small", name: "Processo articular superior" },
                             { top: "50px", left: "430px", size: "large", name: "Asa" },
                             { top: "90px", left: "360px", name: "Parte sacral da margem pélvica" },
-                            { top: "260px", left: "310px", name: "Forame sacropélvico" },
+                            { top: "260px", left: "310px", name: "Forame sacral anterior" },
                             { top: "225px", left: "250px", name: "Cristas transversas" },
                             { top: "340px", left: "250px", size: "large", name: "Ápice do Sacro" },
                             { top: "400px", left: "290px", name: "Processo transverso do cóccix" },
@@ -978,7 +1019,7 @@
                             points: [
                             { top: "40px", left: "340px", size: "large", name: "Faces dos processos articulares superiores" },
                             { top: "100px", left: "50px", size: "large", name: "Superfície auricular" },
-                            { top: "300px", left: "150px", size: "large", name: "Forame sacrodorsal" },
+                            { top: "300px", left: "150px", size: "large", name: "Forame sacral posterior" },
                             { top: "250px", left: "60px", size: "large", name: "Crista sacral lateral" },
                             { top: "250px", left: "230px", size: "large", name: "Crista sacral mediana" },
                             { top: "450px", left: "200px", name: "Corno sacral" },
@@ -988,7 +1029,96 @@
                             ]
                         },
 
-                    }
+                    },
+
+                    tronco_encefálico: {
+
+                    vista_anterior_tronco: {
+                        image: "https://i.imgur.com/Qle6FDp.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "280px", left: "150px", name: "Pirâmide" },
+                        { top: "320px", left: "130px", name: "Fissura mediana anterior" },
+                        { top: "350px", left: "100px", name: "Sulco lateral anterior" },
+                        { top: "280px", left: "190px", size: 'small', name: "Oliva" },
+                        { top: "360px", left: "140px", size: 'small', name: "Decussação das pirâmides" },
+                        { top: "250px", left: "145px", size: 'small', name: "Nervo abducente" },
+                        { top: "140px", left: "235px", size: 'small', name: "Nervo trigêmeo" },
+                        { top: "160px", left: "120px", size: 'small', name: "Sulco basilar" },
+                        { top: "255px", left: "100px", size: 'small', name: "Sulco bulbo pontíneo" },
+                        { top: "260px", left: "130px", size: 'small', name: "Forame cego" },
+                        { top: "90px", left: "190px", name: "Pedúnculo cerebral" },
+                        { top: "110px", left: "120px", size: 'small', name: "Fossa interpeduncular" },
+                        { top: "200px", left: "230px", size: 'small', name: "Pedúnculo cerebelar médio" },
+                        { top: "178px", left: "160px", size: 'small', name: "Estrias transversais da ponte" },
+                        { top: "300px", left: "180px", size: 'small', name: "Nervo hipoglosso" },
+                        { top: "390px", left: "175px", size: 'small', name: "Radículas anteriores do primeiro nervo espinal cervical" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                    vista_posterior_tronco: {
+                        image: "https://i.imgur.com/t25DOiR.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "400px", left: "255px", size: 'small', name: "Sulco mediano posterior" },
+                        { top: "410px", left: "283px", size: 'small', name: "Sulco intermédio posterior" },
+                        { top: "420px", left: "245px", size: 'small', name: "Fascículo gráceo" },
+                        { top: "380px", left: "265px", size: 'small', name: "Tubérculo do núcleo gráceo" },
+                        { top: "270px", left: "193px", size: 'small', name: "Pedúnculo cerebelar inferior" },
+                        { top: "210px", left: "230px", size: 'small', name: "Locus cerúleos" },
+                        { top: "250px", left: "270px", size: 'small', name: "Eminência medial" },
+                        { top: "300px", left: "200px", size: 'small', name: "Recesso lateral" },
+                        { top: "340px", left: "240px", size: 'small', name: "Trígono do vago" },
+                        { top: "320px", left: "246px", size: 'small', name: "Trígono do hipoglosso" },
+                        { top: "310px", left: "230px", size: 'small', name: "Fóvea inferior" },
+                        { top: "250px", left: "230px", size: 'small', name: "Fóvea superior" },
+                        { top: "230px", left: "280px", size: 'small', name: "Sulco limitante" },
+                        { top: "290px", left: "240px", size: 'small', name: "Estrias transversas" },
+                        { top: "230px", left: "200px", size: 'small', name: "Pedúnculo cerebelar superior" },
+                        { top: "250px", left: "160px", name: "Pedúnculo cerebelar médio" },
+                        { top: "265px", left: "280px", size: 'small', name: "Colículo fascial" },
+                        { top: "130px", left: "230px", name: "Colículo inferior" },
+                        { top: "90px", left: "210px", name: "Colículo superior" },
+                        { top: "50px", left: "250px", name: "Corpo pineal" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                    vista_lateral_tronco: {
+                        image: "https://i.imgur.com/xGIugTG.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "300px", left: "100px", size: 'large', name: "Pedúnculo cerebelar médio" },
+                        { top: "450px", left: "50px", size: 'large', name: "Oliva" },
+                        { top: "570px", left: "140px", size: 'small', name: "Sulco lateral posterior" },
+                        { top: "530px", left: "90px", size: 'large', name: "Funículo lateral" },
+                        { top: "620px", left: "140px", size: 'small', name: "Nervo acessório" },
+                        { top: "460px", left: "140px", size: 'large', name: "Nervo glossofaríngeo" },
+                        { top: "530px", left: "140px", name: "Nervo vago" },
+                        { top: "230px", left: "230px", size: 'small', name: "Nervo troclear" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+                 },
+
+                 cerebelo: {
+                    vista_anterior_cerebelo: {
+                        image: "https://i.imgur.com/y0yoNeO.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "300px", left: "100px", size: 'large', name: "Pedúnculo cerebelar médio" },
+                        { top: "450px", left: "50px", size: 'large', name: "Oliva" },
+                        { top: "570px", left: "140px", size: 'small', name: "Sulco intermédio posterior" },
+                        { top: "530px", left: "90px", size: 'large', name: "Funículo lateral" },
+                        { top: "620px", left: "140px", size: 'small', name: "Nervo acessório" },
+                        { top: "460px", left: "140px", size: 'large', name: "Nervo glossofaríngeo" },
+                        { top: "530px", left: "140px", name: "Nervo vago" },
+                        { top: "230px", left: "230px", size: 'small', name: "Nervo troclear" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+                 }
              }
 
         let currentPhase = null;
@@ -999,6 +1129,19 @@
         let totalQuestions = 0;
         let shuffledPoints = [];
         let dialogueIndex = 0;
+
+        // Função para atualizar a visibilidade do temporizador
+        function atualizarTemporizador() {
+            const temporizador = document.getElementById("timer");
+
+            // Mostra o temporizador apenas no modo prova
+            if (modoAtual === "startProvaMode") {
+                temporizador.style.display = "block"; // Mostra o temporizador
+            } else {
+                temporizador.style.display = "none"; // Esconde o temporizador
+            }
+        }
+
 
         function createTarget(point, imageWidth, imageHeight) {
             const target = document.createElement("div");
@@ -1090,6 +1233,7 @@
             document.getElementById("cranio-sublevel-choice").style.display = "none";
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "none";
 
             // Exibe o menu principal
@@ -1119,6 +1263,12 @@
             document.getElementById("vertebra-sublevel-choice").style.display = "flex";
             document.getElementById("vertebra-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
+        
+        function chooseTroncoSublevel() {
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
+            document.getElementById("tronco_encefálico-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+        }
 
         function chooseMode(phase, view) {
             currentPhase = phase;
@@ -1126,6 +1276,7 @@
             document.getElementById("cranio-sublevel-choice").style.display = "none";
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "flex";
             document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
@@ -1134,6 +1285,7 @@
             document.getElementById("cranio-sublevel-choice").style.display = "none";
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
+            document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
             document.getElementById("visual-novel-choice").style.display = "flex";
         }
 
@@ -1148,6 +1300,8 @@
                 document.getElementById("medula-sublevel-choice").style.display = "flex";
             } else if (currentPhase === "vértebra") {
                 document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+            } else if (currentPhase === "tronco_encefálico") {
+                document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
             }
 
             // Restaura o background do submenu
@@ -1178,11 +1332,6 @@
             currentView = view;
             currentMode = mode;
 
-            // Configura o jogo
-            document.getElementById("mode-menu").style.display = "none";
-            document.getElementById("game").style.display = "block";
-            document.getElementById("game").classList.add("active");
-
             // Mostra ou oculta o temporizador com base no modo
             const timerElement = document.getElementById("timer");
             if (mode === "prova") {
@@ -1190,6 +1339,11 @@
             } else {
                 timerElement.style.display = "none"; // Oculta o temporizador nos outros modos
             }
+
+            // Configura o jogo
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("game").classList.add("active");
 
             document.getElementById("image").src = phases[phase][view].image;
             correctAnswers = 0;
@@ -1514,72 +1668,61 @@
             document.getElementById("question-container").appendChild(inputContainer);
         }
 
-        function checkSimilarity(userAnswer, correctAnswer) {
-            // Remove acentos e converte para minúsculas
-            const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-
-            userAnswer = normalize(userAnswer);
-            correctAnswer = normalize(correctAnswer);
-
-            // Verifica se a resposta do usuário está contida na resposta correta ou vice-versa
-            return userAnswer.includes(correctAnswer) || correctAnswer.includes(userAnswer);
-        }
-
         function levenshteinDistance(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
-        
-            const matrix = [];
-        
-            // Inicializa a matriz
-            for (let i = 0; i <= b.length; i++) {
-                matrix[i] = [i];
+    if (a.length === 0) return b.length;
+    if (b.length === 0) return a.length;
+
+    const matrix = [];
+
+    // Inicializa a matriz
+    for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    // Preenche a matriz com as distâncias
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1]; // Caracteres iguais, nenhum custo adicional
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // Substituição
+                    matrix[i][j - 1] + 1,     // Inserção
+                    matrix[i - 1][j] + 1      // Deleção
+                );
             }
-            for (let j = 0; j <= a.length; j++) {
-                matrix[0][j] = j;
-            }
-        
-            // Preenche a matriz com as distâncias
-            for (let i = 1; i <= b.length; i++) {
-                for (let j = 1; j <= a.length; j++) {
-                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                        matrix[i][j] = matrix[i - 1][j - 1]; // Caracteres iguais, nenhum custo adicional
-                    } else {
-                        matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1, // Substituição
-                            matrix[i][j - 1] + 1,     // Inserção
-                            matrix[i - 1][j] + 1      // Deleção
-                        );
-                    }
-                }
-            }
-        
-            return matrix[b.length][a.length]; // Retorna a distância final
         }
-        
-        function checkSimilarity(userAnswer, correctAnswer, maxErrors = 1) {
-            const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        
-            // Normaliza as respostas
-            userAnswer = normalize(userAnswer);
-            correctAnswer = normalize(correctAnswer);
-        
-            // Divide as respostas em palavras
-            const userWords = userAnswer.split(/\s+/);
-            const correctWords = correctAnswer.split(/\s+/);
-        
-            // Verifica se pelo menos uma palavra-chave da resposta correta está na resposta do usuário
-            const hasKeyword = correctWords.some(correctWord => {
-                return userWords.some(userWord => {
-                    const distance = levenshteinDistance(userWord, correctWord);
-                    return distance <= maxErrors; // Tolerância a erros de digitação
-                });
-            });
-        
-            return hasKeyword; // Retorna true se pelo menos uma palavra-chave estiver presente
+    }
+
+    return matrix[b.length][a.length]; // Retorna a distância final
 }
 
-            function checkAnswer(structure, target) {
+function checkSimilarity(userAnswer, correctAnswer, maxErrors = 1) {
+    const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+    // Normaliza as respostas
+    userAnswer = normalize(userAnswer);
+    correctAnswer = normalize(correctAnswer);
+
+    // Divide as respostas em palavras
+    const userWords = userAnswer.split(/\s+/);
+    const correctWords = correctAnswer.split(/\s+/);
+
+    // Verifica se pelo menos uma palavra-chave da resposta correta está na resposta do usuário
+    const hasKeyword = correctWords.some(correctWord => {
+        return userWords.some(userWord => {
+            const distance = levenshteinDistance(userWord, correctWord);
+            return distance <= maxErrors; // Tolerância a erros de digitação
+        });
+    });
+
+    return hasKeyword; // Retorna true se pelo menos uma palavra-chave estiver presente
+}
+
+        function checkAnswer(structure, target) {
             const phaseData = phases[currentPhase][currentView];
             const correctAnswer = shuffledPoints[currentQuestionIndex].name;
             const feedback = document.getElementById("feedback");
@@ -1596,6 +1739,7 @@
                 feedback.style.color = 'red';
                 document.getElementById("wrong-sound").play(); // Toca o som de erro
             }
+
             // Aguarda 1 segundo antes de trocar a pergunta e limpar o feedback
             setTimeout(() => {
                 currentQuestionIndex++;
@@ -1611,7 +1755,7 @@
                 // Limpa o feedback
                 feedback.innerText = '';
             }, 1000);
-        };
+        }
 
         function updateProgressBar() {
             const progressBar = document.getElementById("progress-bar");
@@ -1760,13 +1904,19 @@
                 progressBar.style.width = "0%";
             }
 
-            // Oculta o temporizador ao reiniciar o jogo
+                // Oculta o temporizador ao reiniciar o jogo
             const timerElement = document.getElementById("timer");
             if (timerElement) {
                 timerElement.style.display = "none";
             }
-        };
+        }
 
+        // Garante que o script seja executado após o carregamento do DOM
+        window.onload = () => {
+            // Inicializa o jogo
+            checkMobileDevice();
+            playBackgroundMusic();
+        };
     </script>
 </body>
 </html>
