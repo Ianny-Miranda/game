@@ -550,9 +550,11 @@
         <h1>O que você gostaria de aprender hoje?</h1>
         <button onclick="chooseVertebraSublevel()">Vértebras</button>
         <button onclick="chooseCranioSublevel()">Ossos do Crânio</button>
-        <button onclick="startProvaMode()">PROVA PRÁTICA 1 (vértebras e crânio)</button>
+        <button onclick="startProvaMode1()">PROVA PRÁTICA 1</button>
         <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
         <button onclick="chooseTroncoSublevel()">Tronco Encefálico</button>
+        <button onclick="chooseCerebeloSublevel()">Cerebelo</button>
+        <button onclick="startProvaMode2()">PROVA PRÁTICA 2</button>
     </div>
 </div>
 
@@ -611,7 +613,19 @@
         <button onclick="chooseMode('tronco_encefálico', 'vista_anterior_tronco')">Vista Anterior</button>
         <button onclick="chooseMode('tronco_encefálico', 'vista_posterior_tronco')">Vista Posterior</button>
         <button onclick="chooseMode('tronco_encefálico', 'vista_lateral_tronco')">Vista Lateral</button>
-        <button onclick="chooseMode('tronco_encefálico', 'vista_posterior_sem_nervos')">Vista Posterior sem Nervos</button>
+        <button onclick="chooseMode('tronco_encefálico', 'mesencéfalo')">Mesencéfalo</button>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
+    </div>
+</div>
+
+<!-- Menu de Escolha de Subnível do Cerebelo -->
+<div class="visual-novel-menu" id="cerebelo-sublevel-choice" style="display: none;">
+    <div class="background" id="cerebelo-sublevel-background"></div>
+    <div class="choice-box">
+        <h1>Escolha a vista do tronco encefálico</h1>
+        <button onclick="chooseMode('cerebelo', 'vista_anterior_cerebelo')">Vista Anterior</button>
+        <button onclick="chooseMode('cerebelo', 'vista_posterior_cerebelo')">Vista Posterior</button>
+        <button onclick="chooseMode('cerebelo', 'vista_interior_cerebelo')">Vista Interior</button>
         <button onclick="backToVisualNovelChoice()">Voltar</button>
     </div>
 </div>
@@ -1048,7 +1062,7 @@
                         { top: "255px", left: "100px", size: 'small', name: "Sulco bulbo pontíneo" },
                         { top: "260px", left: "130px", size: 'small', name: "Forame cego" },
                         { top: "90px", left: "190px", name: "Pedúnculo cerebral" },
-                        { top: "110px", left: "120px", size: 'small', name: "Fossa interpeduncular" },
+                        { top: "90px", left: "120px", size: 'small', name: "Fossa interpeduncular" },
                         { top: "200px", left: "230px", size: 'small', name: "Pedúnculo cerebelar médio" },
                         { top: "178px", left: "160px", size: 'small', name: "Estrias transversais da ponte" },
                         { top: "300px", left: "180px", size: 'small', name: "Nervo hipoglosso" },
@@ -1100,6 +1114,19 @@
                         // Adicione mais pontos conforme necessário
                         ]
                     },
+
+                    mesencéfalo: {
+                        image: "https://i.imgur.com/GcGaMUA.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "220px", left: "120px", size: 'small', name: "Aqueduto mesencefálico" },
+                        { top: "370px", left: "120px", size: 'small', name: "Substância negra" },
+                        { top: "420px", left: "140px", size: 'large', name: "Base do pedúnculo cerebral" },
+                        { top: "300px", left: "100px", size: 'large', name: "Tegmento" },
+                        { top: "380px", left: "270px", size: 'small', name: "Nervo troclear" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
                  },
 
                  cerebelo: {
@@ -1107,14 +1134,42 @@
                         image: "https://i.imgur.com/y0yoNeO.png", // Link da imagem da vista anterior
                         background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
                         points: [
-                        { top: "300px", left: "100px", size: 'large', name: "Pedúnculo cerebelar médio" },
-                        { top: "450px", left: "50px", size: 'large', name: "Oliva" },
-                        { top: "570px", left: "140px", size: 'small', name: "Sulco intermédio posterior" },
-                        { top: "530px", left: "90px", size: 'large', name: "Funículo lateral" },
-                        { top: "620px", left: "140px", size: 'small', name: "Nervo acessório" },
-                        { top: "460px", left: "140px", size: 'large', name: "Nervo glossofaríngeo" },
-                        { top: "530px", left: "140px", name: "Nervo vago" },
-                        { top: "230px", left: "230px", size: 'small', name: "Nervo troclear" },
+                        { top: "80px", left: "330px", size: 'large', name: "Vermis cerebelar" },
+                        { top: "320px", left: "200px", size: 'small', name: "Flóculo" },
+                        { top: "145px", left: "340px", name: "Nódulo cerebelar" },
+                        { top: "280px", left: "270px", name: "Pedúnculo cerebelar inferior" },
+                        { top: "180px", left: "300px", name: "Pedúnculo cerebelar superior" },
+                        { top: "260px", left: "220px", size: 'large', name: "Pedúnculo cerebelar médio" },
+                        { top: "260px", left: "400px", name: "Tonsila" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                    vista_posterior_cerebelo: {
+                        image: "https://i.imgur.com/Z3wf9hM.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "200px", left: "450px", size: 'small', name: "Fissura prima" },
+                        { top: "200px", left: "300px", size: 'large', name: "Zona vermiana" },
+                        { top: "200px", left: "210px", size: 'large', name: "Zona paravermiana" },
+                        { top: "200px", left: "50px", size: 'large', name: "Zona lateral" },
+                        { top: "290px", left: "200px", size: 'small', name: "Folha" },
+                        { top: "130px", left: "430px", size: 'large', name: "Lobo anterior" },
+                        { top: "290px", left: "430px", size: 'large', name: "Lobo posterior" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                    vista_interior_cerebelo: {
+                        image: "https://i.imgur.com/jBHcY5K.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "290px", left: "180px", size: 'small', name: "Núcleo fastigial" },
+                        { top: "270px", left: "210px", size: 'small', name: "Núcleo globoso" },
+                        { top: "240px", left: "210px", size: 'small', name: "Núcleo emboliforme" },
+                        { top: "230px", left: "230px", size: 'small', name: "Núcleo denteado" },
+                        { top: "230px", left: "300px", size: 'large', name: "Substância branca" },
+                        { top: "120px", left: "230px", size: 'large', name: "Substância cinzenta" },
                         // Adicione mais pontos conforme necessário
                         ]
                     },
@@ -1234,6 +1289,7 @@
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
+            document.getElementById("cerebelo-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "none";
 
             // Exibe o menu principal
@@ -1270,6 +1326,12 @@
             document.getElementById("tronco_encefálico-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
 
+        function chooseCerebeloSublevel() {
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
+            document.getElementById("cerebelo-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+        }
+
         function chooseMode(phase, view) {
             currentPhase = phase;
             currentView = view;
@@ -1277,6 +1339,7 @@
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
+            document.getElementById("cerebelo-sublevel-choice").style.display = "none";
             document.getElementById("mode-menu").style.display = "flex";
             document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
         }
@@ -1286,6 +1349,7 @@
             document.getElementById("medula-sublevel-choice").style.display = "none";
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
+            document.getElementById("cerebelo-sublevel-choice").style.display = "none";
             document.getElementById("visual-novel-choice").style.display = "flex";
         }
 
@@ -1302,7 +1366,10 @@
                 document.getElementById("vertebra-sublevel-choice").style.display = "flex";
             } else if (currentPhase === "tronco_encefálico") {
                 document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
+            }else if (currentPhase === "cerebelo_encefálico") {
+                document.getElementById("cerebelo_encefálico-sublevel-choice").style.display = "flex";
             }
+            
 
             // Restaura o background do submenu
             document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
@@ -1363,7 +1430,7 @@
         let timer; // Variável para armazenar o temporizador
         let timeLeft = 30; // Tempo inicial
 
-        function startProvaMode() {
+        function startProvaMode1() {
             // Verifica se o objeto phases existe
             if (!phases) {
                 console.error("Erro: O objeto phases não está definido.");
@@ -1539,6 +1606,72 @@
             newInputContainer.appendChild(submitButton);
             document.getElementById("question-container").appendChild(newInputContainer);
             input.focus(); // Define o foco manualmente
+        }
+
+        function startProvaMode2() {
+            // Verifica se o objeto phases existe
+            if (!phases) {
+                console.error("Erro: O objeto phases não está definido.");
+                return;
+            }
+
+            // Coleta TODAS as questões de todas as fases
+            const allQuestions = [];
+            
+            // Fases disponíveis (ajuste os nomes conforme seu objeto phases)
+            const phasesList = ["medula", "tronco_encefálico", "cerebelo"];
+            
+            // Percorre cada fase e visualização para coletar as questões
+            phasesList.forEach(phase => {
+                // Verifica se a fase existe
+                if (!phases[phase]) {
+                    console.error(`Fase não encontrada: ${phase}`);
+                    return; // Pula para a próxima fase
+                }
+
+                // Obtém as visualizações da fase
+                const views = Object.keys(phases[phase]);
+                
+                // Percorre cada visualização
+                views.forEach(view => {
+                    // Verifica se a visualização existe
+                    if (!phases[phase][view]) {
+                        console.error(`Visualização não encontrada: ${phase} - ${view}`);
+                        return; // Pula para a próxima visualização
+                    }
+
+                    // Obtém as questões da visualização
+                    const questions = phases[phase][view].points;
+                    
+                    // Adiciona todas as questões ao array
+                    questions.forEach(question => {
+                        allQuestions.push({
+                            phase: phase, // Adiciona a fase
+                            view: view,   // Adiciona a visualização
+                            question: question // Adiciona a questão
+                        });
+                    });
+                });
+            });
+            
+            // Seleciona 20 questões aleatórias
+            const selectedQuestions = shuffleArray(allQuestions).slice(0, 20);
+            
+            // Configura o modo PROVA
+            resetGame();
+            currentMode = "prova";
+            shuffledPoints = selectedQuestions;
+            totalQuestions = 20;
+            currentQuestionIndex = 0;
+            
+            // Prepara a interface
+            document.getElementById("mode-menu").style.display = "none";
+            document.getElementById("game").style.display = "block";
+            document.getElementById("game").classList.add("active");
+            document.getElementById("timer").style.display = "block";
+            
+            // Inicia a primeira pergunta
+            startProvaQuestion();
         }
 
         function loadQuestions() {
@@ -1882,6 +2015,16 @@ function checkSimilarity(userAnswer, correctAnswer, maxErrors = 1) {
                 }
             } else if (currentPhase === "vértebra") {
                 const vertebraSublevel = document.getElementById("vertebra-sublevel-choice");
+                if (vertebraSublevel) {
+                    vertebraSublevel.style.display = "flex";
+                }
+            } else if (currentPhase === "tronco_encefálico") {
+                const vertebraSublevel = document.getElementById("tronco_encefálico-sublevel-choice");
+                if (vertebraSublevel) {
+                    vertebraSublevel.style.display = "flex";
+                }
+            } else if (currentPhase === "cerebelo") {
+                const vertebraSublevel = document.getElementById("cerebelo-sublevel-choice");
                 if (vertebraSublevel) {
                     vertebraSublevel.style.display = "flex";
                 }
