@@ -178,7 +178,7 @@
 
         .target {
             position: absolute;
-            background-color: rgba(255, 247, 6, 0.64);
+            background-color: rgba(6, 19, 255, 0.64);
             border-radius: 50%;
             cursor: pointer;
             transition: background-color 0.3s;
@@ -554,6 +554,7 @@
         <button onclick="chooseMedulaSublevel()">Medula Espinal</button>
         <button onclick="chooseTroncoSublevel()">Tronco Encefálico</button>
         <button onclick="chooseCerebeloSublevel()">Cerebelo</button>
+        <button onclick="chooseNervosSublevel()">Nervos Cranianos</button>
         <button onclick="startProvaMode2()">PROVA PRÁTICA 2</button>
     </div>
 </div>
@@ -626,6 +627,17 @@
         <button onclick="chooseMode('cerebelo', 'vista_anterior_cerebelo')">Vista Anterior</button>
         <button onclick="chooseMode('cerebelo', 'vista_posterior_cerebelo')">Vista Posterior</button>
         <button onclick="chooseMode('cerebelo', 'vista_interior_cerebelo')">Vista Interior</button>
+        <button onclick="backToVisualNovelChoice()">Voltar</button>
+    </div>
+</div>
+
+<!-- Menu de Escolha de Subnível dos Nervos Cranianos -->
+<div class="visual-novel-menu" id="nervos_cranianos-sublevel-choice" style="display: none;">
+    <div class="background" id="nervos_cranianos-sublevel-background"></div>
+    <div class="choice-box">
+        <h1>Escolha a vista do tronco encefálico</h1>
+        <button onclick="chooseMode('nervos_cranianos', 'vista_superior_nervos')">Vista Superior</button>
+        <button onclick="chooseMode('nervos_cranianos', 'vista_lateral_nervos')">Vista Lateral</button>
         <button onclick="backToVisualNovelChoice()">Voltar</button>
     </div>
 </div>
@@ -1168,12 +1180,50 @@
                         { top: "270px", left: "210px", size: 'small', name: "Núcleo globoso" },
                         { top: "240px", left: "210px", size: 'small', name: "Núcleo emboliforme" },
                         { top: "230px", left: "230px", size: 'small', name: "Núcleo denteado" },
-                        { top: "230px", left: "300px", size: 'large', name: "Substância branca" },
-                        { top: "120px", left: "230px", size: 'large', name: "Substância cinzenta" },
+                        { top: "230px", left: "300px", size: 'large', name: "Corpo medular" },
+                        { top: "120px", left: "230px", size: 'large', name: "Córtex cerebelar" },
                         // Adicione mais pontos conforme necessário
                         ]
                     },
-                 }
+                 },
+
+                    nervos_cranianos: {
+
+                        vista_superior_nervos: {
+                        image: "https://i.imgur.com/cihTDU1.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "90px", left: "245px", size: 'small', name: "Bulbo do nervo olfatório" },
+                        { top: "120px", left: "246px", size: 'small', name: "Trato olfatório" },
+                        { top: "130px", left: "230px", size: 'small', name: "Nervo olfatório" },
+                        { top: "145px", left: "200px", size: 'small', name: "Estria olfatória medial" },
+                        { top: "145px", left: "180px", size: 'small', name: "Estria olfatória lateral" },
+                        { top: "190px", left: "200px", size: 'small', name: "Nervo óptico" },
+                        { top: "190px", left: "220px", size: 'small', name: "Quiasma óptico" },
+                        { top: "250px", left: "280px", size: 'small', name: "Nervo trigeminal" },
+                        { top: "300px", left: "270px", size: 'micro', name: "Nervo fascial" },
+                        { top: "310px", left: "280px", size: 'micro', name: "Nervo vestibulococlear" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+
+                    vista_lateral_nervos: {
+                        image: "https://i.imgur.com/anuzO0u.png", // Link da imagem da vista anterior
+                        background: "https://i.imgur.com/PUf8wJf.jpg", // Background da fase
+                        points: [
+                        { top: "120px", left: "220px", size: 'small', name: "Nervo óptico" },
+                        { top: "165px", left: "220px", size: 'small', name: "Raíz óptica do nervo trigêmeo" },
+                        { top: "150px", left: "250px", size: 'micro', name: "Nervo troclear" },
+                        { top: "155px", left: "270px", size: 'micro', name: "Nervo abducente" },
+                        { top: "160px", left: "240px", size: 'micro', name: "Nervo oculomotor" },
+                        { top: "170px", left: "270px", size: 'small', name: "Nervo trigeminal" },
+                        { top: "190px", left: "260px", size: 'small', name: "Ganglio trigeminal" },
+                        { top: "220px", left: "250px", size: 'small', name: "Raíz mandibular do nervo trigemeo" },
+                        { top: "190px", left: "220px", size: 'small', name: "Raíz maxilar do nervo trigemeo" },
+                        // Adicione mais pontos conforme necessário
+                        ]
+                    },
+                }
              }
 
         let currentPhase = null;
@@ -1330,8 +1380,16 @@
             document.getElementById("visual-novel-choice").style.display = "none";
             document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
             document.getElementById("cerebelo-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            
         }
 
+        function chooseNervosSublevel() {
+            document.getElementById("visual-novel-choice").style.display = "none";
+            document.getElementById("nervos_cranianos-sublevel-choice").style.display = "flex";
+            document.getElementById("nervos_cranianos-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+        }
+
+    
         function chooseMode(phase, view) {
             currentPhase = phase;
             currentView = view;
@@ -1350,6 +1408,7 @@
             document.getElementById("vertebra-sublevel-choice").style.display = "none";
             document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
             document.getElementById("cerebelo-sublevel-choice").style.display = "none";
+            document.getElementById("nervos_cranianos-sublevel-choice").style.display = "none";
             document.getElementById("visual-novel-choice").style.display = "flex";
         }
 
@@ -1619,7 +1678,7 @@
             const allQuestions = [];
             
             // Fases disponíveis (ajuste os nomes conforme seu objeto phases)
-            const phasesList = ["medula", "tronco_encefálico", "cerebelo"];
+            const phasesList = ["medula", "tronco_encefálico", "cerebelo", "nervos_cranianos"];
             
             // Percorre cada fase e visualização para coletar as questões
             phasesList.forEach(phase => {
@@ -1693,7 +1752,10 @@
                 target.className = "target";
 
                 // Ajusta o tamanho do ponto
-                if (point.size === "small") {
+                if (point.size === "micro") {
+                    target.style.width = "10px";
+                    target.style.height = "10px";
+                }else if (point.size === "small") {
                     target.style.width = "15px";
                     target.style.height = "15px";
                 } else if (point.size === "large") {
