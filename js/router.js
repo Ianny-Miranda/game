@@ -28,7 +28,9 @@ const routes = {
         name: "visual-novel-choice",
         show: () => {
             document.getElementById("visual-novel-choice").style.display = "flex";
-            document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -39,7 +41,9 @@ const routes = {
         name: "cranio-sublevel-choice",
         show: () => {
             document.getElementById("cranio-sublevel-choice").style.display = "flex";
-            document.getElementById("cranio-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("cranio-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -50,7 +54,9 @@ const routes = {
         name: "medula-sublevel-choice",
         show: () => {
             document.getElementById("medula-sublevel-choice").style.display = "flex";
-            document.getElementById("medula-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("medula-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -61,7 +67,9 @@ const routes = {
         name: "vertebra-sublevel-choice",
         show: () => {
             document.getElementById("vertebra-sublevel-choice").style.display = "flex";
-            document.getElementById("vertebra-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("vertebra-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -72,7 +80,9 @@ const routes = {
         name: "tronco_encefálico-sublevel-choice",
         show: () => {
             document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
-            document.getElementById("tronco_encefálico-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("tronco_encefálico-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -83,7 +93,9 @@ const routes = {
         name: "cerebelo-sublevel-choice",
         show: () => {
             document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
-            document.getElementById("cerebelo-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("cerebelo-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -94,7 +106,9 @@ const routes = {
         name: "nervos_cranianos-sublevel-choice",
         show: () => {
             document.getElementById("nervos_cranianos-sublevel-choice").style.display = "flex";
-            document.getElementById("nervos_cranianos-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("nervos_cranianos-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -105,7 +119,9 @@ const routes = {
         name: "mode-menu",
         show: () => {
             document.getElementById("mode-menu").style.display = "flex";
-            document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            if (typeof dialogues !== 'undefined' && dialogues.length > 0) {
+                document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+            }
             document.body.classList.add("no-background");
         },
         hide: () => {
@@ -199,6 +215,16 @@ function handleHashChange() {
 function initRouter() {
     window.addEventListener("hashchange", handleHashChange);
 
+    // Tenta iniciar a música de fundo (pode ser bloqueada pelo navegador)
+    playBackgroundMusic();
+
+    // Verifica smartphone
+    if (isSmartphone()) {
+        alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
+        window.location.href = "aviso-mobile.html";
+        return;
+    }
+
     // Se já tem uma hash na URL, navega para ela
     if (window.location.hash) {
         handleHashChange();
@@ -208,5 +234,9 @@ function initRouter() {
     }
 }
 
-// Inicializa o roteador quando o DOM estiver pronto
-document.addEventListener("DOMContentLoaded", initRouter);
+// Inicializa o roteador - suporta tanto carregamento normal quanto Browsersync hot reload
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initRouter);
+} else {
+    initRouter();
+}

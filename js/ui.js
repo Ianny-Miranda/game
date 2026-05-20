@@ -117,16 +117,15 @@ function backToSublevelChoice() {
 // ---------- Feedback da Médica ----------
 
 function showFeedbackMedica() {
-    const feedbackMedica = document.getElementById("feedback-medica");
     const medicSprite = document.getElementById("medic-sprite");
     const feedbackText = document.getElementById("feedback-text");
 
-    if (!feedbackMedica || !medicSprite || !feedbackText) {
+    if (!medicSprite || !feedbackText) {
         console.error("Elementos do feedback da médica não encontrados no DOM.");
         return;
     }
 
-    const percentage = (correctAnswers / totalQuestions) * 100;
+    const percentage = totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0;
 
     if (percentage === 100) {
         medicSprite.src = "https://i.imgur.com/7kDMzXJ.jpg";

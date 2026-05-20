@@ -12,6 +12,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
     <title>Quiz de Anatomia</title>
     <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/011/116/298/original/continuous-line-drawing-of-a-human-brain-free-vector.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
@@ -38,16 +39,16 @@
 <body>
     <!-- Áudios -->
     <audio id="background-music" loop volume="0.4">
-        <source src="A_Lonely_Cherry_Tree_🌸_-_Pix.mp3" type="audio/mpeg">
+        <source src="Audios/A_Lonely_Cherry_Tree_🌸_-_Pix.mp3" type="audio/mpeg">
     </audio>
     <audio id="correct-sound">
-        <source src="correct.mp3" type="audio/mpeg">
+        <source src="Audios/correct.mp3" type="audio/mpeg">
     </audio>
     <audio id="wrong-sound">
-        <source src="Bamboo hit Sound effect - CreativeLibrary.mp3" type="audio/mpeg">
+        <source src="Audios/Bamboo hit Sound effect - CreativeLibrary.mp3" type="audio/mpeg">
     </audio>
     <audio id="victory-sound">
-        <source src="videoplayback (1).m4a" type="audio/mpeg">
+        <source src="Audios/videoplayback (1).m4a" type="audio/mpeg">
     </audio>
 
     <!-- Menu Principal -->
@@ -62,7 +63,7 @@
         <div class="background" id="visual-novel-background"></div>
         <div class="dialogue-container">
             <div class="medic-frame">
-                <img src="https://i.imgur.com/jeUdHBc.png" alt="Dra. Silva">
+                <img src="https://i.imgur.com/jeUdHBc.png" alt="Dra. Silva" crossorigin="anonymous">
             </div>
             <div class="dialogue-box">
                 <p id="dialogue-text">Bem-vindo ao Hospital Geral. Eu sou a Dra. Silva. Como posso ajudá-lo hoje?</p>
@@ -192,7 +193,7 @@
                 <p id="question"></p>
             </div>
             <div class="container">
-                <img id="image" src="" width="100%" alt="Imagem anatômica">
+                <img id="image" src="" width="100%" alt="Imagem anatômica" crossorigin="anonymous">
                 <div id="targets"></div>
             </div>
             <div class="progress-bar">
@@ -213,7 +214,7 @@
         <div class="background" id="feedback-medica-background" style="background-image: url('https://i.imgur.com/PUf8wJf.jpg');"></div>
         <div class="dialogue-container">
             <div class="medic-frame">
-                <img id="medic-sprite" src="" alt="Dra. Silva">
+                <img id="medic-sprite" src="" alt="Dra. Silva" crossorigin="anonymous">
             </div>
             <div class="dialogue-box">
                 <p id="feedback-text"></p>

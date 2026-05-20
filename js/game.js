@@ -12,16 +12,6 @@ let totalQuestions = 0;
 let shuffledPoints = [];
 let timer = null;
 
-// ---------- Inicialização ----------
-
-window.onload = () => {
-    if (isSmartphone()) {
-        alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
-        window.location.href = "aviso-mobile.html";
-    }
-    playBackgroundMusic();
-};
-
 // ---------- Modo Padrão (Clique nos Pontos) ----------
 
 function startGame(phase, view, mode) {
@@ -250,6 +240,11 @@ function setupProvaMode(selectedQuestions) {
     navigateTo("game");
     document.getElementById("timer").style.display = "block";
 
+    if (shuffledPoints.length > 0) {
+        const firstQuestion = shuffledPoints[0];
+        document.getElementById("image").src = phases[firstQuestion.phase][firstQuestion.view].image;
+    }
+
     startProvaQuestion();
 }
 
@@ -272,7 +267,11 @@ function startProvaQuestion() {
     if (existingInput) existingInput.remove();
 
     const currentQuestion = shuffledPoints[currentQuestionIndex];
-    if (!currentQuestion) return;
+    if (!currentQuestion || !currentQuestion.phase || !currentQuestion.view || !phases[currentQuestion.phase] || !phases[currentQuestion.phase][currentQuestion.view]) {
+        console.error("Questão inválida para prova:", currentQuestion);
+        showEndGame();
+        return;
+    }
 
     const phaseData = phases[currentQuestion.phase][currentQuestion.view];
     document.getElementById("image").src = phaseData.image;
