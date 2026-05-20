@@ -78,3 +78,69 @@ function isSmartphone() {
     const isWindowsPhone = /windows phone/.test(userAgent);
     return isSmallScreen && (isiPhone || isAndroidPhone || isWindowsPhone);
 }
+
+/**
+ * Converte coordenadas em pixels para percentuais relativos ao tamanho real da imagem.
+ * @param {string} topPx - Valor CSS top em px (ex: "260px")
+ * @param {string} leftPx - Valor CSS left em px (ex: "200px")
+ * @returns {{ top: string, left: string }} Valores em percentual
+ */
+function pxToPercent(topPx, leftPx) {
+    const img = document.getElementById("image");
+    if (!img) return { top: topPx, left: leftPx };
+
+    /**
+     * As coordenadas em px no JSON foram medidas sobre a imagem no seu tamanho ORIGINAL.
+     * Usamos naturalWidth/naturalHeight (dimensões reais do arquivo) como referência.
+     * 
+     * O target é então posicionado em percentual dessa referência.
+     * Como #targets cobre 100% da imagem exibida (graças ao .img-wrapper),
+     * e a imagem mantém a proporção (aspect ratio), os percentuais funcionam
+     * em qualquer tamanho de tela.
+     */
+    const refWidth = img.naturalWidth;
+    const refHeight = img.naturalHeight;
+
+    // Fallback se a imagem não carregou ainda
+    if (!refWidth || !refHeight || refWidth <= 1 || refHeight <= 1) {
+        return { top: topPx, left: leftPx };
+    }
+
+    const topNum = parseFloat(topPx);
+    const leftNum = parseFloat(leftPx);
+
+    return {
+        top: `${(topNum / refHeight) * 100}%`,
+        left: `${(leftNum / refWidth) * 100}%`
+    };
+}
+
+/**
+ * Obtém o tamanho do target baseado no size definido no JSON.
+ * Em dispositivos touch (celulares e tablets), aumenta o tamanho
+ * para facilitar o toque preciso nos alvos.
+ */
+function getTargetSize(size) {
+    const isTouch = ('ontouchstart' in window) || 
+                    (navigator.maxTouchPoints > 0) || 
+                    (navigator.msMaxTouchPoints > 0);
+
+    // Tamanhos aumentados para dispositivos touch (celulares e tablets)
+    if (isTouch && window.innerWidth < 1024) {
+        switch (size) {
+            case "micro":  return { width: "14px",  height: "14px" };
+            case "small":  return { width: "22px", height: "22px" };
+            case "large":  return { width: "36px", height: "36px" };
+            default:       return { width: "26px", height: "26px" };
+        }
+    }
+
+    // Tamanhos normais para desktop
+    switch (size) {
+        case "micro":  return { width: "8px",  height: "8px" };
+        case "small":  return { width: "14px", height: "14px" };
+        case "large":  return { width: "28px", height: "28px" };
+        default:       return { width: "18px", height: "18px" };
+    }
+}
+

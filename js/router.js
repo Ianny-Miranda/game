@@ -218,13 +218,6 @@ function initRouter() {
     // Tenta iniciar a música de fundo (pode ser bloqueada pelo navegador)
     playBackgroundMusic();
 
-    // Verifica smartphone
-    if (isSmartphone()) {
-        alert("A versão mobile do jogo ainda não está pronta. Por favor, acesse pelo computador.");
-        window.location.href = "aviso-mobile.html";
-        return;
-    }
-
     // Se já tem uma hash na URL, navega para ela
     if (window.location.hash) {
         handleHashChange();

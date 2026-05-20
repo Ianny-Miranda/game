@@ -2,6 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
+/* === VARIÁVEIS GLOBAIS === */
+:root {
+    --primary: #800020;
+    --primary-dark: #600018;
+    --border-color: #5A3E2B;
+    --font-size-base: 16px;
+    --font-size-h1: 2.5em;
+    --btn-width: 300px;
+    --btn-height: 70px;
+    --btn-font-size: 20px;
+}
+
 /* === BODY === */
 body {
     font-family: 'Jersey 15', sans-serif;
@@ -12,12 +24,16 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    min-height: 100dvh; /* dynamic viewport height for mobile */
     background-color: #f0f0f0;
     background-image: url('https://i.imgur.com/naeZ29X.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed; /* melhor para mobile */
     transition: background-color 0.5s ease-in-out;
+    -webkit-tap-highlight-color: transparent; /* remove highlight no tap mobile */
+    overscroll-behavior: none; /* previne scroll bounce em alguns browsers */
 }
 
 body.no-background {
@@ -34,7 +50,7 @@ body.no-background {
     width: 80%;
     max-width: 500px;
     background-color: rgba(255, 255, 255, 0.9);
-    border: 4px solid #5A3E2B;
+    border: 4px solid var(--border-color);
     padding: 30px;
     position: relative;
     border-radius: 15px;
@@ -44,8 +60,8 @@ body.no-background {
 
 .menu h1, .sub-menu h1, .cranio-sub-menu h1,
 .medula-sub-menu h1, .vertebra-sub-menu h1, .mode-menu h1 {
-    color: #920000;
-    font-size: 2.5em;
+    color: var(--primary);
+    font-size: var(--font-size-h1);
     text-shadow: 2px 2px 0 #ffffff;
     margin-bottom: 20px;
     text-align: center;
@@ -63,10 +79,10 @@ p {
 .medula-sub-menu button,
 .vertebra-sub-menu button,
 .mode-menu button {
-    width: 300px;
-    height: 70px;
+    width: var(--btn-width);
+    height: var(--btn-height);
     font-family: 'Jersey 15', cursive;
-    font-size: 20px;
+    font-size: var(--btn-font-size);
     color: #fff;
     text-shadow: 2px 2px 0 #000;
     display: inline-block;
@@ -112,7 +128,7 @@ p {
 .vertebra-sub-menu button:focus,
 .mode-menu button:focus {
     outline: none;
-    box-shadow: 0 0 5px #800020;
+    box-shadow: 0 0 5px var(--primary);
 }
 
 /* === GAME AREA === */
@@ -123,6 +139,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh; /* dynamic viewport height for mobile */
     text-align: center;
     transition: opacity 0.5s ease-in-out;
     opacity: 0;
@@ -130,7 +147,10 @@ p {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    overflow: auto;
+    background-attachment: fixed;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* scroll suave no iOS */
     z-index: 1000;
 }
 
@@ -143,8 +163,15 @@ p {
     padding: 20px;
     border-radius: 15px;
     max-width: 800px;
+    width: 90%;
     margin: 20px auto;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.game-content h1 {
+    font-size: 1.8em;
+    color: var(--primary);
 }
 
 /* === CONTAINER & TARGETS === */
@@ -156,6 +183,29 @@ p {
     background: white;
     padding: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.container img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.img-wrapper {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+}
+
+#targets {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }
 
 .target {
@@ -164,6 +214,8 @@ p {
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
 }
 
 .target.correct {
@@ -214,6 +266,7 @@ p {
     padding: 10px;
     color: white;
     font-style: italic;
+    font-size: clamp(14px, 4vw, 20px); /* tamanho responsivo */
 }
 
 .structure-name {
@@ -226,7 +279,7 @@ p {
 #timer {
     font-size: 24px;
     font-weight: bold;
-    color: #800020;
+    color: var(--primary);
     margin: 20px 0;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.9);
@@ -245,6 +298,7 @@ p {
     background-color: rgba(255, 255, 255, 0.8);
     font-size: 14px;
     color: #333;
+    box-sizing: border-box;
 }
 
 /* === VISUAL NOVEL === */
@@ -254,6 +308,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -278,16 +333,19 @@ p {
     width: 100%;
     max-width: 1200px;
     margin-bottom: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .medic-frame {
     width: 200px;
     height: 300px;
     background-color: #fff;
-    border: 5px solid #800020;
+    border: 5px solid var(--primary);
     border-radius: 10px;
     margin-right: 20px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .medic-frame img {
@@ -312,7 +370,7 @@ p {
 
 .dialogue-box button {
     padding: 10px 20px;
-    background-color: #800020;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 5px;
@@ -321,7 +379,7 @@ p {
 }
 
 .dialogue-box button:hover {
-    background-color: #600018;
+    background-color: var(--primary-dark);
 }
 
 .dialogue-box button:active {
@@ -335,6 +393,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -350,10 +409,14 @@ p {
     width: 80%;
     max-width: 600px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-height: 80vh;
+    max-height: 80dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .choice-box h1 {
-    color: #800020;
+    color: var(--primary);
     font-size: 2em;
     margin-bottom: 20px;
 }
@@ -363,16 +426,17 @@ p {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
-    background-color: #800020;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 1.2em;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .choice-box button:hover {
-    background-color: #600018;
+    background-color: var(--primary-dark);
 }
 
 /* === PROVA BUTTONS === */
@@ -396,12 +460,14 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     overflow: hidden;
-    overflow: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .visual-novel-menu .background {
@@ -426,7 +492,7 @@ p {
 }
 
 .visual-novel-menu .choice-box h1 {
-    color: #800020;
+    color: var(--primary);
     font-size: 2em;
     margin-bottom: 20px;
 }
@@ -436,14 +502,439 @@ p {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
-    background-color: #800020;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 1.2em;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .visual-novel-menu .choice-box button:hover {
-    background-color: #600018;
+    background-color: var(--primary-dark);
+}
+
+/* === INPUT CONTAINER (modo escrita/prova) === */
+#input-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#input-container input {
+    flex: 1 1 200px;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid var(--primary);
+    outline: none;
+    min-height: 44px; /* mínimo para toque */
+}
+
+#input-container input:focus {
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 2px rgba(128, 0, 32, 0.2);
+}
+
+#input-container button {
+    padding: 12px 24px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    min-height: 44px; /* mínimo para toque */
+    min-width: 80px;
+}
+
+#input-container button:active {
+    background-color: var(--primary-dark);
+}
+
+/* === SCORE === */
+#score {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* === VOLTAR / CONTINUAR BUTTONS === */
+#voltar-button,
+#continuar-button {
+    padding: 12px 24px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 15px;
+    min-height: 44px;
+    font-family: 'Jersey 15', sans-serif;
+}
+
+#voltar-button:hover,
+#continuar-button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ==================================================================
+   MEDIA QUERIES - TABLETS (768px - 1024px)
+   ================================================================== */
+@media (max-width: 1024px) and (min-width: 769px) {
+    :root {
+        --font-size-h1: 2.2em;
+        --btn-width: 280px;
+        --btn-height: 65px;
+        --btn-font-size: 19px;
+    }
+
+    .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu,
+    .vertebra-sub-menu, .mode-menu {
+        width: 85%;
+        padding: 25px;
+    }
+
+    .game-content {
+        width: 92%;
+        max-width: 700px;
+        padding: 18px;
+    }
+
+    .medic-frame {
+        width: 160px;
+        height: 240px;
+    }
+
+    .dialogue-box {
+        width: 65%;
+    }
+
+    .choice-box {
+        padding: 25px;
+    }
+
+    .choice-box h1 {
+        font-size: 1.6em;
+    }
+
+    .choice-box button {
+        padding: 14px;
+        font-size: 1.1em;
+    }
+}
+
+/* ==================================================================
+   MEDIA QUERIES - CELULARES (até 768px)
+   ================================================================== */
+@media (max-width: 768px) {
+    :root {
+        --font-size-h1: 1.6em;
+        --btn-width: 90%;
+        --btn-height: 60px;
+        --btn-font-size: 17px;
+    }
+
+    /* Ajustes gerais */
+    body {
+        background-size: cover;
+    }
+
+    /* Menu principal */
+    .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu,
+    .vertebra-sub-menu, .mode-menu {
+        width: 90%;
+        padding: 20px 15px;
+        max-width: 400px;
+    }
+
+    .menu h1, .sub-menu h1 {
+        font-size: var(--font-size-h1);
+        margin-bottom: 15px;
+    }
+
+    .menu button,
+    .sub-menu button {
+        width: var(--btn-width);
+        height: var(--btn-height);
+        font-size: var(--btn-font-size);
+        margin: 5px auto;
+    }
+
+    /* Game area */
+    .game-content {
+        width: 95%;
+        padding: 12px;
+        margin: 10px auto;
+    }
+
+    .game-content h1 {
+        font-size: 1.3em;
+    }
+
+    .container {
+        border-width: 3px;
+        padding: 5px;
+    }
+
+    #question {
+        font-size: clamp(13px, 3.5vw, 16px);
+        padding: 8px;
+    }
+
+    #feedback {
+        font-size: 16px;
+    }
+
+    #timer {
+        font-size: 18px;
+        padding: 8px;
+        margin: 12px 0;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+        height: 14px;
+    }
+
+    /* Score */
+    #score {
+        font-size: 1em;
+    }
+
+    /* Input container */
+    #input-container input {
+        font-size: 16px;
+        padding: 10px 12px;
+    }
+
+    #input-container button {
+        font-size: 15px;
+        padding: 10px 18px;
+    }
+
+    /* Game buttons */
+    #voltar-button,
+    #continuar-button {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    /* Visual Novel dialogo */
+    .dialogue-container {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 0 5px;
+    }
+
+    .medic-frame {
+        width: 120px;
+        height: 160px;
+        margin-right: 0;
+        margin-bottom: 10px;
+        border-width: 3px;
+    }
+
+    .dialogue-box {
+        width: 95%;
+        max-width: 95%;
+        padding: 15px;
+    }
+
+    .dialogue-box p {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .dialogue-box button {
+        padding: 8px 16px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    /* Visual Novel menus */
+    .visual-novel-menu .choice-box,
+    .visual-novel-choice .choice-box {
+        width: 90%;
+        max-width: 90%;
+        padding: 20px 15px;
+        max-height: 85vh;
+        max-height: 85dvh;
+    }
+
+    .choice-box h1 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .choice-box button {
+        padding: 14px 12px;
+        font-size: 1em;
+        margin: 8px 0;
+        min-height: 48px;
+        border-radius: 8px;
+    }
+
+    /* Menu de subnível com scroll */
+    .visual-novel-menu {
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+
+    .visual-novel-menu .choice-box {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Copyright */
+    .copyright {
+        font-size: 11px;
+        padding: 8px;
+    }
+}
+
+/* ==================================================================
+   CELULARES PEQUENOS (até 380px)
+   ================================================================== */
+@media (max-width: 380px) {
+    :root {
+        --font-size-h1: 1.3em;
+        --btn-height: 52px;
+        --btn-font-size: 15px;
+    }
+
+    .menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu,
+    .vertebra-sub-menu, .mode-menu {
+        padding: 15px 10px;
+    }
+
+    .game-content {
+        padding: 10px;
+    }
+
+    .game-content h1 {
+        font-size: 1.1em;
+    }
+
+    .choice-box h1 {
+        font-size: 1.1em;
+    }
+
+    .choice-box button {
+        padding: 12px 10px;
+        font-size: 0.9em;
+        min-height: 44px;
+    }
+
+    .medic-frame {
+        width: 100px;
+        height: 130px;
+    }
+
+    .dialogue-box {
+        padding: 12px;
+    }
+
+    .dialogue-box p {
+        font-size: 0.9em;
+    }
+}
+
+/* ==================================================================
+   ORIENTAÇÃO PAISAGEM (Landscape) em celulares
+   ================================================================== */
+@media (max-width: 900px) and (orientation: landscape) {
+    .visual-novel-menu {
+        align-items: center;
+        padding-top: 0;
+    }
+
+    .visual-novel-menu .choice-box {
+        max-height: 90vh;
+        max-height: 90dvh;
+        padding: 15px;
+    }
+
+    .choice-box h1 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .choice-box button {
+        padding: 10px 10px;
+        font-size: 0.9em;
+        margin: 5px 0;
+        min-height: 40px;
+    }
+
+    .dialogue-container {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .medic-frame {
+        width: 100px;
+        height: 130px;
+        margin-right: 10px;
+        margin-bottom: 0;
+    }
+
+    .game-content {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .game-content h1 {
+        font-size: 1.1em;
+    }
+
+    #timer {
+        margin: 8px 0;
+    }
+}
+
+/* ==================================================================
+   TELAS MUITO GRANDES (acima de 1400px)
+   ================================================================== */
+@media (min-width: 1400px) {
+    .game-content {
+        max-width: 1000px;
+        padding: 30px;
+    }
+
+    .dialogue-container {
+        max-width: 1400px;
+    }
+}
+
+/* ==================================================================
+   TOUCH-ONLY - Dispositivos exclusivamente touch
+   ================================================================== */
+@media (hover: none) and (pointer: coarse) {
+    .menu button:hover,
+    .sub-menu button:hover,
+    .cranio-sub-menu button:hover,
+    .medula-sub-menu button:hover,
+    .vertebra-sub-menu button:hover,
+    .mode-menu button:hover,
+    .choice-box button:hover {
+        filter: none;
+        background-color: var(--primary);
+    }
+
+    .target {
+        /* targets maiores para touch */
+        min-width: 22px !important;
+        min-height: 22px !important;
+    }
+
+    /* Remove hover em links/botões */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
 }

@@ -11,8 +11,12 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="referrer" content="no-referrer-when-downgrade">
+    <meta name="theme-color" content="#800020">
     <title>Quiz de Anatomia</title>
     <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/011/116/298/original/continuous-line-drawing-of-a-human-brain-free-vector.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
@@ -193,8 +197,10 @@
                 <p id="question"></p>
             </div>
             <div class="container">
-                <img id="image" src="" width="100%" alt="Imagem anatômica" crossorigin="anonymous">
-                <div id="targets"></div>
+                <div class="img-wrapper">
+                    <img id="image" src="" width="100%" alt="Imagem anatômica" crossorigin="anonymous">
+                    <div id="targets"></div>
+                </div>
             </div>
             <div class="progress-bar">
                 <div class="progress-bar-fill" id="progress-bar"></div>

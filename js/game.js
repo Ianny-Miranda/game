@@ -12,6 +12,19 @@ let totalQuestions = 0;
 let shuffledPoints = [];
 let timer = null;
 
+/**
+ * Rola a página para garantir que o input fique visível (útil em mobile
+ * quando o teclado virtual aparece).
+ */
+function scrollInputIntoView() {
+    const inputContainer = document.getElementById("input-container");
+    if (inputContainer) {
+        setTimeout(() => {
+            inputContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    }
+}
+
 // ---------- Modo Padrão (Clique nos Pontos) ----------
 
 function startGame(phase, view, mode) {
@@ -35,18 +48,35 @@ function startGame(phase, view, mode) {
 
     navigateTo("game");
 
-    document.getElementById("image").src = phases[phase][view].image;
+    const img = document.getElementById("image");
     correctAnswers = 0;
     totalQuestions = phases[phase][view].points.length;
     shuffledPoints = shuffleArray([...phases[phase][view].points]);
     currentQuestionIndex = 0;
 
-    if (mode === 'prova') {
-        startProvaQuestion();
-    } else if (mode === 'escrita') {
-        startWritingMode();
-    } else {
-        loadQuestions();
+    // Aguarda a imagem carregar para garantir que naturalWidth/naturalHeight
+    // estejam disponíveis para o cálculo correto de posição dos targets
+    img.onload = () => {
+        if (mode === 'prova') {
+            startProvaQuestion();
+        } else if (mode === 'escrita') {
+            startWritingMode();
+        } else {
+            loadQuestions();
+        }
+    };
+    img.src = phases[phase][view].image;
+
+    // Se a imagem já estava em cache, o onload pode não disparar
+    if (img.complete && img.naturalWidth > 0) {
+        img.onload = null;
+        if (mode === 'prova') {
+            startProvaQuestion();
+        } else if (mode === 'escrita') {
+            startWritingMode();
+        } else {
+            loadQuestions();
+        }
     }
 }
 
@@ -65,19 +95,21 @@ function loadQuestions() {
         const target = document.createElement("div");
         target.className = "target";
 
-        if (point.size === "micro") {
-            target.style.width = "10px";  target.style.height = "10px";
-        } else if (point.size === "small") {
-            target.style.width = "15px";  target.style.height = "15px";
-        } else if (point.size === "large") {
-            target.style.width = "30px";  target.style.height = "30px";
-        } else {
-            target.style.width = "20px";  target.style.height = "20px";
-        }
+        const size = getTargetSize(point.size);
+        target.style.width = size.width;
+        target.style.height = size.height;
 
-        target.style.top = point.top;
-        target.style.left = point.left;
-        target.onclick = () => checkAnswer(point.name, target);
+        const pos = pxToPercent(point.top, point.left);
+        target.style.top = pos.top;
+        target.style.left = pos.left;
+
+        // Suporte tanto a click quanto a touch para mobile
+        target.addEventListener('click', (e) => checkAnswer(point.name, target));
+        target.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            checkAnswer(point.name, target);
+        });
+        
         targetsContainer.appendChild(target);
     });
 
@@ -97,7 +129,7 @@ function checkAnswer(structure, target) {
         playCorrectSound();
     } else {
         target.classList.add("incorrect");
-        feedback.innerText = `Incorreto! A estrutura correta é: ${correctAnswer}`;
+        feedback.innerText = `Incorreto! Você clicou em: ${structure}.`;
         feedback.style.color = 'red';
         playWrongSound();
     }
@@ -114,7 +146,7 @@ function checkAnswer(structure, target) {
             showEndGame();
         }
         feedback.innerText = '';
-    }, 1000);
+    }, 2500);
 }
 
 // ---------- Modo Escrita ----------
@@ -126,10 +158,14 @@ function startWritingMode() {
     const currentQuestion = shuffledPoints[currentQuestionIndex];
     const target = document.createElement("div");
     target.className = "target blinking";
-    target.style.top = currentQuestion.top;
-    target.style.left = currentQuestion.left;
-    target.style.width = "20px";
-    target.style.height = "20px";
+
+    const size = getTargetSize(currentQuestion.size);
+    target.style.width = size.width;
+    target.style.height = size.height;
+
+    const pos = pxToPercent(currentQuestion.top, currentQuestion.left);
+    target.style.top = pos.top;
+    target.style.left = pos.left;
     targetsContainer.appendChild(target);
 
     const existingInput = document.getElementById("input-container");
@@ -139,31 +175,19 @@ function startWritingMode() {
 
     const inputContainer = document.createElement("div");
     inputContainer.id = "input-container";
-    inputContainer.style.marginTop = "20px";
 
     const input = document.createElement("input");
     input.type = "text";
+    input.autocomplete = "off";
+    input.autocorrect = "off";
+    input.spellcheck = false;
     input.placeholder = "Digite aqui...";
-    input.style.padding = "10px";
-    input.style.fontSize = "16px";
-    input.style.borderRadius = "5px";
-    input.style.border = "2px solid #800020";
 
     const submitButton = document.createElement("button");
     submitButton.innerText = "Enviar";
-    submitButton.style.padding = "10px 20px";
-    submitButton.style.marginLeft = "10px";
-    submitButton.style.backgroundColor = "#800020";
-    submitButton.style.color = "white";
-    submitButton.style.border = "none";
-    submitButton.style.borderRadius = "5px";
-    submitButton.style.cursor = "pointer";
 
-    input.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") submitButton.click();
-    });
-
-    submitButton.onclick = () => {
+    // Função de submit compartilhada
+    const submitWritingAnswer = () => {
         const userAnswer = input.value.trim().toLowerCase();
         const correctAnswer = currentQuestion.name.toLowerCase();
         const isCorrect = checkSimilarity(userAnswer, correctAnswer);
@@ -193,10 +217,29 @@ function startWritingMode() {
         }, 1000);
     };
 
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === "Go") {
+            event.preventDefault();
+            submitButton.click();
+        }
+    });
+
+    // Em mobile, ao perder foco, não atrasa o fluxo
+    input.addEventListener("blur", () => {
+        // Pequeno delay para permitir clique no botão
+    });
+
+    submitButton.onclick = submitWritingAnswer;
+
     inputContainer.appendChild(input);
     inputContainer.appendChild(submitButton);
     document.getElementById("question-container").appendChild(inputContainer);
-    input.focus();
+    
+    // Foca e rola para o input (importante em mobile com teclado virtual)
+    setTimeout(() => {
+        input.focus();
+        scrollInputIntoView();
+    }, 100);
 }
 
 // ---------- Modo Prova ----------
@@ -240,12 +283,22 @@ function setupProvaMode(selectedQuestions) {
     navigateTo("game");
     document.getElementById("timer").style.display = "block";
 
+    const img = document.getElementById("image");
+
     if (shuffledPoints.length > 0) {
         const firstQuestion = shuffledPoints[0];
-        document.getElementById("image").src = phases[firstQuestion.phase][firstQuestion.view].image;
-    }
+        img.onload = () => {
+            startProvaQuestion();
+        };
+        img.src = phases[firstQuestion.phase][firstQuestion.view].image;
 
-    startProvaQuestion();
+        if (img.complete && img.naturalWidth > 0) {
+            img.onload = null;
+            startProvaQuestion();
+        }
+    } else {
+        startProvaQuestion();
+    }
 }
 
 function startProvaQuestion() {
@@ -274,18 +327,32 @@ function startProvaQuestion() {
     }
 
     const phaseData = phases[currentQuestion.phase][currentQuestion.view];
-    document.getElementById("image").src = phaseData.image;
+    const img = document.getElementById("image");
+    img.src = phaseData.image;
 
-    const targetsContainer = document.getElementById("targets");
-    targetsContainer.innerHTML = "";
+    const showTarget = () => {
+        const targetsContainer = document.getElementById("targets");
+        targetsContainer.innerHTML = "";
 
-    const target = document.createElement("div");
-    target.className = "target blinking";
-    target.style.top = currentQuestion.question.top;
-    target.style.left = currentQuestion.question.left;
-    target.style.width = "20px";
-    target.style.height = "20px";
-    targetsContainer.appendChild(target);
+        const target = document.createElement("div");
+        target.className = "target blinking";
+
+        const size = getTargetSize(currentQuestion.question.size);
+        target.style.width = size.width;
+        target.style.height = size.height;
+
+        const pos = pxToPercent(currentQuestion.question.top, currentQuestion.question.left);
+        target.style.top = pos.top;
+        target.style.left = pos.left;
+        targetsContainer.appendChild(target);
+    };
+
+    // Aguarda a imagem carregar para posicionar corretamente
+    if (img.complete && img.naturalWidth > 0) {
+        showTarget();
+    } else {
+        img.onload = showTarget;
+    }
 
     document.getElementById("question").innerHTML = `Digite o nome da estrutura que está piscando:`;
 
@@ -294,6 +361,9 @@ function startProvaQuestion() {
 
     const input = document.createElement("input");
     input.type = "text";
+    input.autocomplete = "off";
+    input.autocorrect = "off";
+    input.spellcheck = false;
     input.placeholder = "Digite aqui...";
 
     const submitButton = document.createElement("button");
@@ -333,14 +403,21 @@ function startProvaQuestion() {
     };
 
     input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") submitAnswer();
+        if (e.key === "Enter" || e.key === "Go") {
+            e.preventDefault();
+            submitAnswer();
+        }
     });
     submitButton.addEventListener("click", submitAnswer);
 
     newInputContainer.appendChild(input);
     newInputContainer.appendChild(submitButton);
     document.getElementById("question-container").appendChild(newInputContainer);
-    input.focus();
+    
+    setTimeout(() => {
+        input.focus();
+        scrollInputIntoView();
+    }, 100);
 }
 
 function handleProvaAnswer() {
