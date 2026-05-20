@@ -15,8 +15,8 @@ const dialogues = [
 // ---------- Navegação Principal ----------
 
 function showSubMenu() {
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("visual-novel").style.display = "flex";
+    navigateTo("visual-novel");
+    dialogueIndex = 0;
     nextDialogue();
 }
 
@@ -32,87 +32,57 @@ function nextDialogue() {
 }
 
 function showVisualNovelChoice() {
-    document.getElementById("visual-novel").style.display = "none";
-    document.getElementById("visual-novel-choice").style.display = "flex";
-    document.getElementById("visual-novel-choice-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("visual-novel-choice");
 }
 
 function backToMenu() {
-    const elementsToHide = [
-        "game", "cranio-sublevel-choice", "medula-sublevel-choice",
-        "vertebra-sublevel-choice", "tronco_encefálico-sublevel-choice",
-        "cerebelo-sublevel-choice", "mode-menu", "feedback-medica"
-    ];
-    elementsToHide.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = "none";
-    });
-
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("menu").style.display = "flex";
-    document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
     resetGame();
+    navigateTo("menu");
 }
 
 function backToSubMenu() {
-    const game = document.getElementById("game");
-    if (game) game.style.display = "none";
-
-    document.body.style.backgroundImage = "url('https://i.imgur.com/naeZ29X.jpg')";
-
     if (currentPhase === "cranio") {
-        document.getElementById("cranio-sublevel-choice").style.display = "flex";
+        navigateTo("cranio-sublevel-choice");
     } else if (currentPhase === "medula") {
-        document.getElementById("medula-sublevel-choice").style.display = "flex";
+        navigateTo("medula-sublevel-choice");
     } else if (currentPhase === "vértebra") {
-        document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+        navigateTo("vertebra-sublevel-choice");
     } else if (currentPhase === "tronco_encefálico") {
-        document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
+        navigateTo("tronco_encefálico-sublevel-choice");
     } else if (currentPhase === "cerebelo") {
-        document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
+        navigateTo("cerebelo-sublevel-choice");
     } else if (currentPhase === "nervos_cranianos") {
-        document.getElementById("nervos_cranianos-sublevel-choice").style.display = "flex";
+        navigateTo("nervos_cranianos-sublevel-choice");
+    } else {
+        navigateTo("visual-novel-choice");
     }
-
     resetGame();
 }
 
 // ---------- Menus de Subníveis ----------
 
 function chooseCranioSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("cranio-sublevel-choice").style.display = "flex";
-    document.getElementById("cranio-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("cranio-sublevel-choice");
 }
 
 function chooseMedulaSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("medula-sublevel-choice").style.display = "flex";
-    document.getElementById("medula-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("medula-sublevel-choice");
 }
 
 function chooseVertebraSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("vertebra-sublevel-choice").style.display = "flex";
-    document.getElementById("vertebra-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("vertebra-sublevel-choice");
 }
 
 function chooseTroncoSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
-    document.getElementById("tronco_encefálico-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("tronco_encefálico-sublevel-choice");
 }
 
 function chooseCerebeloSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
-    document.getElementById("cerebelo-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("cerebelo-sublevel-choice");
 }
 
 function chooseNervosSublevel() {
-    document.getElementById("visual-novel-choice").style.display = "none";
-    document.getElementById("nervos_cranianos-sublevel-choice").style.display = "flex";
-    document.getElementById("nervos_cranianos-sublevel-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("nervos_cranianos-sublevel-choice");
 }
 
 // ---------- Menu de Modo ----------
@@ -120,42 +90,26 @@ function chooseNervosSublevel() {
 function chooseMode(phase, view) {
     currentPhase = phase;
     currentView = view;
-    document.getElementById("cranio-sublevel-choice").style.display = "none";
-    document.getElementById("medula-sublevel-choice").style.display = "none";
-    document.getElementById("vertebra-sublevel-choice").style.display = "none";
-    document.getElementById("tronco_encefálico-sublevel-choice").style.display = "none";
-    document.getElementById("cerebelo-sublevel-choice").style.display = "none";
-    document.getElementById("nervos_cranianos-sublevel-choice").style.display = "none";
-    document.getElementById("mode-menu").style.display = "flex";
-    document.getElementById("mode-menu-background").style.backgroundImage = `url('${dialogues[dialogues.length - 1].background}')`;
+    navigateTo("mode-menu");
 }
 
 function backToVisualNovelChoice() {
-    const menus = [
-        "cranio-sublevel-choice", "medula-sublevel-choice",
-        "vertebra-sublevel-choice", "tronco_encefálico-sublevel-choice",
-        "cerebelo-sublevel-choice", "nervos_cranianos-sublevel-choice"
-    ];
-    menus.forEach(id => {
-        document.getElementById(id).style.display = "none";
-    });
-    document.getElementById("visual-novel-choice").style.display = "flex";
+    navigateTo("visual-novel-choice");
 }
 
 function backToSublevelChoice() {
-    document.getElementById("mode-menu").style.display = "none";
     if (currentPhase === "cranio") {
-        document.getElementById("cranio-sublevel-choice").style.display = "flex";
+        navigateTo("cranio-sublevel-choice");
     } else if (currentPhase === "medula") {
-        document.getElementById("medula-sublevel-choice").style.display = "flex";
+        navigateTo("medula-sublevel-choice");
     } else if (currentPhase === "vértebra") {
-        document.getElementById("vertebra-sublevel-choice").style.display = "flex";
+        navigateTo("vertebra-sublevel-choice");
     } else if (currentPhase === "tronco_encefálico") {
-        document.getElementById("tronco_encefálico-sublevel-choice").style.display = "flex";
+        navigateTo("tronco_encefálico-sublevel-choice");
     } else if (currentPhase === "cerebelo") {
-        document.getElementById("cerebelo-sublevel-choice").style.display = "flex";
+        navigateTo("cerebelo-sublevel-choice");
     } else if (currentPhase === "nervos_cranianos") {
-        document.getElementById("nervos_cranianos-sublevel-choice").style.display = "flex";
+        navigateTo("nervos_cranianos-sublevel-choice");
     }
     resetGame();
 }
@@ -185,7 +139,5 @@ function showFeedbackMedica() {
         feedbackText.innerText = "Você errou muitas perguntas. Não desanime! Revise o conteúdo e tente novamente.";
     }
 
-    feedbackMedica.style.display = "flex";
-    const game = document.getElementById("game");
-    if (game) game.style.display = "none";
+    navigateTo("feedback-medica");
 }

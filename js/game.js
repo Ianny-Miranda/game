@@ -43,9 +43,7 @@ function startGame(phase, view, mode) {
         timerElement.style.display = "none";
     }
 
-    document.getElementById("mode-menu").style.display = "none";
-    document.getElementById("game").style.display = "block";
-    document.getElementById("game").classList.add("active");
+    navigateTo("game");
 
     document.getElementById("image").src = phases[phase][view].image;
     correctAnswers = 0;
@@ -249,9 +247,7 @@ function setupProvaMode(selectedQuestions) {
     totalQuestions = 20;
     currentQuestionIndex = 0;
 
-    document.getElementById("mode-menu").style.display = "none";
-    document.getElementById("game").style.display = "block";
-    document.getElementById("game").classList.add("active");
+    navigateTo("game");
     document.getElementById("timer").style.display = "block";
 
     startProvaQuestion();
