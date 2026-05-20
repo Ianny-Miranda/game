@@ -1,0 +1,449 @@
+/* === IMPORTS & BASE === */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+
+/* === BODY === */
+body {
+    font-family: 'Jersey 15', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    background-image: url('https://i.imgur.com/naeZ29X.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-color 0.5s ease-in-out;
+}
+
+body.no-background {
+    background-image: none;
+}
+
+/* === MENUS === */
+.menu, .sub-menu, .cranio-sub-menu, .medula-sub-menu,
+.vertebra-sub-menu, .mode-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 4px solid #5A3E2B;
+    padding: 30px;
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.menu h1, .sub-menu h1, .cranio-sub-menu h1,
+.medula-sub-menu h1, .vertebra-sub-menu h1, .mode-menu h1 {
+    color: #920000;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 0 #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+p {
+    font-size: 18px;
+    color: #555;
+}
+
+/* === BUTTONS === */
+.menu button,
+.sub-menu button,
+.cranio-sub-menu button,
+.medula-sub-menu button,
+.vertebra-sub-menu button,
+.mode-menu button {
+    width: 300px;
+    height: 70px;
+    font-family: 'Jersey 15', cursive;
+    font-size: 20px;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    display: inline-block;
+    background-image: url('https://i.imgur.com/dHWvqGk.png');
+    background-color: #00000000;
+    background-size: cover;
+    display: block;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    cursor: pointer;
+    object-fit: cover;
+    line-height: 0;
+}
+
+.menu button:hover,
+.sub-menu button:hover,
+.cranio-sub-menu button:hover,
+.medula-sub-menu button:hover,
+.vertebra-sub-menu button:hover,
+.mode-menu button:hover {
+    filter: brightness(1.2);
+    transition: all 0.2s ease;
+}
+
+.menu button:active,
+.sub-menu button:active,
+.cranio-sub-menu button:active,
+.medula-sub-menu button:active,
+.vertebra-sub-menu button:active,
+.mode-menu button:active {
+    box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000;
+    transform: translate(3px, 3px);
+}
+
+.menu button:focus,
+.sub-menu button:focus,
+.cranio-sub-menu button:focus,
+.medula-sub-menu button:focus,
+.vertebra-sub-menu button:focus,
+.mode-menu button:focus {
+    outline: none;
+    box-shadow: 0 0 5px #800020;
+}
+
+/* === GAME AREA === */
+.game {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    background-image: url('https://i.imgur.com/PUf8wJf.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: auto;
+    z-index: 1000;
+}
+
+.game.active {
+    opacity: 1;
+}
+
+.game-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* === CONTAINER & TARGETS === */
+.container {
+    position: relative;
+    display: inline-block;
+    border: 5px solid #333;
+    border-radius: 10px;
+    background: white;
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.target {
+    position: absolute;
+    background-color: rgba(6, 19, 255, 0.64);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.target.correct {
+    background-color: rgba(0, 255, 0, 0.7);
+}
+
+.target.incorrect {
+    background-color: rgba(255, 0, 0, 0.7);
+}
+
+.blinking {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* === PROGRESS BAR === */
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #28a745;
+    width: 0;
+    transition: width 0.5s ease-in-out;
+}
+
+/* === FEEDBACK === */
+#feedback {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#question {
+    background-color: rgba(128, 0, 32, 0.8);
+    border-radius: 12px;
+    padding: 10px;
+    color: white;
+    font-style: italic;
+}
+
+.structure-name {
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+}
+
+/* === TIMER === */
+#timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #800020;
+    margin: 20px 0;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* === COPYRIGHT === */
+.copyright {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    color: #333;
+}
+
+/* === VISUAL NOVEL === */
+.visual-novel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.dialogue-container {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+}
+
+.medic-frame {
+    width: 200px;
+    height: 300px;
+    background-color: #fff;
+    border: 5px solid #800020;
+    border-radius: 10px;
+    margin-right: 20px;
+    overflow: hidden;
+}
+
+.medic-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dialogue-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    max-width: 800px;
+    text-align: left;
+}
+
+.dialogue-box p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.dialogue-box button {
+    padding: 10px 20px;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 1px 1px 0 #000, 2px 2px 0 #000, 3px 3px 0 #000;
+}
+
+.dialogue-box button:hover {
+    background-color: #600018;
+}
+
+.dialogue-box button:active {
+    transform: translate(3px, 3px);
+}
+
+/* === VISUAL NOVEL CHOICE === */
+.visual-novel-choice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.choice-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.choice-box h1 {
+    color: #800020;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.choice-box button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.choice-box button:hover {
+    background-color: #600018;
+}
+
+/* === PROVA BUTTONS === */
+.prova button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #008029;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+/* === VISUAL NOVEL MENU === */
+.visual-novel-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: hidden;
+    overflow: auto;
+}
+
+.visual-novel-menu .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.visual-novel-menu .choice-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.visual-novel-menu .choice-box h1 {
+    color: #800020;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.visual-novel-menu .choice-box button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #800020;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.visual-novel-menu .choice-box button:hover {
+    background-color: #600018;
+}
